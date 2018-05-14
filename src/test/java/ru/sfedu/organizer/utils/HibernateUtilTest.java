@@ -5,6 +5,9 @@
  */
 package ru.sfedu.organizer.utils;
 
+import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.Professions;
+import ru.sfedu.organizer.entity.Voices;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -19,7 +22,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.hibernate.Session;
-import ru.sfedu.organizer.model.*;
 
 
 /**
@@ -50,7 +52,7 @@ public class HibernateUtilTest {
     /**
      * Test of getSessionFactory method, of class HibernateUtil.
      */
-    @Test
+    //@Test
     public void testGetSessionFactory() {
         System.out.println("getSessionFactory");
         SessionFactory expResult = null;
@@ -60,7 +62,7 @@ public class HibernateUtilTest {
         fail("The test case is a prototype.");
     }
     
-    @Test
+    //@Test
     public void test(){
         System.out.println("test");
         Session session =  HibernateUtil.getSessionFactory().openSession();
@@ -89,7 +91,7 @@ public class HibernateUtilTest {
         session.close();
     }   
     
-    @Test
+    //@Test
     public void t2(){
         Session session =  HibernateUtil.getSessionFactory().openSession();
         Human human = new Human();

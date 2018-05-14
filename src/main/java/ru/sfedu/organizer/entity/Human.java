@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -13,6 +13,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.Check;
 
 /**
@@ -21,6 +23,7 @@ import org.hibernate.annotations.Check;
 @Entity
 @Table(name = "human")
 @Check(constraints = "human_birthDate is null or human_deathDate is null or (human_birthDate < human_deathDate)")
+@XmlRootElement
 public class Human {
 
     //
@@ -218,6 +221,7 @@ public class Human {
      *
      * @return the value of places
      */
+    @XmlTransient
     public Set<Place> getPlaces() {
         return places;
     }

@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.Session;
-import ru.sfedu.organizer.model.Aria;
-import ru.sfedu.organizer.model.Opera;
+import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.Opera;
 
 /**
  *

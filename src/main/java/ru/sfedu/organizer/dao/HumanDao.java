@@ -5,8 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.Session;
-import ru.sfedu.organizer.model.Event;
-import ru.sfedu.organizer.model.Human;
+import ru.sfedu.organizer.entity.Event;
+import ru.sfedu.organizer.entity.Human;
 
 /**
  *

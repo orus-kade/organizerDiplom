@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.Column;
@@ -12,12 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class Note
  */
 @Entity
 @Table(name = "note")
+@XmlRootElement
 public class Note {
 
     //

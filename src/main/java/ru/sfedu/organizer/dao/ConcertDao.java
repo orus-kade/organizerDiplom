@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.Session;
-import ru.sfedu.organizer.model.Concert;
+import ru.sfedu.organizer.entity.Concert;
 
 /**
  *

@@ -5,6 +5,18 @@
  */
 package ru.sfedu.organizer.dao;
 
+import ru.sfedu.organizer.entity.Opera;
+import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.Concert;
+import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.Professions;
+import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.Place;
+import ru.sfedu.organizer.entity.Personage;
+import ru.sfedu.organizer.entity.Voices;
+import ru.sfedu.organizer.entity.Role;
+import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.entity.Stage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -20,7 +32,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import ru.sfedu.organizer.model.*;
 import ru.sfedu.organizer.utils.HibernateUtil;
 import ru.sfedu.organizer.utils.MyGenerator;
 
@@ -52,68 +63,68 @@ public class DaoTest {
     /**
      * Test of get method, of class Dao.
      */
-    @Test
-    public void testGet() {
-        System.out.println("get");
-        long id = 0L;
-        Class cl = null;
-        Dao instance = null;
-        Optional expResult = null;
-        Optional result = instance.get(id, cl);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testGet() {
+//        System.out.println("get");
+//        long id = 0L;
+//        Class cl = null;
+//        Dao instance = null;
+//        Optional expResult = null;
+//        Optional result = instance.get(id, cl);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of delete method, of class Dao.
      */
-    @Test
-    public void testDelete() {
-        System.out.println("delete");
-        Dao instance = null;
-        instance.delete(null);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testDelete() {
+//        System.out.println("delete");
+//        Dao instance = null;
+//        instance.delete(null);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of deleteList method, of class Dao.
      */
-    @Test
-    public void testDeleteList() {
-        System.out.println("deleteList");
-        Optional<List> listItem = null;
-        Dao instance = null;
-        instance.deleteList(listItem);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testDeleteList() {
+//        System.out.println("deleteList");
+//        Optional<List> listItem = null;
+//        Dao instance = null;
+//        instance.deleteList(listItem);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of saveOrUpdate method, of class Dao.
      */
-    @Test
-    public void testSaveOrUpdate() {
-        System.out.println("saveOrUpdate");
-        Dao instance = null;
-        instance.saveOrUpdate(null);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testSaveOrUpdate() {
+//        System.out.println("saveOrUpdate");
+//        Dao instance = null;
+//        instance.saveOrUpdate(null);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of saveOrUpdateList method, of class Dao.
      */
-    @Test
-    public void testSaveOrUpdateList() {
-        System.out.println("saveOrUpdateList");
-        Optional<List> itemList = null;
-        Dao instance = null;
-        instance.saveOrUpdateList(itemList);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    @Test
+//    public void testSaveOrUpdateList() {
+//        System.out.println("saveOrUpdateList");
+//        Optional<List> itemList = null;
+//        Dao instance = null;
+//        instance.saveOrUpdateList(itemList);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of getAll method, of class Dao.
@@ -146,26 +157,26 @@ public class DaoTest {
 //        fail("The test case is a prototype.");
 //    }
     
-    @Test
-    public void getPage(){
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        Optional<List> result;
-        Dao<Human> dao = new Dao<>(session);
-        Human human = new Human();
-        human.setName("AAnameNew");
-        dao.saveOrUpdate(Optional.ofNullable(human));
-        int count = dao.countAll(Human.class);
-        System.out.println(count);
-        //result = dao.getAll(Human.class);
-        result = dao.getAllByPage(Human.class, 1, Arrays.asList("name"));
-        if (result.isPresent()){
-            List list = result.get();
-            System.out.println(list.isEmpty());
-            System.out.println(list); 
-        }        
-    }
+//    @Test
+//    public void getPage(){
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        Optional<List> result;
+//        Dao<Human> dao = new Dao<>(session);
+//        Human human = new Human();
+//        human.setName("AAnameNew");
+//        dao.saveOrUpdate(Optional.ofNullable(human));
+//        int count = dao.countAll(Human.class);
+//        System.out.println(count);
+//        //result = dao.getAll(Human.class);
+//        result = dao.getAllByPage(Human.class, 1, Arrays.asList("name"));
+//        if (result.isPresent()){
+//            List list = result.get();
+//            System.out.println(list.isEmpty());
+//            System.out.println(list); 
+//        }        
+//    }
     
-    @Test
+    //@Test
     public void addData(){
         Session session = HibernateUtil.getSessionFactory().openSession();
         
@@ -235,7 +246,6 @@ public class DaoTest {
                 aries.add(aria);
             }
             Libretto libretto = new Libretto();
-            libretto.setOpera(opera);
             libretto.setText(i+" some libretto text");
             Set<Human> humans = new HashSet<>();
             humans.add(humanDao.get((long) i, Human.class).get());

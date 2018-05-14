@@ -1,9 +1,10 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,12 +13,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class Opera
  */
 @Entity
 @Table(name = "opera")
+@XmlRootElement
 public class Opera {
 
     //
@@ -41,7 +45,7 @@ public class Opera {
     @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
     private Set<Aria> aries;
     
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="libretto_id")
     private Libretto libretto;
     
@@ -130,6 +134,7 @@ public class Opera {
      *
      * @return the value of personages
      */
+    @XmlTransient
     public Set<Personage> getPersonages() {
         return personages;
     }
@@ -148,6 +153,7 @@ public class Opera {
      *
      * @return the value of aries
      */
+    @XmlTransient
     public Set<Aria> getAries() {
         return aries;
     }

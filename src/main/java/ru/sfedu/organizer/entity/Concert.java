@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -7,12 +7,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class Concert
  */
 @Entity
 @Table(name = "concert")
+@XmlRootElement
 public class Concert extends Event {
 
     //
@@ -60,6 +63,7 @@ public class Concert extends Event {
      *
      * @return the value of aries
      */
+    @XmlTransient
     public Set<Aria> getAries() {
         return aries;
     }
@@ -78,6 +82,7 @@ public class Concert extends Event {
      *
      * @return the value of singers
      */
+    @XmlTransient
     public Set<Human> getSingers() {
         return singers;
     }

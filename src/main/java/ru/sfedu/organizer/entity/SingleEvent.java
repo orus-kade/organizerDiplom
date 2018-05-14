@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -12,12 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Class SingleEvent
  */
 @Entity
 @Table(name = "single_event")
+@XmlRootElement
 public class SingleEvent {
 
     //

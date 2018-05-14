@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -15,12 +15,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class User
  */
 @Entity
 @Table(name = "userdata")
+@XmlRootElement
 public class User {
 
     //
@@ -201,6 +204,7 @@ public class User {
      *
      * @return the value of notes
      */
+    @XmlTransient
     public Set<Note> getNotes() {
         return notes;
     }
@@ -219,6 +223,7 @@ public class User {
      *
      * @return the value of events
      */
+    @XmlTransient
     public Set<SingleEvent> getEvents() {
         return events;
     }

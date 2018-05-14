@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 
 import java.util.*;
@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 
@@ -22,6 +24,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name="libretto")
+@XmlRootElement
 public class Libretto {
 
   //
@@ -32,9 +35,9 @@ public class Libretto {
   @Column(name="libretto_id")
   private long id;
   
-  @OneToOne(mappedBy = "libretto")
-  @NotNull
-  private Opera opera;
+//  @OneToOne(mappedBy = "libretto")
+//  @NotNull
+//  private Opera opera;
   
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
   @JoinTable(name="libretto_writer",
@@ -79,17 +82,17 @@ public class Libretto {
    * Set the value of opera
    * @param newVar the new value of opera
    */
-  public void setOpera (Opera newVar) {
-    opera = newVar;
-  }
+//  public void setOpera (Opera newVar) {
+//    opera = newVar;
+//  }
 
   /**
    * Get the value of opera
    * @return the value of opera
    */
-  public Opera getOpera () {
-    return opera;
-  }
+//  public Opera getOpera () {
+//    return opera;
+//  }
 
   /**
    * Set the value of writers
@@ -103,6 +106,7 @@ public class Libretto {
    * Get the value of writers
    * @return the value of writers
    */
+    @XmlTransient
   public Set<Human> getWriters () {
     return writers;
   }

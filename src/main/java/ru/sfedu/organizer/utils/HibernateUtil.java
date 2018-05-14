@@ -1,11 +1,23 @@
 package ru.sfedu.organizer.utils;
 
+import ru.sfedu.organizer.entity.Stage;
+import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.entity.Opera;
+import ru.sfedu.organizer.entity.Concert;
+import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.Role;
+import ru.sfedu.organizer.entity.Personage;
+import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.User;
+import ru.sfedu.organizer.entity.Note;
+import ru.sfedu.organizer.entity.Event;
+import ru.sfedu.organizer.entity.Place;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
-import ru.sfedu.organizer.model.*;
 
 
 /**

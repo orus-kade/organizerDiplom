@@ -1,5 +1,6 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
+import com.google.gson.annotations.Expose;
 import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,53 +15,65 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class Aria
  */
 @Entity
 @Table(name = "aria")
+@XmlRootElement(name = "aria")
+
 public class Aria {
 
     //
     // Fields
     //
+    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aria_id")
     private long id;
 
+    @Expose
     @Column(name = "aria_title")
     @NotNull
     private String title;
 
+    @Expose
     @Column(name = "aria_text")
     private String text;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @Expose(serialize = false, deserialize = false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_composer",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "composer_id"))
     private Set<Human> composers;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @Expose(serialize = false, deserialize = false)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_writer",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "writer_id"))
     private Set<Human> writers;
 
+    @Expose
 //    @ManyToMany(mappedBy = "aries", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_personage",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "personage_id"))
     private Set<Personage> personages;
 
-    @ManyToOne
+    @Expose
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "opera_id")
     @NotNull
     private Opera opera;
 
+    @Expose
     @Column(name = "position")
     @NotNull
     private int position;
@@ -149,6 +162,7 @@ public class Aria {
      *
      * @return the value of composers
      */
+    @XmlTransient
     public Set<Human> getComposers() {
         return composers;
     }
@@ -167,6 +181,7 @@ public class Aria {
      *
      * @return the value of writers
      */
+    @XmlTransient
     public Set<Human> getWriters() {
         return writers;
     }
@@ -185,6 +200,7 @@ public class Aria {
      *
      * @return the value of personages
      */
+    @XmlTransient
     public Set<Personage> getPersonages() {
         return personages;
     }

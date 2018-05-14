@@ -1,10 +1,10 @@
 package ru.sfedu.organizer.dao;
 
+import ru.sfedu.organizer.entity.Personage;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.Session;
-import ru.sfedu.organizer.model.*;
 
 /**
  *

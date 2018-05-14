@@ -18,5 +18,6 @@ Any value defined here will override the pom.xml file value but is only applicab
         <org-netbeans-modules-whitelist.whitelist-oracle>false</org-netbeans-modules-whitelist.whitelist-oracle>
         <netbeans.compile.on.save>all</netbeans.compile.on.save>
         <netbeans.hint.licensePath>${project.basedir}/licenseheader.txt</netbeans.hint.licensePath>
+        <org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>ide</org-netbeans-modules-maven-jaxws.rest_2e_config_2e_type>
     </properties>
 </project-shared-configuration>

@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -24,6 +26,7 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "personage")
+@XmlRootElement
 public class Personage {
 
     //
@@ -116,6 +119,7 @@ public class Personage {
      *
      * @return the value of personages
      */
+    @XmlTransient
     public Set<Aria> getAries() {
         return aries;
     }

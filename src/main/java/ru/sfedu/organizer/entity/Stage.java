@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.entity;
 
 import java.util.*;
 import javax.persistence.CascadeType;
@@ -8,12 +8,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class Stage
  */
 @Entity
 @Table(name = "stage")
+@XmlRootElement
 public class Stage extends Event {
 
     //
@@ -77,6 +80,7 @@ public class Stage extends Event {
      *
      * @return the value of roles
      */
+    @XmlTransient
     public Set<Role> getRoles() {
         return roles;
     }
