@@ -1,5 +1,6 @@
 package ru.sfedu.organizer.utils;
 
+import java.lang.reflect.Method;
 import ru.sfedu.organizer.entity.Stage;
 import ru.sfedu.organizer.entity.Libretto;
 import ru.sfedu.organizer.entity.SingleEvent;
@@ -62,4 +63,5 @@ public class HibernateUtil {
 
         return sessionFactory;
     }
+    
 }

@@ -19,21 +19,21 @@ import ru.sfedu.organizer.entity.SingleEvent;
 public class SingleEventDao extends Dao<SingleEvent>{
     
     public SingleEventDao(Session session) {
-        super(session);
+        super(SingleEvent.class);
     }
     public Optional<SingleEvent> getById(long id){
-        return this.get(id, SingleEvent.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(SingleEvent.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(SingleEvent.class, Arrays.asList("datetime"));
+        return super.getAll(Arrays.asList("datetime"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(SingleEvent.class, page, Arrays.asList("datetime"));
+        return super.getAllByPage(page, Arrays.asList("datetime"));
     }
 }

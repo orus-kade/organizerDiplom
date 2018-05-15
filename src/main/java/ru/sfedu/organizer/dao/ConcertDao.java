@@ -14,23 +14,23 @@ import ru.sfedu.organizer.entity.Concert;
 public class ConcertDao extends Dao<Concert>{
     
     public ConcertDao(Session session) {
-        super(session);
+        super(Concert.class);
     }
     
     public Optional<Concert> getById(long id){
-        return this.get(id, Concert.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Concert.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Concert.class, Arrays.asList("title"));
+        return super.getAll(Arrays.asList("title"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Concert.class, page, Arrays.asList("title"));
+        return super.getAllByPage(page, Arrays.asList("title"));
     }
     
 }

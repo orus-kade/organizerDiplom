@@ -15,11 +15,11 @@ import ru.sfedu.organizer.entity.Note;
 public class NoteDao extends Dao<Note>{
     
     public NoteDao(Session session) {
-        super(session);
+        super(Note.class);
     }
     
     public Optional<Note> getById(long id){
-        return this.get(id, Note.class);
+        return this.get(id);
     }
     
 //    public int count(){

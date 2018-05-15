@@ -15,22 +15,22 @@ import ru.sfedu.organizer.entity.Opera;
 public class OperaDao extends Dao<Opera>{
     
     public OperaDao(Session session) {
-        super(session);
+        super(Opera.class);
     }
     
     public Optional<Opera> getById(long id){
-        return this.get(id, Opera.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Opera.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Opera.class, Arrays.asList("title"));
+        return super.getAll(Arrays.asList("title"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Opera.class, page, Arrays.asList("title"));
+        return super.getAllByPage(page, Arrays.asList("title"));
     }
 }

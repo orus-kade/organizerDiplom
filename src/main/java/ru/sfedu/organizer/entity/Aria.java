@@ -44,16 +44,16 @@ public class Aria {
     @Expose
     @Column(name = "aria_text")
     private String text;
-
+//fetch = FetchType.LAZY, 
     @Expose(serialize = false, deserialize = false)
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_composer",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "composer_id"))
     private Set<Human> composers;
 
     @Expose(serialize = false, deserialize = false)
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_writer",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "writer_id"))
@@ -61,14 +61,14 @@ public class Aria {
 
     @Expose
 //    @ManyToMany(mappedBy = "aries", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
-    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_personage",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "personage_id"))
     private Set<Personage> personages;
 
     @Expose
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne()
     @JoinColumn(name = "opera_id")
     @NotNull
     private Opera opera;
@@ -244,4 +244,12 @@ public class Aria {
     //
     // Other methods
     //
+
+    @Override
+    public String toString() {
+        return "Aria{" + "id=" + id + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", personages=" + personages + ", opera=" + opera + ", position=" + position + '}';
+    }
+    
+    
+    
 }

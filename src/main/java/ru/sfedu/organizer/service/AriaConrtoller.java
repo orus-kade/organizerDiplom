@@ -22,8 +22,10 @@ import javax.ws.rs.core.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Session;
+import ru.sfedu.organizer.business.AriaBusiness;
 import ru.sfedu.organizer.dao.AriaDao;
 import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.model.AriaModel;
 import ru.sfedu.organizer.utils.HibernateUtil;
 
 /**
@@ -32,14 +34,15 @@ import ru.sfedu.organizer.utils.HibernateUtil;
  */
 @Stateless
 @Path("/aria")
-public class AriaFacadeREST extends AbstractFacade<Aria> {
+public class AriaConrtoller extends AbstractFacade<Aria> {
     
-    static final Logger logger = LogManager.getLogger(AriaFacadeREST.class);
+    static final Logger logger = LogManager.getLogger(AriaConrtoller.class);
+    private static AriaBusiness ariaBusiness = new AriaBusiness();
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public AriaFacadeREST() {
+    public AriaConrtoller() {
         super(Aria.class);
     }
 
@@ -68,19 +71,22 @@ public class AriaFacadeREST extends AbstractFacade<Aria> {
     //@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) {
-//        return super.find(id);
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        logger.debug("olo");
-        AriaDao ariaDao = new AriaDao(session);
-        logger.debug("olo2");
-        Optional<Aria> o = ariaDao.getById(id);
-        logger.debug(o.isPresent());
-        Aria aria = o.get();    
-        logger.debug(aria);
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(aria);  
-        //return aria;
-        session.close();
+////      return super.find(id);
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        logger.debug("olo");
+//        AriaDao ariaDao = new AriaDao(session);
+//        logger.debug("olo2");
+//        Optional<Aria> o = ariaDao.getById(id);
+//        logger.debug(o.isPresent());
+//        Aria aria = o.get();    
+//        logger.debug(aria);
+//        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+//        String json = gson.toJson(aria);  
+//        //return aria;
+//        session.close();
+        AriaModel ariaModel = ariaBusiness.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(ariaModel); 
         return Response.status(200).entity(json).build();
     }
 

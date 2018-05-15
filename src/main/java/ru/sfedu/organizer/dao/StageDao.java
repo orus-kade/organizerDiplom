@@ -19,23 +19,23 @@ import ru.sfedu.organizer.entity.Stage;
 public class StageDao extends Dao<Stage>{
     
     public StageDao(Session session) {
-        super(session);
+        super(Stage.class);
     }
     
     public Optional<Stage> getById(long id){
-        return this.get(id, Stage.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Stage.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Stage.class, Arrays.asList("title"));
+        return super.getAll(Arrays.asList("title"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Stage.class, page, Arrays.asList("title"));
+        return super.getAllByPage(page, Arrays.asList("title"));
     }
     
 }

@@ -15,22 +15,22 @@ import ru.sfedu.organizer.entity.Human;
 public class HumanDao extends Dao<Human>{
     
     public HumanDao(Session session) {
-        super(session);
+        super(Human.class);
     }
     
     public Optional<Human> getById(long id){
-        return this.get(id, Human.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Human.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Human.class, Arrays.asList("surname", "name", "patronymic"));
+        return super.getAll(Arrays.asList("surname", "name", "patronymic"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Human.class, page, Arrays.asList("surname", "name", "patronymic"));
+        return super.getAllByPage(page, Arrays.asList("surname", "name", "patronymic"));
     }
 }

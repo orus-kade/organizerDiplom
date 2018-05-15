@@ -25,6 +25,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -248,7 +249,7 @@ public class DaoTest {
             Libretto libretto = new Libretto();
             libretto.setText(i+" some libretto text");
             Set<Human> humans = new HashSet<>();
-            humans.add(humanDao.get((long) i, Human.class).get());
+            humans.add(humanDao.get((long) i).get());
             libretto.setWriters(humans);
             opera.setLibretto(libretto);
             opera.setAries(aries);
@@ -268,7 +269,7 @@ public class DaoTest {
             places.add(place);
         }
         placeDao.saveOrUpdateList(Optional.ofNullable(places));
-        AriaDao ariaDao = new AriaDao(session);
+        AriaDao ariaDao = new AriaDao();
         ConcertDao concertDao = new ConcertDao(session);
         List<Concert> concerts = new ArrayList<>();
         for (int i=1; i<=10; i++){
@@ -347,6 +348,17 @@ public class DaoTest {
 //        System.out.println(a.getPersonages());
 //        Opera o = daoOpera.getById(1L).get();
 //        //System.out.println(a.getPersonages());
+        session.close();
+    }
+    
+   // @Test 
+    public void anotherTest(){
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        AriaDao ariaDao = new AriaDao();
+        Aria aria = ariaDao.getById(1L).get();
+        System.out.println("olo");        
+        //Hibernate.isInitialized(aria);
+        //System.out.println(Hibernate.isPropertyInitialized(aria, "composers"));
         session.close();
     }
 }

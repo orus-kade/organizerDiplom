@@ -14,22 +14,22 @@ import ru.sfedu.organizer.entity.Place;
 public class PlaceDao extends Dao<Place>{
     
     public PlaceDao(Session session) {
-        super(session);
+        super(Place.class);
     }
     
     public Optional<Place> getById(long id){
-        return this.get(id, Place.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Place.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Place.class, Arrays.asList("title"));
+        return super.getAll(Arrays.asList("title"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Place.class, page, Arrays.asList("title"));
+        return super.getAllByPage(page, Arrays.asList("title"));
     }
 }

@@ -28,7 +28,19 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(ru.sfedu.organizer.service.AriaFacadeREST.class);
+        resources.add(ru.sfedu.organizer.service.AriaConrtoller.class);
+//        resources.add(ru.sfedu.organizer.service.ConcertFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.EventFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.HumanFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.LibrettoFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.NoteFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.OperaFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.PersonageFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.PlaceFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.RoleFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.SingleEventFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.StageFacadeREST.class);
+//        resources.add(ru.sfedu.organizer.service.UserFacadeREST.class);
         resources.add(ru.sfedu.organizer.service.ConcertFacadeREST.class);
         resources.add(ru.sfedu.organizer.service.EventFacadeREST.class);
         resources.add(ru.sfedu.organizer.service.HumanFacadeREST.class);

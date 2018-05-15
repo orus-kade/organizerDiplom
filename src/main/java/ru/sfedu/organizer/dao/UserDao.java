@@ -17,10 +17,10 @@ import ru.sfedu.organizer.entity.User;
 public class UserDao extends Dao<User>{
     
     public UserDao(Session session) {
-        super(session);
+        super(User.class);
     }
     
     public Optional<User> getById(long id){
-        return this.get(id, User.class);
+        return this.get(id);
     }
 }

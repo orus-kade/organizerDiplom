@@ -15,22 +15,22 @@ import ru.sfedu.organizer.entity.Event;
 public class EventDao extends Dao<Event>{
     
     public EventDao(Session session) {
-        super(session);
+        super(Event.class);
     }
     
     public Optional<Event> getById(long id){
-        return this.get(id, Event.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Event.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Event.class, Arrays.asList("title"));
+        return super.getAll(Arrays.asList("title"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Event.class, page, Arrays.asList("title"));
+        return super.getAllByPage(page, Arrays.asList("title"));
     }
 }

@@ -13,10 +13,10 @@ import ru.sfedu.organizer.entity.Libretto;
 public class LibrettoDao extends Dao<Libretto>{
     
     public LibrettoDao(Session session) {
-        super(session);
+        super(Libretto.class);
     }
     
     public Optional<Libretto> getById(long id){
-        return this.get(id, Libretto.class);
+        return this.get(id);
     }
 }

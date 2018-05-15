@@ -15,24 +15,24 @@ import org.hibernate.criterion.CriteriaQuery;
  */
 public class AriaDao extends Dao<Aria>{
 
-    public AriaDao(Session session) {
-        super(session);
+    public AriaDao() {
+        super(Aria.class);
     }
   
     public Optional<Aria> getById(long id){
-        return this.get(id, Aria.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Aria.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Aria.class, Arrays.asList("title"));
+        return super.getAll(Arrays.asList("title"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Aria.class, page, Arrays.asList("title"));
+        return super.getAllByPage(page, Arrays.asList("title"));
     }
     
 //    public Optional<List> getByTitle(String title, int page){

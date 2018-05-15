@@ -19,23 +19,23 @@ import ru.sfedu.organizer.entity.Role;
 public class RoleDao extends Dao<Role>{
     
     public RoleDao(Session session) {
-        super(session);
+        super(Role.class);
     }
     
     public Optional<Role> getById(long id){
-        return this.get(id, Role.class);
+        return this.get(id);
     }
     
     public int count(){
-        return this.countAll(Role.class);
+        return this.countAll();
     }
     
     public Optional<List> getAll(){
-        return super.getAll(Role.class, Arrays.asList("personage"));
+        return super.getAll(Arrays.asList("personage"));
     }
     
     public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(Role.class, page, Arrays.asList("personage"));
+        return super.getAllByPage(page, Arrays.asList("personage"));
     }
     
 }
