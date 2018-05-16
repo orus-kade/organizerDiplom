@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Type;
 
 /**
  *
@@ -40,13 +41,17 @@ public class Personage {
     @Column(name = "personage_name")
     @NotNull
     private String name;
+    
+    @Column(name = "personage_description")
+    @Type(type = "text")
+    private String description;
 
     @ManyToMany
     @JoinTable(name = "aria_personage",
             joinColumns = @JoinColumn(name = "personage_id"),
             inverseJoinColumns = @JoinColumn(name = "aria_id"))
 //    @ManyToMany(mappedBy = "personages")
-    private Set<Aria> aries;
+    private List<Aria> aries;
 
     @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "opera_id")
@@ -110,7 +115,7 @@ public class Personage {
      *
      * @param newVar the new value of personages
      */
-    public void setAries(Set<Aria> newVar) {
+    public void setAries(List<Aria> newVar) {
         aries = newVar;
     }
 
@@ -120,7 +125,7 @@ public class Personage {
      * @return the value of personages
      */
     @XmlTransient
-    public Set<Aria> getAries() {
+    public List<Aria> getAries() {
         return aries;
     }
 
@@ -142,7 +147,17 @@ public class Personage {
         return opera;
     }
 
+    
+    
     //
     // Other methods
     //
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

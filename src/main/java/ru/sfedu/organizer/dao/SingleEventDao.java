@@ -18,7 +18,7 @@ import ru.sfedu.organizer.entity.SingleEvent;
  */
 public class SingleEventDao extends Dao<SingleEvent>{
     
-    public SingleEventDao(Session session) {
+    public SingleEventDao() {
         super(SingleEvent.class);
     }
     public Optional<SingleEvent> getById(long id){

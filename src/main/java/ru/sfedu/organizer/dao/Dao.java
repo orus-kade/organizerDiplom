@@ -31,15 +31,15 @@ public abstract class Dao<T> {
     
     private Logger logger = LogManager.getRootLogger();
     
-    private Session session = null;
+    protected Session session = null;
     
-    private Class<T> entityClass;
+    protected Class<T> entityClass;
     
     public Dao(Class entityClass) {
         this.entityClass = entityClass;
     }
     
-    private void getSession(){
+    protected void getSession(){
         this.session = HibernateUtil.getSessionFactory().getCurrentSession();
     }
     

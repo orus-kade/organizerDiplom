@@ -12,7 +12,7 @@ import org.hibernate.Session;
  */
 public class PersonageDao extends Dao<Personage>{
     
-    public PersonageDao(Session session) {
+    public PersonageDao() {
         super(Personage.class);
     }
     

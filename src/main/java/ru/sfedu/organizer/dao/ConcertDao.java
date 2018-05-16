@@ -13,7 +13,7 @@ import ru.sfedu.organizer.entity.Concert;
  */
 public class ConcertDao extends Dao<Concert>{
     
-    public ConcertDao(Session session) {
+    public ConcertDao() {
         super(Concert.class);
     }
     

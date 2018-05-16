@@ -1,11 +1,11 @@
 package ru.sfedu.organizer.entity;
 
-import com.google.gson.annotations.Expose;
 import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import org.hibernate.annotations.Type;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,50 +30,43 @@ public class Aria {
     //
     // Fields
     //
-    @Expose
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "aria_id")
     private long id;
 
-    @Expose
     @Column(name = "aria_title")
     @NotNull
     private String title;
 
-    @Expose
     @Column(name = "aria_text")
+    @Type(type = "text")
     private String text;
 //fetch = FetchType.LAZY, 
-    @Expose(serialize = false, deserialize = false)
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_composer",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "composer_id"))
-    private Set<Human> composers;
+    private List<Human> composers;
 
-    @Expose(serialize = false, deserialize = false)
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_writer",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "writer_id"))
-    private Set<Human> writers;
+    private List<Human> writers;
 
-    @Expose
 //    @ManyToMany(mappedBy = "aries", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_personage",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "personage_id"))
-    private Set<Personage> personages;
+    private List<Personage> personages;
 
-    @Expose
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "opera_id")
     @NotNull
     private Opera opera;
 
-    @Expose
     @Column(name = "position")
     @NotNull
     private int position;
@@ -153,7 +146,7 @@ public class Aria {
      *
      * @param newVar the new value of composers
      */
-    public void setComposers(Set<Human> newVar) {
+    public void setComposers(List<Human> newVar) {
         composers = newVar;
     }
 
@@ -163,7 +156,7 @@ public class Aria {
      * @return the value of composers
      */
     @XmlTransient
-    public Set<Human> getComposers() {
+    public List<Human> getComposers() {
         return composers;
     }
 
@@ -172,7 +165,7 @@ public class Aria {
      *
      * @param newVar the new value of writers
      */
-    public void setWriters(Set<Human> newVar) {
+    public void setWriters(List<Human> newVar) {
         writers = newVar;
     }
 
@@ -182,7 +175,7 @@ public class Aria {
      * @return the value of writers
      */
     @XmlTransient
-    public Set<Human> getWriters() {
+    public List<Human> getWriters() {
         return writers;
     }
 
@@ -191,7 +184,7 @@ public class Aria {
      *
      * @param newVar the new value of personages
      */
-    public void setPersonages(Set<Personage> newVar) {
+    public void setPersonages(List<Personage> newVar) {
         personages = newVar;
     }
 
@@ -201,7 +194,7 @@ public class Aria {
      * @return the value of personages
      */
     @XmlTransient
-    public Set<Personage> getPersonages() {
+    public List<Personage> getPersonages() {
         return personages;
     }
 

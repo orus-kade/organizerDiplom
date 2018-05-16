@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Type;
 
 
 
@@ -35,17 +36,18 @@ public class Libretto {
   @Column(name="libretto_id")
   private long id;
   
-//  @OneToOne(mappedBy = "libretto")
-//  @NotNull
-//  private Opera opera;
+  @OneToOne(mappedBy = "libretto", cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+  @NotNull
+  private Opera opera;
   
   @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
   @JoinTable(name="libretto_writer",
           joinColumns = @JoinColumn(name="libretto_id"),
           inverseJoinColumns = @JoinColumn(name="writer_id"))
-  private Set<Human> writers;
+  private List<Human> writers;
   
   @Column(name="libretto_text")
+  @Type(type = "text")
   private String text;
   
   //
@@ -82,23 +84,23 @@ public class Libretto {
    * Set the value of opera
    * @param newVar the new value of opera
    */
-//  public void setOpera (Opera newVar) {
-//    opera = newVar;
-//  }
+  public void setOpera (Opera newVar) {
+    opera = newVar;
+  }
 
   /**
    * Get the value of opera
    * @return the value of opera
    */
-//  public Opera getOpera () {
-//    return opera;
-//  }
+  public Opera getOpera () {
+    return opera;
+  }
 
   /**
    * Set the value of writers
    * @param newVar the new value of writers
    */
-  public void setWriters (Set<Human> newVar) {
+  public void setWriters (List<Human> newVar) {
     writers = newVar;
   }
 
@@ -107,7 +109,7 @@ public class Libretto {
    * @return the value of writers
    */
     @XmlTransient
-  public Set<Human> getWriters () {
+  public List<Human> getWriters () {
     return writers;
   }
 

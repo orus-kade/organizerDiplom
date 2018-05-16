@@ -12,7 +12,7 @@ import ru.sfedu.organizer.entity.Libretto;
  */
 public class LibrettoDao extends Dao<Libretto>{
     
-    public LibrettoDao(Session session) {
+    public LibrettoDao() {
         super(Libretto.class);
     }
     

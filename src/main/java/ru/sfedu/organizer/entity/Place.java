@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Type;
 
 /**
  * Class Place
@@ -39,14 +40,18 @@ public class Place {
     @Column(name="place_location")
     private String location;
     
+    @Column(name="place_description")
+    @Type(type = "text")
+    private String description;
+    
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "place_human",
             joinColumns = @JoinColumn(name = "place_id"),
             inverseJoinColumns = @JoinColumn(name = "human_id"))
-    private Set<Human> persons;
+    private List<Human> persons;
 
     @OneToMany(mappedBy = "place", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
-    private Set<SingleEvent> events;
+    private List<SingleEvent> events;
     
     //
     // Constructors
@@ -123,7 +128,7 @@ public class Place {
      *
      * @param newVar the new value of persons
      */
-    public void setPersons(Set<Human> newVar) {
+    public void setPersons(List<Human> newVar) {
         persons = newVar;
     }
 
@@ -133,22 +138,30 @@ public class Place {
      * @return the value of persons
      */
     @XmlTransient
-    public Set<Human> getPersons() {
+    public List<Human> getPersons() {
         return persons;
     }
     
     @XmlTransient
-    public Set<SingleEvent> getEvents() {
+    public List<SingleEvent> getEvents() {
         return events;
     }
 
-    public void setEvents(Set<SingleEvent> events) {
+    public void setEvents(List<SingleEvent> events) {
         this.events = events;
     }
 
     //
     // Other methods
     //
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     
 }

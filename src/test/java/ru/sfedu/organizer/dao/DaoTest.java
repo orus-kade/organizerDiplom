@@ -33,6 +33,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import ru.sfedu.organizer.entity.Event;
 import ru.sfedu.organizer.utils.HibernateUtil;
 import ru.sfedu.organizer.utils.MyGenerator;
 
@@ -189,25 +190,25 @@ public class DaoTest {
             human.setName(MyGenerator.generateTitle()+" "+i);
             human.setSurname(MyGenerator.generateTitle()+" "+i);
             human.setPatronymic(MyGenerator.generateTitle()+""+i);
-            human.setProfessions(new HashSet<Professions>(Arrays.asList(Professions.COMPOSER, Professions.DIRECTOR, Professions.SINGER, Professions.WRITER)));
+            human.setProfessions(Arrays.asList(Professions.values()));
             human.setVoice(Voices.values()[MyGenerator.generateInt(0, Voices.values().length-1)]);
             human.setBirthDate(MyGenerator.generateDateLong(new GregorianCalendar(1930, 0, 1).getTimeInMillis(), new GregorianCalendar(1990, 11, 31).getTimeInMillis()));
             human.setDeathDate(MyGenerator.generateDateLong(new GregorianCalendar(1991, 0, 1).getTimeInMillis(), new Date().getTime()));
             list.add(human);
         }
-        HumanDao humanDao = new HumanDao(session);
+        HumanDao humanDao = new HumanDao();
         humanDao.saveOrUpdateList(Optional.ofNullable(list));
         
-        Set chars;
-        PersonageDao daoPers = new PersonageDao(session);
-        OperaDao daoOpera = new OperaDao(session);
-        Set aries;
+        List<Personage> chars;
+        PersonageDao daoPers = new PersonageDao();
+        OperaDao daoOpera = new OperaDao();
+        List<Aria> aries;
         for (int i = 1; i<=10; i++){
             Opera opera = new Opera();
             opera.setTitle("TitleOpera "+i);
             opera.setDescription("some descr " + i);
             daoOpera.saveOrUpdate(Optional.ofNullable(opera));
-            chars = new HashSet();
+            chars = new ArrayList<>();
             Personage ch1 = new Personage();
             ch1.setOpera(opera);
             ch1.setName("Character1 "+i);
@@ -227,61 +228,63 @@ public class DaoTest {
             
             daoOpera.saveOrUpdate(Optional.ofNullable(opera));
             
-            aries = new HashSet<Aria>();
+            aries = new ArrayList<>();
             for (int j = 1; j<=7; j++){
                 Aria aria = new Aria();
                 aria.setOpera(opera);
                 aria.setPosition(j);
                 aria.setText("some " +j+ " text " +j);
                 aria.setTitle(" " + j + " Aria title  " + i);
-                Set charsAria = new HashSet<Personage>();
-                charsAria.add(daoPers.getById(MyGenerator.generateLong((i-1)*3+1, i*3)).get());
-                charsAria.add(daoPers.getById(MyGenerator.generateLong((i-1)*3+1, i*3)).get());
+                List<Personage> charsAria = new ArrayList<>();
+                charsAria.add(daoPers.getById(MyGenerator.generateLong((i-1)*3+1, i*3-1)).get());                
+                charsAria.add(daoPers.getById(i*3).get());
                 aria.setPersonages(charsAria);
-                Set<Human> humans = new HashSet<>();
-                humans.add(humanDao.getById((long) MyGenerator.generateLong(1, 10)).get());
+                List<Human> humans = new ArrayList<>();
+                humans.add(humanDao.getById((long) MyGenerator.generateLong(1, 5)).get());
+                humans.add(humanDao.getById((long) MyGenerator.generateLong(6, 10)).get());
                 aria.setComposers(humans);
-                humans = new HashSet<>();
-                humans.add(humanDao.getById((long) MyGenerator.generateLong(1, 10)).get());
+                humans = new ArrayList<>();
+                humans.add(humanDao.getById((long) MyGenerator.generateLong(1, 5)).get());
+                humans.add(humanDao.getById((long) MyGenerator.generateLong(6, 10)).get());
                 aria.setWriters(humans);
                 aries.add(aria);
             }
             Libretto libretto = new Libretto();
             libretto.setText(i+" some libretto text");
-            Set<Human> humans = new HashSet<>();
+            List<Human> humans = new ArrayList<>();
             humans.add(humanDao.get((long) i).get());
             libretto.setWriters(humans);
             opera.setLibretto(libretto);
             opera.setAries(aries);
             daoOpera.saveOrUpdate(Optional.ofNullable(opera));
         } 
-        PlaceDao placeDao = new PlaceDao(session);
+        PlaceDao placeDao = new PlaceDao();
         List<Place> places = new ArrayList<>();
         for(int i = 1; i<=10; i++){
             Place place = new Place();
             place.setTitle(MyGenerator.generateTitle()+ " " + i);
-            Set<Human> humans = new HashSet<>();
-            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
-            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
-            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
+            List<Human> humans = new ArrayList<>();
+            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 5L)).get());
+            humans.add(humanDao.getById(MyGenerator.generateLong(6L, 10L)).get());
+
             place.setPersons(humans);
             place.setLocation("location some " + i);
             places.add(place);
         }
         placeDao.saveOrUpdateList(Optional.ofNullable(places));
         AriaDao ariaDao = new AriaDao();
-        ConcertDao concertDao = new ConcertDao(session);
+        ConcertDao concertDao = new ConcertDao();
         List<Concert> concerts = new ArrayList<>();
         for (int i=1; i<=10; i++){
             Concert concert = new Concert();
-            aries = new HashSet();
+            aries = new ArrayList<>();
             for (int j=0; j<=5; j++){
                 aries.add(ariaDao.getById(MyGenerator.generateLong(1, 70)).get());
             }
             concert.setAries(aries);
             concert.setDescription(MyGenerator.generateTitle() + " desc " + i);
             concert.setDirector(humanDao.getById(MyGenerator.generateLong(1, 10)).get());
-            Set<Human> humans = new HashSet<>();
+            List<Human> humans = new ArrayList<>();
             humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
             humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
             humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
@@ -289,11 +292,11 @@ public class DaoTest {
             concerts.add(concert);
         }
         concertDao.saveOrUpdateList(Optional.ofNullable(concerts));
-        StageDao stageDao = new StageDao(session);
+        StageDao stageDao = new StageDao();
         List<Stage> stages = new ArrayList<>();
         for (int i=1; i<=10; i++){
             Stage stage = new Stage();
-            aries = new HashSet();
+            aries = new ArrayList<>();
             for (int j=1; j<=5; j++){
                 aries.add(ariaDao.getById(MyGenerator.generateLong(1, 70)).get());
             }
@@ -303,8 +306,8 @@ public class DaoTest {
             stages.add(stage);
         }
         stageDao.saveOrUpdateList(Optional.ofNullable(stages));
-        EventDao eventDao = new EventDao(session);
-        SingleEventDao singleEventDao = new SingleEventDao(session);
+        EventDao eventDao = new EventDao();
+        SingleEventDao singleEventDao = new SingleEventDao();
         List<SingleEvent> singleEvents = new ArrayList<>();
         for (int i = 1; i<=15 ; i++){
             SingleEvent singleEvent = new SingleEvent();
@@ -315,7 +318,7 @@ public class DaoTest {
             singleEvents.add(singleEvent);
         }
         singleEventDao.saveOrUpdateList(Optional.ofNullable(singleEvents));
-        RoleDao roleDao = new RoleDao(session);
+        RoleDao roleDao = new RoleDao();
         List<Role> roles = new ArrayList<>();
         for (int i = 1; i<=30; i++){
             Role role = new Role();
@@ -329,7 +332,7 @@ public class DaoTest {
         for (int i = 11; i<=20; i++){
             Stage stage = stageDao.getById(i).get();
             long operaId = stage.getOpera().getId();
-            Set<Role> rs = new HashSet<>();
+            List<Role> rs = new ArrayList<>();
             rs.add(roleDao.getById(operaId*3).get());
             rs.add(roleDao.getById(operaId*3-1).get());
             rs.add(roleDao.getById(operaId*3-2).get());
@@ -351,14 +354,22 @@ public class DaoTest {
         session.close();
     }
     
-   // @Test 
+    //@Test 
     public void anotherTest(){
-        Session session = HibernateUtil.getSessionFactory().openSession();
-        AriaDao ariaDao = new AriaDao();
-        Aria aria = ariaDao.getById(1L).get();
-        System.out.println("olo");        
+//        Session session = HibernateUtil.getSessionFactory().openSession();
+//        AriaDao ariaDao = new AriaDao();
+//        Aria aria = ariaDao.getById(1L).get();
+//        Event event = new Event();
+//        EventDao eventDao = new EventDao();
+//        event = eventDao.getById(1L).get();
+//        System.out.println(event.getClass().getName());
+//        System.out.println("olo");        
         //Hibernate.isInitialized(aria);
         //System.out.println(Hibernate.isPropertyInitialized(aria, "composers"));
-        session.close();
+//        session.close();  
+          Set prof = new HashSet<Professions>();
+          prof.add(Professions.COMPOSER);
+          prof.add(Professions.COMPOSER);
+          prof.add(Professions.COMPOSER);
     }
 }

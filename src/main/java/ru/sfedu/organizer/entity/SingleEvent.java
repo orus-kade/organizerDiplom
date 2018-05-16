@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.hibernate.annotations.Type;
 
 /**
  * Class SingleEvent
@@ -39,6 +40,7 @@ public class SingleEvent {
     private long datetime;
     
     @Column(name="singe_event_description")
+    @Type(type = "text")
     private String description;
     
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH})

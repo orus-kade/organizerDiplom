@@ -14,7 +14,7 @@ import ru.sfedu.organizer.entity.Event;
  */
 public class EventDao extends Dao<Event>{
     
-    public EventDao(Session session) {
+    public EventDao() {
         super(Event.class);
     }
     

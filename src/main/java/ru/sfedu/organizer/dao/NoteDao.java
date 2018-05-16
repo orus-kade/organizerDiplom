@@ -14,7 +14,7 @@ import ru.sfedu.organizer.entity.Note;
  */
 public class NoteDao extends Dao<Note>{
     
-    public NoteDao(Session session) {
+    public NoteDao() {
         super(Note.class);
     }
     

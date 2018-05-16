@@ -30,7 +30,7 @@ public class Stage extends Event {
     @JoinTable(name = "role_stage",
             joinColumns = @JoinColumn(name = "stage_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+    private List<Role> roles;
 
     //
     // Constructors
@@ -71,7 +71,7 @@ public class Stage extends Event {
      *
      * @param newVar the new value of roles
      */
-    public void setRoles(Set<Role> newVar) {
+    public void setRoles(List<Role> newVar) {
         roles = newVar;
     }
 
@@ -81,7 +81,7 @@ public class Stage extends Event {
      * @return the value of roles
      */
     @XmlTransient
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 

@@ -16,6 +16,7 @@ import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.Check;
+import org.hibernate.annotations.Type;
 
 /**
  * Class Human
@@ -46,6 +47,7 @@ public class Human {
     private String patronymic;
 
     @Column(name = "human_biography")
+    @Type(type = "text")
     private String biography;
 
     @Column(name = "human_birthDate")
@@ -55,7 +57,7 @@ public class Human {
     private long deathDate;
 
     @ManyToMany(mappedBy = "persons", cascade = {CascadeType.MERGE, CascadeType.REFRESH})    
-    private Set<Place> places;
+    private List<Place> places;
 
     @Column(name = "human_voice", nullable = true)
     @Enumerated(EnumType.STRING)
@@ -63,7 +65,7 @@ public class Human {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private Set<Professions> professions;
+    private List<Professions> professions;
 
     //
     // Constructors
@@ -212,7 +214,7 @@ public class Human {
      *
      * @param newVar the new value of places
      */
-    public void setPlaces(Set<Place> newVar) {
+    public void setPlaces(List<Place> newVar) {
         places = newVar;
     }
 
@@ -222,7 +224,7 @@ public class Human {
      * @return the value of places
      */
     @XmlTransient
-    public Set<Place> getPlaces() {
+    public List<Place> getPlaces() {
         return places;
     }
 
@@ -249,7 +251,7 @@ public class Human {
      *
      * @param newVar the new value of professions
      */
-    public void setProfessions(Set<Professions> newVar) {
+    public void setProfessions(List<Professions> newVar) {
         professions = newVar;
     }
 
@@ -258,7 +260,7 @@ public class Human {
      *
      * @return the value of professions
      */
-    public Set<Professions> getProfessions() {
+    public List<Professions> getProfessions() {
         return professions;
     }
 

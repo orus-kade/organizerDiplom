@@ -37,7 +37,7 @@ import ru.sfedu.organizer.utils.HibernateUtil;
 public class AriaConrtoller extends AbstractFacade<Aria> {
     
     static final Logger logger = LogManager.getLogger(AriaConrtoller.class);
-    private static AriaBusiness ariaBusiness = new AriaBusiness();
+    private static final AriaBusiness ariaBusiness = new AriaBusiness();
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;

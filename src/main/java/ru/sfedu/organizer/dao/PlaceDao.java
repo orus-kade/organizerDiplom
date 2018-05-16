@@ -13,7 +13,7 @@ import ru.sfedu.organizer.entity.Place;
  */
 public class PlaceDao extends Dao<Place>{
     
-    public PlaceDao(Session session) {
+    public PlaceDao() {
         super(Place.class);
     }
     

@@ -44,6 +44,7 @@ public class User {
     
     @Enumerated(EnumType.STRING)
     @NotNull
+    @Column(name="user_role")
     private UserRoles role;
     
     @Column(name="user_email")
@@ -58,13 +59,13 @@ public class User {
     private String name;
     
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    private Set<Note> notes;
+    private List<Note> notes;
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "single_event_user",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "single_event_id"))
-    private Set<SingleEvent> events;
+    private List<SingleEvent> events;
 
     //
     // Constructors
@@ -195,7 +196,7 @@ public class User {
      *
      * @param newVar the new value of notes
      */
-    public void setNotes(Set<Note> newVar) {
+    public void setNotes(List<Note> newVar) {
         notes = newVar;
     }
 
@@ -205,7 +206,7 @@ public class User {
      * @return the value of notes
      */
     @XmlTransient
-    public Set<Note> getNotes() {
+    public List<Note> getNotes() {
         return notes;
     }
 
@@ -214,7 +215,7 @@ public class User {
      *
      * @param newVar the new value of events
      */
-    public void setEvents(Set<SingleEvent> newVar) {
+    public void setEvents(List<SingleEvent> newVar) {
         events = newVar;
     }
 
@@ -224,7 +225,7 @@ public class User {
      * @return the value of events
      */
     @XmlTransient
-    public Set<SingleEvent> getEvents() {
+    public List<SingleEvent> getEvents() {
         return events;
     }
 

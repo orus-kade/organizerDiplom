@@ -4,7 +4,6 @@ package ru.sfedu.organizer.business;
 
 import java.util.ArrayList;
 import java.util.Optional;
-import org.hibernate.Session;
 import ru.sfedu.organizer.dao.AriaDao;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.model.AriaModel;
@@ -15,7 +14,7 @@ import ru.sfedu.organizer.model.AriaModel;
  */
 public class AriaBusiness {
     
-    private static AriaDao ariaDao = new AriaDao();
+    private static final AriaDao ariaDao = new AriaDao();
 
     public AriaBusiness() {
     }
@@ -27,9 +26,9 @@ public class AriaBusiness {
             Aria aria = o.get();
             ariaModel = new AriaModel(aria.getId(), aria.getTitle(), aria.getText(), aria.getPosition());   
             ariaModel.addOpera(aria.getOpera());
-            ariaModel.addComposers(new ArrayList<>(aria.getComposers()));
-            ariaModel.addWriters(new ArrayList<>(aria.getWriters()));
-            ariaModel.addPersonages(new ArrayList<>(aria.getPersonages()));
+            ariaModel.addComposers(aria.getComposers());
+            ariaModel.addWriters(aria.getWriters());
+            ariaModel.addPersonages(aria.getPersonages());
         }
         return ariaModel;
     }    

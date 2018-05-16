@@ -18,7 +18,7 @@ import ru.sfedu.organizer.entity.Stage;
  */
 public class StageDao extends Dao<Stage>{
     
-    public StageDao(Session session) {
+    public StageDao() {
         super(Stage.class);
     }
     

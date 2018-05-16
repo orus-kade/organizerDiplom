@@ -2,6 +2,7 @@
  */
 package ru.sfedu.organizer.service;
 
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,20 +16,25 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import ru.sfedu.organizer.business.OperaBusiness;
 import ru.sfedu.organizer.entity.Opera;
+import ru.sfedu.organizer.model.OperaModel;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.opera")
-public class OperaFacadeREST extends AbstractFacade<Opera> {
+@Path("/opera")
+public class OperaController extends AbstractFacade<Opera> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public OperaFacadeREST() {
+    private static final OperaBusiness operaBusiness = new OperaBusiness();
+    
+    public OperaController() {
         super(Opera.class);
     }
 
@@ -53,10 +59,13 @@ public class OperaFacadeREST extends AbstractFacade<Opera> {
     }
 
     @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Opera find(@PathParam("id") Long id) {
-        return super.find(id);
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Long id) {
+        OperaModel operaModel = operaBusiness.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(operaModel); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET

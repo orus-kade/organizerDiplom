@@ -16,7 +16,7 @@ import ru.sfedu.organizer.entity.User;
  */
 public class UserDao extends Dao<User>{
     
-    public UserDao(Session session) {
+    public UserDao() {
         super(User.class);
     }
     

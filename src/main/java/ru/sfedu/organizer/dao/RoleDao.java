@@ -18,7 +18,7 @@ import ru.sfedu.organizer.entity.Role;
  */
 public class RoleDao extends Dao<Role>{
     
-    public RoleDao(Session session) {
+    public RoleDao() {
         super(Role.class);
     }
     

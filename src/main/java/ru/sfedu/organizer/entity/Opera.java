@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Type;
 
 /**
  * Class Opera
@@ -37,13 +38,14 @@ public class Opera {
     private String title;
     
     @Column(name="opera_description")
+    @Type(type = "text")
     private String description;
     
     @OneToMany(mappedBy="opera", cascade = CascadeType.ALL)
-    private Set<Personage> personages;
+    private List<Personage> personages;
     
     @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
-    private Set<Aria> aries;
+    private List<Aria> aries;
     
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="libretto_id")
@@ -125,7 +127,7 @@ public class Opera {
      *
      * @param newVar the new value of personages
      */
-    public void setPersonages(Set<Personage> newVar) {
+    public void setPersonages(List<Personage> newVar) {
         personages = newVar;
     }
 
@@ -135,7 +137,7 @@ public class Opera {
      * @return the value of personages
      */
     @XmlTransient
-    public Set<Personage> getPersonages() {
+    public List<Personage> getPersonages() {
         return personages;
     }
 
@@ -144,7 +146,7 @@ public class Opera {
      *
      * @param newVar the new value of aries
      */
-    public void setAries(Set<Aria> newVar) {
+    public void setAries(List<Aria> newVar) {
         aries = newVar;
     }
 
@@ -154,7 +156,7 @@ public class Opera {
      * @return the value of aries
      */
     @XmlTransient
-    public Set<Aria> getAries() {
+    public List<Aria> getAries() {
         return aries;
     }
 
@@ -172,6 +174,7 @@ public class Opera {
      *
      * @return the value of libretto
      */
+    @XmlTransient
     public Libretto getLibretto() {
         return libretto;
     }

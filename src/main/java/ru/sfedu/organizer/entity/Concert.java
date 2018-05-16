@@ -25,13 +25,13 @@ public class Concert extends Event {
     @JoinTable(name = "aria_concert",
             joinColumns = @JoinColumn(name = "aria_id"),
             inverseJoinColumns = @JoinColumn(name = "consert_id"))
-    private Set<Aria> aries;
+    private List<Aria> aries;
     
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "concert_singer",
             joinColumns = @JoinColumn(name = "singer_id"),
             inverseJoinColumns = @JoinColumn(name = "consert_id"))
-    private Set<Human> singers;
+    private List<Human> singers;
 
     //
     // Constructors
@@ -54,7 +54,7 @@ public class Concert extends Event {
    * Set the value of aries
    * @param newVar the new value of aries
    */
-  public void setAries(Set<Aria> newVar) {
+  public void setAries(List<Aria> newVar) {
         aries = newVar;
     }
 
@@ -64,7 +64,7 @@ public class Concert extends Event {
      * @return the value of aries
      */
     @XmlTransient
-    public Set<Aria> getAries() {
+    public List<Aria> getAries() {
         return aries;
     }
 
@@ -73,7 +73,7 @@ public class Concert extends Event {
      *
      * @param newVar the new value of singers
      */
-    public void setSingers(Set<Human> newVar) {
+    public void setSingers(List<Human> newVar) {
         singers = newVar;
     }
 
@@ -83,7 +83,7 @@ public class Concert extends Event {
      * @return the value of singers
      */
     @XmlTransient
-    public Set<Human> getSingers() {
+    public List<Human> getSingers() {
         return singers;
     }
 
