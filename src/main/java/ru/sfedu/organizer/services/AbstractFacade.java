@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
 import java.util.List;
 import javax.persistence.EntityManager;

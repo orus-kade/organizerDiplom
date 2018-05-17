@@ -1,7 +1,8 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,34 +16,41 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import ru.sfedu.organizer.entity.Libretto;
+import javax.ws.rs.core.Response;
+import ru.sfedu.organizer.business.PlaceBusiness;
+import ru.sfedu.organizer.entity.Place;
+import ru.sfedu.organizer.model.PlaceModel;
 
 /**
  *
  * @author sterie
  */
+
 @Stateless
-@Path("ru.sfedu.organizer.model.libretto")
-public class LibrettoFacadeREST extends AbstractFacade<Libretto> {
+@Path("/place")
+public class PlaceController extends AbstractFacade<Place> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public LibrettoFacadeREST() {
-        super(Libretto.class);
+    private static final PlaceBusiness placeBusiness = new PlaceBusiness();
+    
+    
+    public PlaceController() {
+        super(Place.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Libretto entity) {
+    public void create(Place entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Libretto entity) {
+    public void edit(@PathParam("id") Long id, Place entity) {
         super.edit(entity);
     }
 
@@ -53,23 +61,26 @@ public class LibrettoFacadeREST extends AbstractFacade<Libretto> {
     }
 
     @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Libretto find(@PathParam("id") Long id) {
-        return super.find(id);
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Long id) {
+        PlaceModel placeModel = placeBusiness.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(placeModel); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Libretto> findAll() {
+    public List<Place> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Libretto> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Place> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

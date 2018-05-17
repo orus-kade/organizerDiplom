@@ -1,7 +1,8 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,34 +16,40 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import ru.sfedu.organizer.entity.Note;
+import javax.ws.rs.core.Response;
+import ru.sfedu.organizer.business.LibrettoBusiness;
+import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.model.HumanModel;
+import ru.sfedu.organizer.model.LibrettoModel;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.note")
-public class NoteFacadeREST extends AbstractFacade<Note> {
+@Path("/libretto")
+public class LibrettoController extends AbstractFacade<Libretto> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public NoteFacadeREST() {
-        super(Note.class);
+    private static final LibrettoBusiness librettoBusiness = new LibrettoBusiness();
+    
+    public LibrettoController() {
+        super(Libretto.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Note entity) {
+    public void create(Libretto entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Note entity) {
+    public void edit(@PathParam("id") Long id, Libretto entity) {
         super.edit(entity);
     }
 
@@ -53,23 +60,26 @@ public class NoteFacadeREST extends AbstractFacade<Note> {
     }
 
     @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Note find(@PathParam("id") Long id) {
-        return super.find(id);
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Long id) {
+        LibrettoModel librettoModel = librettoBusiness.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(librettoModel); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Note> findAll() {
+    public List<Libretto> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Note> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Libretto> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

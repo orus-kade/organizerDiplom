@@ -10,4 +10,14 @@
             30
         </session-timeout>
     </session-config>-->    
+<!--    <servlet>
+        <servlet-name>Resteasy</servlet-name>
+        <servlet-class>
+            org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher
+        </servlet-class>-->
+<!--        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>ru.sfedu.organizer.services.OrganizerApplication</param-value>
+        </init-param>-->
+<!--    </servlet>  -->
 </web-app>

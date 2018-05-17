@@ -4,6 +4,7 @@ package ru.sfedu.organizer.business;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import javax.ejb.Stateless;
 import org.hibernate.Session;
 import ru.sfedu.organizer.dao.OperaDao;
 import ru.sfedu.organizer.entity.Opera;
@@ -14,6 +15,7 @@ import ru.sfedu.organizer.model.OperaModel;
  *
  * @author sterie
  */
+@Stateless
 public class OperaBusiness {
     
     private static OperaDao operaDao = new OperaDao();
@@ -33,5 +35,12 @@ public class OperaBusiness {
             operaModel.addWriters(new ArrayList<>(operaDao.getHumansByProfession(opera, Professions.WRITER)));
         }
         return operaModel;
-    }    
+    }  
+    
+    public void delete(long id){
+        Optional<Opera> o = operaDao.getById(id);
+        if (o.isPresent()){
+            operaDao.delete(o.get());
+        }
+    }
 }

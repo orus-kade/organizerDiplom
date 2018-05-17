@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -15,34 +15,34 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import ru.sfedu.organizer.entity.User;
+import ru.sfedu.organizer.entity.Role;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.user")
-public class UserFacadeREST extends AbstractFacade<User> {
+@Path("ru.sfedu.organizer.model.role")
+public class RoleFacadeREST extends AbstractFacade<Role> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public UserFacadeREST() {
-        super(User.class);
+    public RoleFacadeREST() {
+        super(Role.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(User entity) {
+    public void create(Role entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, User entity) {
+    public void edit(@PathParam("id") Long id, Role entity) {
         super.edit(entity);
     }
 
@@ -55,21 +55,21 @@ public class UserFacadeREST extends AbstractFacade<User> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public User find(@PathParam("id") Long id) {
+    public Role find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findAll() {
+    public List<Role> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<User> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Role> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

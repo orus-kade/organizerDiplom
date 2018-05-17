@@ -23,14 +23,14 @@ public class Concert extends Event {
     //
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "aria_concert",
-            joinColumns = @JoinColumn(name = "aria_id"),
-            inverseJoinColumns = @JoinColumn(name = "consert_id"))
+            joinColumns = @JoinColumn(name = "concert_id"),
+            inverseJoinColumns = @JoinColumn(name = "aria_id"))
     private List<Aria> aries;
     
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
     @JoinTable(name = "concert_singer",
-            joinColumns = @JoinColumn(name = "singer_id"),
-            inverseJoinColumns = @JoinColumn(name = "consert_id"))
+            joinColumns = @JoinColumn(name = "concert_id"),
+            inverseJoinColumns = @JoinColumn(name = "singer_id"))
     private List<Human> singers;
 
     //

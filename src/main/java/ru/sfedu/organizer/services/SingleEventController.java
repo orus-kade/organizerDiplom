@@ -1,7 +1,8 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,20 +16,25 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import ru.sfedu.organizer.business.SingleEventBusiness;
 import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.model.SingleEventModel;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.singleevent")
-public class SingleEventFacadeREST extends AbstractFacade<SingleEvent> {
+@Path("/singleevent")
+public class SingleEventController extends AbstractFacade<SingleEvent> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    
+    private static final SingleEventBusiness business = new SingleEventBusiness();
 
-    public SingleEventFacadeREST() {
+    public SingleEventController() {
         super(SingleEvent.class);
     }
 
@@ -53,10 +59,13 @@ public class SingleEventFacadeREST extends AbstractFacade<SingleEvent> {
     }
 
     @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public SingleEvent find(@PathParam("id") Long id) {
-        return super.find(id);
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Long id) {
+        SingleEventModel singleEventModel = business.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(singleEventModel);
+        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET

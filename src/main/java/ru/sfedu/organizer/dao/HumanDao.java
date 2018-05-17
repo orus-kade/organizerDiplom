@@ -1,17 +1,22 @@
 
 package ru.sfedu.organizer.dao;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Date;
 import java.util.Optional;
-import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.type.LongType;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Event;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Libretto;
 import ru.sfedu.organizer.entity.Professions;
+import ru.sfedu.organizer.entity.SingleEvent;
 
 /**
  *
@@ -39,7 +44,7 @@ public class HumanDao extends Dao<Human>{
         return super.getAllByPage(page, Arrays.asList("surname", "name", "patronymic"));
     }
     
-    public List<Aria> getHumanWorksByProfession(long humanId, Professions profession){
+    public List<Aria> getWorksByProfession(long humanId, Professions profession){
         List<Aria> list = new ArrayList<>();
         if (profession.equals(Professions.COMPOSER) || profession.equals(Professions.WRITER)){
             this.getSession();
@@ -56,7 +61,7 @@ public class HumanDao extends Dao<Human>{
         return list;
     }
     
-    public List<Libretto> getHumanWorksLibretto(long humanId){
+    public List<Libretto> getWorksLibretto(long humanId){
         List<Libretto> list = new ArrayList<>();
             this.getSession();
             Transaction tran = this.session.beginTransaction();
@@ -66,6 +71,76 @@ public class HumanDao extends Dao<Human>{
                     .setParameter("humanId", humanId)
                     .list());
             tran.commit();
+        return list;
+    }
+    
+    public List<Event> getDirectorEvents(long humanId){
+        List<Event> list = new ArrayList<>();
+        this.getSession();
+        Transaction tran = this.session.beginTransaction();
+        list.addAll(session.createCriteria(Event.class)
+                .add(Restrictions.sqlRestriction(" event_director_id = " + humanId))
+                .list());
+        tran.commit();
+        return list;
+    }
+    
+    public List<Event> getSingerEvents(long humanId){
+        List<Event> list = new ArrayList<>();
+        this.getSession();
+        Transaction tran = this.session.beginTransaction();       
+        //select {e.*} from event e where id in 
+        //(select stage_id from role_stage rs join "role" r on rs.role_id = r.role_id where r.singer_id = 6
+        //union
+        //select consert_id from concert_singer where singer_id = 7
+        //)
+        List<Long> listEventsIds = new ArrayList<>();
+        listEventsIds.addAll(session.createSQLQuery("select stage_id as id from role_stage rs join \"role\" r "
+                + "on rs.role_id = r.role_id where r.singer_id = :humanId "
+                + "union "
+                + "select concert_id as id from concert_singer where singer_id = :humanId "
+                + "union "
+                + "select e.id as id from event e where event_director_id = :humanId ")
+                .setParameter("humanId", humanId)
+                .addScalar("id", LongType.INSTANCE)
+                .list());
+        if (! listEventsIds.isEmpty()) {
+            list.addAll(session.createCriteria(Event.class)
+                   .add(Restrictions.in("id", listEventsIds))
+                   .list());
+        }
+        tran.commit();
+        return list;
+    }    
+//    
+//    select * from single_event where event_id in (
+//      select e.id from event e where id in 
+//      (select stage_id from role_stage rs join "role" r on rs.role_id = r.role_id where r.singer_id = 6
+//      union
+//      select consert_id from concert_singer where singer_id = 6
+//      )
+//    )  + datetime ограничение   
+    public List<SingleEvent> getFutureEvents(long humanId){
+        List<SingleEvent> list = new ArrayList<>();
+        this.getSession();
+        Transaction tran = session.beginTransaction();
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);        
+        long date = cal.getTimeInMillis();
+        list.addAll(session.createSQLQuery(" select {se.*} from single_event se where event_id in ("
+                + "select e.id from event e where id in "
+                + "(select stage_id from role_stage rs join \"role\" r on rs.role_id = r.role_id where r.singer_id = :humanId "
+                + "union "
+                + "select concert_id from concert_singer where singer_id = :humanId) "
+                + ") and single_event_datetime >= :date")
+                .addEntity("se", SingleEvent.class)
+                .setParameter("humanId", humanId)
+                .setParameter("date", date)
+                .list());
+        tran.commit();
         return list;
     }
 }

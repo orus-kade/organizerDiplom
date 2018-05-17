@@ -12,6 +12,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Type;
@@ -42,6 +43,9 @@ public class Event {
     @Column(name="event_description")
     @Type(type = "text")
     private String description;
+    
+    @OneToMany(mappedBy="event", cascade = CascadeType.ALL)
+    private List<SingleEvent> singleEvents;
 
     //
     // Constructors
@@ -75,6 +79,14 @@ public class Event {
      */
     public long getId() {
         return id;
+    }
+
+    public List<SingleEvent> getSingleEvents() {
+        return singleEvents;
+    }
+
+    public void setSingleEvents(List<SingleEvent> singleEvents) {
+        this.singleEvents = singleEvents;
     }
 
     /**

@@ -23,17 +23,6 @@ public class HumanWorks {
     }
     
     public void addComposerWorks(List<Aria> aries){
-//        aries.stream().sorted(new Comparator<Aria>(){
-//            @Override
-//            public int compare(Aria o1, Aria o2) {
-//                if (o1.getOpera().getId() == o2.getOpera().getId()) return 0;
-//                else if (o1.getOpera().getId()> o2.getOpera().getId()) return 1;
-//                else return -1;
-//            }           
-//        }).forEachOrdered(e -> {
-//            long operaId = e.getOpera().getId();
-//            
-//        });
         aries.stream().forEach(e -> this.composerWorks.add(new AriaInfo(e)));
     }
     
@@ -44,19 +33,7 @@ public class HumanWorks {
     public void addLibrettos(List<Libretto> libs){
         libs.stream().forEach(e -> this.librettos.add(new LibrettoInfo(e.getOpera(), e.getId())));
     }
-    
-    class AriaInfo{
-        long id;
-        String title;
-        long operaId;
-        String operaTitle;
-        public AriaInfo(Aria aria) {
-            this.id = aria.getId();
-            this.title = aria.getTitle();
-            this.operaId = aria.getOpera().getId();
-            this.operaTitle = aria.getOpera().getTitle();
-        }
-    }
+
     class LibrettoInfo{
         long operaId;
         String operaTitle;

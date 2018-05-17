@@ -289,6 +289,7 @@ public class DaoTest {
             humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
             humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
             concert.setSingers(humans);
+            concert.setTitle("Consert " + i);
             concerts.add(concert);
         }
         concertDao.saveOrUpdateList(Optional.ofNullable(concerts));
@@ -303,6 +304,7 @@ public class DaoTest {
             stage.setOpera(daoOpera.getById(MyGenerator.generateLong(1, 10)).get());
             stage.setDescription(MyGenerator.generateTitle() + " desc " + i);
             stage.setDirector(humanDao.getById(MyGenerator.generateLong(1, 10)).get());
+            stage.setTitle("Stage " + i + " " + stage.getOpera().getTitle());
             stages.add(stage);
         }
         stageDao.saveOrUpdateList(Optional.ofNullable(stages));
@@ -354,22 +356,22 @@ public class DaoTest {
         session.close();
     }
     
-    //@Test 
+    @Test 
     public void anotherTest(){
-//        Session session = HibernateUtil.getSessionFactory().openSession();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 //        AriaDao ariaDao = new AriaDao();
 //        Aria aria = ariaDao.getById(1L).get();
-//        Event event = new Event();
-//        EventDao eventDao = new EventDao();
-//        event = eventDao.getById(1L).get();
-//        System.out.println(event.getClass().getName());
-//        System.out.println("olo");        
+        Event event = new Event();
+        EventDao eventDao = new EventDao();
+        event = eventDao.getById(1L).get();
+        System.out.println(event.getClass().getName());
+        System.out.println("olo");        
         //Hibernate.isInitialized(aria);
         //System.out.println(Hibernate.isPropertyInitialized(aria, "composers"));
-//        session.close();  
-          Set prof = new HashSet<Professions>();
-          prof.add(Professions.COMPOSER);
-          prof.add(Professions.COMPOSER);
-          prof.add(Professions.COMPOSER);
+        session.close();  
+//          Set prof = new HashSet<Professions>();
+//          prof.add(Professions.COMPOSER);
+//          prof.add(Professions.COMPOSER);
+//          prof.add(Professions.COMPOSER);
     }
 }

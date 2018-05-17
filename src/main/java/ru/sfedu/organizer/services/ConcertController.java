@@ -1,7 +1,8 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,61 +16,69 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import ru.sfedu.organizer.entity.Stage;
+import javax.ws.rs.core.Response;
+import ru.sfedu.organizer.business.ConcertBusiness;
+import ru.sfedu.organizer.entity.Concert;
+import ru.sfedu.organizer.model.ConcertModel;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.stage")
-public class StageFacadeREST extends AbstractFacade<Stage> {
+@Path("/concert")
+public class ConcertController extends AbstractFacade<Concert> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
+    
+    private static final ConcertBusiness concertBusiness = new ConcertBusiness();
 
-    public StageFacadeREST() {
-        super(Stage.class);
+    public ConcertController() {
+        super(Concert.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Stage entity) {
+    public void create(Concert entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Stage entity) {
+    public void edit(@PathParam("id") Long id, Concert entity) {
         super.edit(entity);
     }
 
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+        concertBusiness.delete(id);
     }
 
     @GET
-    @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Stage find(@PathParam("id") Long id) {
-        return super.find(id);
+    @Path("/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Long id) {
+        ConcertModel concertModel = concertBusiness.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(concertModel);
+        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Stage> findAll() {
+    public List<Concert> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Stage> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Concert> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

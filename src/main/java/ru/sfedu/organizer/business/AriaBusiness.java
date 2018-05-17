@@ -4,6 +4,7 @@ package ru.sfedu.organizer.business;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import javax.ejb.Stateless;
 import ru.sfedu.organizer.dao.AriaDao;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.model.AriaModel;
@@ -12,6 +13,7 @@ import ru.sfedu.organizer.model.AriaModel;
  *
  * @author sterie
  */
+@Stateless
 public class AriaBusiness {
     
     private static final AriaDao ariaDao = new AriaDao();
@@ -31,5 +33,12 @@ public class AriaBusiness {
             ariaModel.addPersonages(aria.getPersonages());
         }
         return ariaModel;
+    }
+
+    public void delete(long id){
+        Optional<Aria> o = ariaDao.getById(id);
+        if (o.isPresent()){
+            ariaDao.delete(o.get());
+        }
     }    
 }

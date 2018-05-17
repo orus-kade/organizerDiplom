@@ -13,6 +13,7 @@ import org.hibernate.criterion.CriteriaQuery;
  *
  * @author sterie
  */
+
 public class AriaDao extends Dao<Aria>{
 
     public AriaDao() {
@@ -41,4 +42,13 @@ public class AriaDao extends Dao<Aria>{
 //        
 //    }
     
+    public void delete(Aria aria){
+        this.getSession();
+        Transaction tran = session.beginTransaction();
+        session.createSQLQuery("delete from aria_concert where aria_id = :id")
+                .setParameter("id", aria.getId())
+                .executeUpdate();
+        session.delete(aria);
+        tran.commit();
+    }
 }

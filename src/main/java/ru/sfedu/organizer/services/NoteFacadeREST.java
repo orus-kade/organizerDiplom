@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
 import java.util.List;
 import javax.ejb.Stateless;
@@ -15,34 +15,34 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import ru.sfedu.organizer.entity.Personage;
+import ru.sfedu.organizer.entity.Note;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.personage")
-public class PersonageFacadeREST extends AbstractFacade<Personage> {
+@Path("ru.sfedu.organizer.model.note")
+public class NoteFacadeREST extends AbstractFacade<Note> {
 
     @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
     private EntityManager em;
 
-    public PersonageFacadeREST() {
-        super(Personage.class);
+    public NoteFacadeREST() {
+        super(Note.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Personage entity) {
+    public void create(Note entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Personage entity) {
+    public void edit(@PathParam("id") Long id, Note entity) {
         super.edit(entity);
     }
 
@@ -55,21 +55,21 @@ public class PersonageFacadeREST extends AbstractFacade<Personage> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Personage find(@PathParam("id") Long id) {
+    public Note find(@PathParam("id") Long id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Personage> findAll() {
+    public List<Note> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Personage> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Note> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

@@ -54,26 +54,22 @@ public abstract class Dao<T> {
         return item;
     }
     
-    public void delete(Optional<T> item){
-        if(item.isPresent()){
-            this.getSession();
-            Transaction tran = session.beginTransaction();
-            session.delete(item);
-            tran.commit();
-        }
+    public void delete(T item){
+        this.getSession();
+        Transaction tran = session.beginTransaction();
+        session.delete(item);
+        tran.commit();
     }
     
-    public void deleteList(Optional<List> listItem){
-        if(listItem.isPresent()){
+    public void deleteList(List listItem){
             this.getSession();
             Transaction tran = session.beginTransaction();
-            listItem.get().forEach(e ->{
+            listItem.forEach(e ->{
                 if (e != null){
                     session.delete(e);
                 }
             });
             tran.commit();
-        }
     }
     
     public void saveOrUpdate(Optional<T> item){

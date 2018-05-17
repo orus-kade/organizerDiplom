@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.service;
+package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
@@ -19,6 +19,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.HumanBusiness;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.model.HumanEvents;
 import ru.sfedu.organizer.model.HumanModel;
 import ru.sfedu.organizer.model.HumanWorks;
 
@@ -56,9 +57,19 @@ public class HumanController extends AbstractFacade<Human> {
     @DELETE
     @Path("{id}")
     public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+        humanBusiness.delete(id);
     }
 
+    @GET
+    @Path("/events/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getEvents(@PathParam("id") Long id) {
+        HumanEvents humanEvents = humanBusiness.getEventsById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(humanEvents); 
+        return Response.status(200).entity(json).build();
+    }
+    
     @GET
     @Path("/works/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -79,20 +90,6 @@ public class HumanController extends AbstractFacade<Human> {
         return Response.status(200).entity(json).build();
     }
     
-    
-    
-//    @GET
-//    @Path("/{id}/events")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response getEvents(@PathParam("id") Long id) {
-//        HumanModel humanModel = humanBusiness.getById(id);
-//        Gson gson = new Gson();
-//        String json = gson.toJson(humanModel); 
-//        return Response.status(200).entity(json).build();
-//    }
-    
-    
-
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
