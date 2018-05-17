@@ -3,6 +3,7 @@ package ru.sfedu.organizer.entity;
 import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -26,7 +27,7 @@ public class Stage extends Event {
     @JoinColumn(name="opera_id")
     private Opera opera;
     
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(name = "role_stage",
             joinColumns = @JoinColumn(name = "stage_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))

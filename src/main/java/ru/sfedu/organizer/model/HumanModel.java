@@ -36,10 +36,12 @@ public class HumanModel {
     }
    
     public void addPlaces(List<Place> list){
-        list.stream().forEach(e -> this.places.put(e.getId(), e.getTitle()));
+        if (list != null)
+            list.stream().forEach(e -> this.places.put(e.getId(), e.getTitle()));
     }
     
     public void addProfessions(List<Professions> list){
-        list.stream().forEach(e -> this.professions.add(e.toString()));
+        if (list != null)
+            list.stream().forEach(e -> this.professions.add(e.toString()));
     }
 }

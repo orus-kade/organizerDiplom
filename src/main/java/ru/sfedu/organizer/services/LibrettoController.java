@@ -55,8 +55,9 @@ public class LibrettoController extends AbstractFacade<Libretto> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+    public Response remove(@PathParam("id") Long id) {
+        librettoBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

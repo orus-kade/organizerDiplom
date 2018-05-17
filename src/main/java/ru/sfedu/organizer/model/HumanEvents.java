@@ -22,15 +22,18 @@ public class HumanEvents {
     }
     
     public void addFutureEvents(List<SingleEvent> list){
-        list.stream().forEach(e -> this.futureEvents.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
+        if (list != null)
+            list.stream().forEach(e -> this.futureEvents.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
     }
     
     public void addDirectorEvents(List<Event> list){
-        list.stream().forEach(e -> this.directorEvents.add(new EventInfo(e.getClass().getSimpleName(), e.getId(), e.getTitle())));
+        if (list != null)
+            list.stream().forEach(e -> this.directorEvents.add(new EventInfo(e.getClass().getSimpleName(), e.getId(), e.getTitle())));
     }
     
     public void addSingerEvents(List<Event> list){
-        list.stream().forEach(e -> this.singerEvents.add(new EventInfo(e.getClass().getSimpleName(), e.getId(), e.getTitle())));
+        if (list != null)
+            list.stream().forEach(e -> this.singerEvents.add(new EventInfo(e.getClass().getSimpleName(), e.getId(), e.getTitle())));
     }
 
     

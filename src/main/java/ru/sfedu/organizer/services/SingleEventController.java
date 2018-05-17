@@ -54,8 +54,9 @@ public class SingleEventController extends AbstractFacade<SingleEvent> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+    public Response remove(@PathParam("id") Long id) {
+        business.delete(id);
+        return Response.ok().build();
     }
 
     @GET

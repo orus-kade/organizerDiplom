@@ -2,6 +2,8 @@
  */
 package ru.sfedu.organizer.model;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +12,8 @@ import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Libretto;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Personage;
+import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.entity.Stage;
 
 /**
  *
@@ -24,91 +28,60 @@ public class OperaModel {
     private long librettoId;
     private Map<Long, String> writers  = new HashMap<>();
     private Map<Long, String> composers  = new HashMap<>();  
+    private Map<Long, String> stages = new HashMap<>();
+    private List<SingleEventInfo> futureEvents = new ArrayList<>();
+    
 
     public OperaModel() {
     }
 
-    public OperaModel(long id, String title, String description, long librettoId) {
+    public OperaModel(long id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
-        this.librettoId = librettoId;
     }   
-    
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Map<Long, String> getPersonages() {
-        return personages;
-    }
 
     public void addPersonages(List<Personage> list){
-        list.forEach(e -> this.personages.put(e.getId(), e.getName())
-        );
-    }
-
-    public Map<Long, String> getAries() {
-        return aries;
+        if (list != null)
+            list.forEach(e -> this.personages.put(e.getId(), e.getName())
+            );
     }
 
     public void addAries(List<Aria> list){
-        list.forEach(e -> this.aries.put(e.getId(), e.getPosition() + " " + e.getTitle())
-        );
+        if (list != null)
+            list.forEach(e -> this.aries.put(e.getId(), e.getPosition() + " " + e.getTitle())
+            );
     }
-
-    public long getLibrettoId() {
-        return librettoId;
-    }
-
+    
     public void setLibrettoId(long librettoId) {
         this.librettoId = librettoId;
     }
-    
-
-    public Map<Long, String> getWriters() {
-        return writers;
-    }
 
     public void addWriters(List<Human> list){
-        list.forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.writers.put(e.getId(), name);
-        });
+        if (list != null)
+            list.forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.writers.put(e.getId(), name);
+            });
     }
     
     public void addComposers(List<Human> list){
-        list.forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.composers.put(e.getId(), name);
-        });
-    }
-
-    public Map<Long, String> getComposers() {
-        return composers;
-    }   
+        if (list != null)
+            list.forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.composers.put(e.getId(), name);
+            });
+    } 
     
+    public void addStages(List<Stage> list){
+        if (list != null)
+            list.stream().forEach(e -> this.stages.put(e.getId(), e.getTitle()));
+    }
+    
+    public void addFutureEvents(List<SingleEvent> list){
+        if (list != null)
+           list.stream().forEach(e -> this.futureEvents.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
+    }
 }

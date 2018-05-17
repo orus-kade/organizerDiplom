@@ -36,9 +36,8 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.OperaController.class);
         resources.add(ru.sfedu.organizer.services.PersonageController.class);
         resources.add(ru.sfedu.organizer.services.PlaceController.class);
-        resources.add(ru.sfedu.organizer.services.RoleFacadeREST.class);
         resources.add(ru.sfedu.organizer.services.SingleEventController.class);
-        resources.add(ru.sfedu.organizer.services.StageFacadeREST.class);
+        resources.add(ru.sfedu.organizer.services.StageController.class);
         resources.add(ru.sfedu.organizer.services.UserFacadeREST.class);
     }    
 }

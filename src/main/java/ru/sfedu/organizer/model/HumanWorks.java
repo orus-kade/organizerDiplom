@@ -22,16 +22,19 @@ public class HumanWorks {
     public HumanWorks() {
     }
     
-    public void addComposerWorks(List<Aria> aries){
-        aries.stream().forEach(e -> this.composerWorks.add(new AriaInfo(e)));
+    public void addComposerWorks(List<Aria> list){
+        if (list != null)
+            list.stream().forEach(e -> this.composerWorks.add(new AriaInfo(e)));
     }
     
-    public void addWriterWorks(List<Aria> aries){
-        aries.stream().forEach(e -> this.writerWorks.add(new AriaInfo(e)));
+    public void addWriterWorks(List<Aria> list){
+        if (list != null)
+            list.stream().forEach(e -> this.writerWorks.add(new AriaInfo(e)));
     }
     
-    public void addLibrettos(List<Libretto> libs){
-        libs.stream().forEach(e -> this.librettos.add(new LibrettoInfo(e.getOpera(), e.getId())));
+    public void addLibrettos(List<Libretto> list){
+        if (list != null)
+            list.stream().forEach(e -> this.librettos.add(new LibrettoInfo(e.getOpera(), e.getId())));
     }
 
     class LibrettoInfo{

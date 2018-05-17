@@ -31,14 +31,16 @@ public class PlaceModel {
     }
     
     public void addHumans(List<Human> list){
-        list.stream().forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.humans.put(e.getId(), name);
-        });
+        if (list != null)
+            list.stream().forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.humans.put(e.getId(), name);
+            });
     }
     
     public void addEvents(List<SingleEvent> list){
-        list.stream().forEach(e -> this.events.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
+        if (list != null)
+            list.stream().forEach(e -> this.events.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
     }
 }

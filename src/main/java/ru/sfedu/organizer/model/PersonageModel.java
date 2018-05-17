@@ -28,8 +28,9 @@ public class PersonageModel {
     }
 
     public void addAries(List<Aria> list){
-        list.forEach(e -> this.aries.put(e.getId(), e.getPosition() + " " + e.getTitle())
-        );
+        if (list != null)
+            list.forEach(e -> this.aries.put(e.getId(), e.getPosition() + " " + e.getTitle())
+            );
     }   
     
 }

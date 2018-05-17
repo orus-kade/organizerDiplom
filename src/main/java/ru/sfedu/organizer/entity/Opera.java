@@ -47,6 +47,9 @@ public class Opera {
     @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
     private List<Aria> aries;
     
+    @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
+    private List<Stage> stages;
+    
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name="libretto_id")
     private Libretto libretto;
@@ -178,8 +181,18 @@ public class Opera {
     public Libretto getLibretto() {
         return libretto;
     }
+    
+    
 
     //
     // Other methods
     //
+
+    public List<Stage> getStages() {
+        return stages;
+    }
+
+    public void setStages(List<Stage> stages) {
+        this.stages = stages;
+    }
 }

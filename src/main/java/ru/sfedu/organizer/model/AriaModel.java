@@ -64,24 +64,27 @@ public class AriaModel {
     }
     
     public void addComposers(List<Human> list){
-        list.stream().forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.composers.put(e.getId(), name);
-        });
+        if (list != null)
+            list.stream().forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.composers.put(e.getId(), name);
+            });
     }
     
     public void addWriters(List<Human> list){
-        list.stream().forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.writers.put(e.getId(), name);
-        });
+        if (list != null)
+            list.stream().forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.writers.put(e.getId(), name);
+            });
     }
     
     public void addPersonages(List<Personage> list){
-        list.stream().forEach(e -> this.personages.put(e.getId(), e.getName())
-        );
+        if (list != null)
+            list.stream().forEach(e -> this.personages.put(e.getId(), e.getName())
+            );
     }
     
     public void addOpera(Opera opera){

@@ -54,8 +54,9 @@ public class ConcertController extends AbstractFacade<Concert> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) {
         concertBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

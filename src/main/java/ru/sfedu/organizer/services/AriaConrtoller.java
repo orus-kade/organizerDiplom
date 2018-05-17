@@ -62,8 +62,9 @@ public class AriaConrtoller extends AbstractFacade<Aria> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) {
         ariaBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

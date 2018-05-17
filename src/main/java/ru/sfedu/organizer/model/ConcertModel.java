@@ -39,17 +39,20 @@ public class ConcertModel {
     }
     
     public void addSingers(List<Human> list){
-        list.stream().forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.singers.put(e.getId(), name);
-        });
+        if (list != null)
+            list.stream().forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.singers.put(e.getId(), name);
+            });
     }
     public void addAries(List<Aria> list){
-        list.stream().forEach(e -> this.aries.add(new AriaInfo(e)));
+        if (list != null)
+            list.stream().forEach(e -> this.aries.add(new AriaInfo(e)));
     }
     
     public void addEvents(List<SingleEvent> list){
-        list.stream().forEach(e -> this.events.put(e.getId(), new Date(e.getDatetime())));
+        if (list != null)
+            list.stream().forEach(e -> this.events.put(e.getId(), new Date(e.getDatetime())));
     }
 }

@@ -2,6 +2,7 @@
  */
 package ru.sfedu.organizer.services;
 
+import com.google.gson.Gson;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -15,61 +16,71 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
-import ru.sfedu.organizer.entity.Role;
+import javax.ws.rs.core.Response;
+import ru.sfedu.organizer.business.StageBusiness;
+import ru.sfedu.organizer.entity.Stage;
+import ru.sfedu.organizer.model.ConcertModel;
+import ru.sfedu.organizer.model.StageModel;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("ru.sfedu.organizer.model.role")
-public class RoleFacadeREST extends AbstractFacade<Role> {
+@Path("/stage")
+public class StageController extends AbstractFacade<Stage> {
 
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
+    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU") 
     private EntityManager em;
+    
+    private static final StageBusiness stageBusiness = new StageBusiness();
 
-    public RoleFacadeREST() {
-        super(Role.class);
+    public StageController() {
+        super(Stage.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Role entity) {
+    public void create(Stage entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Role entity) {
+    public void edit(@PathParam("id") Long id, Stage entity) {
         super.edit(entity);
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+    @Path("/{id}")
+    public Response remove(@PathParam("id") Long id) {
+        stageBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET
-    @Path("{id}")
+    @Path("/{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Role find(@PathParam("id") Long id) {
-        return super.find(id);
+    public Response find(@PathParam("id") Long id) {
+        StageModel stageModel = stageBusiness.getById(id);
+        Gson gson = new Gson();
+        String json = gson.toJson(stageModel);
+        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Role> findAll() {
+    public List<Stage> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Role> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Stage> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 

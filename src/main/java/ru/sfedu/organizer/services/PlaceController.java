@@ -55,9 +55,10 @@ public class PlaceController extends AbstractFacade<Place> {
     }
 
     @DELETE
-    @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+    @Path("/{id}")
+    public Response remove(@PathParam("id") Long id) {
+        placeBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

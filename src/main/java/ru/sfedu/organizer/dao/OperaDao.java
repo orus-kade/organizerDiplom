@@ -3,13 +3,17 @@ package ru.sfedu.organizer.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Professions;
+import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.entity.Stage;
 
 /**
  *
@@ -55,5 +59,31 @@ public class OperaDao extends Dao<Opera>{
             tran.commit();
         }        
         return list;
+    }
+    
+    public List<SingleEvent> getFutureEvents(List<Stage> list){
+        List<SingleEvent> singleEvents = new ArrayList<>();
+        if (list != null && !list.isEmpty()){
+            List<Long> stageIds = new ArrayList<>();
+            stageIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);        
+            long date = cal.getTimeInMillis();
+            this.getSession();
+            Transaction tran = session.beginTransaction();
+            singleEvents.addAll(session.createCriteria(SingleEvent.class)
+                    .add(Restrictions.gt("datetime", date))
+                    .createCriteria("event", "event")
+                    .add(Restrictions.in("event.id", stageIds))
+                    .list());
+            tran.commit();
+        }
+        return singleEvents;
     }
 }

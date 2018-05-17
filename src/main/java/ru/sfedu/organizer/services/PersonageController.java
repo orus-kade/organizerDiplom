@@ -55,8 +55,9 @@ public class PersonageController extends AbstractFacade<Personage> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+    public Response remove(@PathParam("id") Long id) {
+        personageBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

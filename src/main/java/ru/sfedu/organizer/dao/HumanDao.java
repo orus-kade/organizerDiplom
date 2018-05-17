@@ -32,6 +32,25 @@ public class HumanDao extends Dao<Human>{
         return this.get(id);
     }
     
+//    public void delete(Human human){
+//        this.getSession();
+//        Transaction tran = session.beginTransaction();
+//        session.createSQLQuery("delete from aria_composer where composer_id = :id")
+//                .setParameter("id", human.getId())
+//                .executeUpdate();
+//        session.createSQLQuery("delete from aria_writer where writer_id = :id")
+//                .setParameter("id", human.getId())
+//                .executeUpdate();
+//        session.createSQLQuery("delete from conseert_singer where singer_id = :id")
+//                .setParameter("id", human.getId())
+//                .executeUpdate();
+//        session.createSQLQuery("delete from aria_composer where composer_id = :id")
+//                .setParameter("id", human.getId())
+//                .executeUpdate();
+//        session.delete(human);
+//        tran.commit();
+//    }
+    
     public int count(){
         return this.countAll();
     }

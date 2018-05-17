@@ -56,8 +56,9 @@ public class HumanController extends AbstractFacade<Human> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) {
         humanBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

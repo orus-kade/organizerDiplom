@@ -241,11 +241,11 @@ public class DaoTest {
                 aria.setPersonages(charsAria);
                 List<Human> humans = new ArrayList<>();
                 humans.add(humanDao.getById((long) MyGenerator.generateLong(1, 5)).get());
-                humans.add(humanDao.getById((long) MyGenerator.generateLong(6, 10)).get());
+                humans.add(humanDao.getById((long) MyGenerator.generateLong(8, 10)).get());
                 aria.setComposers(humans);
                 humans = new ArrayList<>();
                 humans.add(humanDao.getById((long) MyGenerator.generateLong(1, 5)).get());
-                humans.add(humanDao.getById((long) MyGenerator.generateLong(6, 10)).get());
+                humans.add(humanDao.getById((long) MyGenerator.generateLong(8, 10)).get());
                 aria.setWriters(humans);
                 aries.add(aria);
             }
@@ -265,7 +265,7 @@ public class DaoTest {
             place.setTitle(MyGenerator.generateTitle()+ " " + i);
             List<Human> humans = new ArrayList<>();
             humans.add(humanDao.getById(MyGenerator.generateLong(1L, 5L)).get());
-            humans.add(humanDao.getById(MyGenerator.generateLong(6L, 10L)).get());
+            humans.add(humanDao.getById(MyGenerator.generateLong(8L, 10L)).get());
 
             place.setPersons(humans);
             place.setLocation("location some " + i);
@@ -285,9 +285,9 @@ public class DaoTest {
             concert.setDescription(MyGenerator.generateTitle() + " desc " + i);
             concert.setDirector(humanDao.getById(MyGenerator.generateLong(1, 10)).get());
             List<Human> humans = new ArrayList<>();
-            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
-            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
-            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
+            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 6L)).get());
+            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 6L)).get());
+            humans.add(humanDao.getById(MyGenerator.generateLong(1L, 6L)).get());
             concert.setSingers(humans);
             concert.setTitle("Consert " + i);
             concerts.add(concert);
@@ -303,7 +303,7 @@ public class DaoTest {
             }
             stage.setOpera(daoOpera.getById(MyGenerator.generateLong(1, 10)).get());
             stage.setDescription(MyGenerator.generateTitle() + " desc " + i);
-            stage.setDirector(humanDao.getById(MyGenerator.generateLong(1, 10)).get());
+            stage.setDirector(humanDao.getById(MyGenerator.generateLong(1, 6)).get());
             stage.setTitle("Stage " + i + " " + stage.getOpera().getTitle());
             stages.add(stage);
         }
@@ -324,7 +324,7 @@ public class DaoTest {
         List<Role> roles = new ArrayList<>();
         for (int i = 1; i<=30; i++){
             Role role = new Role();
-            role.setSinger(humanDao.getById(MyGenerator.generateLong(1L, 10L)).get());
+            role.setSinger(humanDao.getById(MyGenerator.generateLong(1L, 6L)).get());
             role.setPersonage(daoPers.getById(i).get());
             roles.add(role);
         }

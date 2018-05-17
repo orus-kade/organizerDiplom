@@ -54,8 +54,9 @@ public class OperaController extends AbstractFacade<Opera> {
 
     @DELETE
     @Path("{id}")
-    public void remove(@PathParam("id") Long id) {
-        super.remove(super.find(id));
+    public Response remove(@PathParam("id") Long id) {
+        operaBusiness.delete(id);
+        return Response.ok().build();
     }
 
     @GET

@@ -26,10 +26,11 @@ public class LibrettoModel {
     }
     
     public void addWriters(List<Human> list){
-        list.stream().forEach(e -> {
-            String name = e.getSurname() + " " + e.getName();
-            if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-            this.writers.put(e.getId(), name);
-        });
+        if (list != null)
+            list.stream().forEach(e -> {
+                String name = e.getSurname() + " " + e.getName();
+                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
+                this.writers.put(e.getId(), name);
+            });
     }
 }
