@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.PlaceBusiness;
 import ru.sfedu.organizer.entity.Place;
 import ru.sfedu.organizer.model.PlaceModel;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -28,31 +29,21 @@ import ru.sfedu.organizer.model.PlaceModel;
 
 @Stateless
 @Path("/place")
-public class PlaceController extends AbstractFacade<Place> {
-
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
-
+public class PlaceController{
     private static final PlaceBusiness placeBusiness = new PlaceBusiness();
-    
-    
-    public PlaceController() {
-        super(Place.class);
-    }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Place entity) {
-        super.create(entity);
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void create(Place entity) {
+//        super.create(entity);
+//    }
 
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Place entity) {
-        super.edit(entity);
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void edit(@PathParam("id") Long id, Place entity) {
+//        super.edit(entity);
+//    }
 
     @DELETE
     @Path("/{id}")
@@ -72,29 +63,28 @@ public class PlaceController extends AbstractFacade<Place> {
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Place> findAll() {
-        return super.findAll();
+    public Response findAll() {
+        List<SearchResult> list = placeBusiness.getAll();        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Place> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        List<SearchResult> list = placeBusiness.getByRange(from, to);        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
+        return String.valueOf(placeBusiness.count());
+    }  
 }

@@ -17,6 +17,7 @@ import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Libretto;
 import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.utils.Utils;
 
 /**
  *
@@ -32,25 +33,6 @@ public class HumanDao extends Dao<Human>{
         return this.get(id);
     }
     
-//    public void delete(Human human){
-//        this.getSession();
-//        Transaction tran = session.beginTransaction();
-//        session.createSQLQuery("delete from aria_composer where composer_id = :id")
-//                .setParameter("id", human.getId())
-//                .executeUpdate();
-//        session.createSQLQuery("delete from aria_writer where writer_id = :id")
-//                .setParameter("id", human.getId())
-//                .executeUpdate();
-//        session.createSQLQuery("delete from conseert_singer where singer_id = :id")
-//                .setParameter("id", human.getId())
-//                .executeUpdate();
-//        session.createSQLQuery("delete from aria_composer where composer_id = :id")
-//                .setParameter("id", human.getId())
-//                .executeUpdate();
-//        session.delete(human);
-//        tran.commit();
-//    }
-    
     public int count(){
         return this.countAll();
     }
@@ -59,8 +41,8 @@ public class HumanDao extends Dao<Human>{
         return super.getAll(Arrays.asList("surname", "name", "patronymic"));
     }
     
-    public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(page, Arrays.asList("surname", "name", "patronymic"));
+    public Optional<List> getByRange(int from, int to){
+        return super.getByRange(from, to, Arrays.asList("surname", "name", "patronymic"));
     }
     
     public List<Aria> getWorksByProfession(long humanId, Professions profession){
@@ -142,13 +124,8 @@ public class HumanDao extends Dao<Human>{
     public List<SingleEvent> getFutureEvents(long humanId){
         List<SingleEvent> list = new ArrayList<>();
         this.getSession();
-        Transaction tran = session.beginTransaction();
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.HOUR_OF_DAY, 0);
-        cal.set(Calendar.MINUTE, 0);
-        cal.set(Calendar.SECOND, 0);
-        cal.set(Calendar.MILLISECOND, 0);        
-        long date = cal.getTimeInMillis();
+        Transaction tran = session.beginTransaction();        
+        long date = Utils.getCurrentDateWithoutTime();
         list.addAll(session.createSQLQuery(" select {se.*} from single_event se where event_id in ("
                 + "select e.id from event e where id in "
                 + "(select stage_id from role_stage rs join \"role\" r on rs.role_id = r.role_id where r.singer_id = :humanId "

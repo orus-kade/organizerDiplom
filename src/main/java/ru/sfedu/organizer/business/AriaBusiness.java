@@ -3,11 +3,13 @@
 package ru.sfedu.organizer.business;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import javax.ejb.Stateless;
 import ru.sfedu.organizer.dao.AriaDao;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.model.AriaModel;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -40,5 +42,23 @@ public class AriaBusiness {
         if (o.isPresent()){
             ariaDao.delete(o.get());
         }
-    }    
+    }   
+    
+    public List<SearchResult> getByRange(int from, int to){
+        Optional<List> o = ariaDao.getByRange(from, to);
+        List<SearchResult> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<Aria> list = o.get();
+            list.stream().forEach(e -> result.add(new SearchResult(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getTitle())));
+        }
+        return result;
+    }
+    
+    public List<SearchResult> getAll(){
+        return this.getByRange(1, this.count());
+    }
+    
+    public int count(){
+        return ariaDao.count();
+    }
 }

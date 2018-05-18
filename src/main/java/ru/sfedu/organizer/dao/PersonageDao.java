@@ -28,8 +28,8 @@ public class PersonageDao extends Dao<Personage>{
         return super.getAll(Arrays.asList("name"));
     }
     
-    public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(page, Arrays.asList("name"));
+    public Optional<List> getByRange(int from, int to){
+        return super.getByRange(from, to, Arrays.asList("name"));
     }
     
 }

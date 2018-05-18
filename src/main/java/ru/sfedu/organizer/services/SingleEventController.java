@@ -19,6 +19,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.SingleEventBusiness;
 import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.model.SearchResult;
+import ru.sfedu.organizer.model.SingleEventInfo;
 import ru.sfedu.organizer.model.SingleEventModel;
 
 /**
@@ -27,30 +29,22 @@ import ru.sfedu.organizer.model.SingleEventModel;
  */
 @Stateless
 @Path("/singleevent")
-public class SingleEventController extends AbstractFacade<SingleEvent> {
-
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
+public class SingleEventController{
     
     private static final SingleEventBusiness business = new SingleEventBusiness();
 
-    public SingleEventController() {
-        super(SingleEvent.class);
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void create(SingleEvent entity) {
+//        super.create(entity);
+//    }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(SingleEvent entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, SingleEvent entity) {
-        super.edit(entity);
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void edit(@PathParam("id") Long id, SingleEvent entity) {
+//        super.edit(entity);
+//    }
 
     @DELETE
     @Path("{id}")
@@ -70,29 +64,56 @@ public class SingleEventController extends AbstractFacade<SingleEvent> {
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<SingleEvent> findAll() {
-        return super.findAll();
+    public Response findAll() {
+        List<SingleEventInfo> list = business.getAll();        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("{from}/{to}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        List<SingleEventInfo> list = business.getByRange(from, to);        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
+    }
+    
+    @GET
+    @Path("future/{from}/{to}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRangeFuture(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        List<SingleEventInfo> list = business.getByRangeFuture(from, to);        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
+    }
+    
+    @GET
+    @Path("future")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<SingleEvent> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    public Response findAllFuture() {
+        List<SingleEventInfo> list = business.getAllFuture();        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
+        return String.valueOf(business.count());
     }
     
+    @GET
+    @Path("future/count")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String countFutureREST() {
+        return String.valueOf(business.count());
+    }
+
 }

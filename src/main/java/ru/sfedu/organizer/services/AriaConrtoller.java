@@ -4,6 +4,7 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import javax.ejb.Stateless;
@@ -26,6 +27,7 @@ import ru.sfedu.organizer.business.AriaBusiness;
 import ru.sfedu.organizer.dao.AriaDao;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.model.AriaModel;
+import ru.sfedu.organizer.model.SearchResult;
 import ru.sfedu.organizer.utils.HibernateUtil;
 
 /**
@@ -34,31 +36,26 @@ import ru.sfedu.organizer.utils.HibernateUtil;
  */
 @Stateless
 @Path("/aria")
-public class AriaConrtoller extends AbstractFacade<Aria> {
+public class AriaConrtoller{
     
     static final Logger logger = LogManager.getLogger(AriaConrtoller.class);
     private static final AriaBusiness ariaBusiness = new AriaBusiness();
 
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
+//    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
+//    private EntityManager em;
 
-    public AriaConrtoller() {
-        super(Aria.class);
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void create(Aria entity) {
+//        //super.create(entity);
+//    }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Aria entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Aria entity) {
-        super.edit(entity);
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void edit(@PathParam("id") Long id, Aria entity) {
+//        //super.edit(entity);
+//    }
 
     @DELETE
     @Path("{id}")
@@ -69,22 +66,8 @@ public class AriaConrtoller extends AbstractFacade<Aria> {
 
     @GET
     @Path("/{id}")
-    //@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) {
-////      return super.find(id);
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        logger.debug("olo");
-//        AriaDao ariaDao = new AriaDao(session);
-//        logger.debug("olo2");
-//        Optional<Aria> o = ariaDao.getById(id);
-//        logger.debug(o.isPresent());
-//        Aria aria = o.get();    
-//        logger.debug(aria);
-//        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-//        String json = gson.toJson(aria);  
-//        //return aria;
-//        session.close();
         AriaModel ariaModel = ariaBusiness.getById(id);
         Gson gson = new Gson();
         String json = gson.toJson(ariaModel); 
@@ -92,29 +75,28 @@ public class AriaConrtoller extends AbstractFacade<Aria> {
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Aria> findAll() {
-        return super.findAll();
+    public Response findAll() {
+        List<SearchResult> list = ariaBusiness.getAll();        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Aria> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        List<SearchResult> list = ariaBusiness.getByRange(from, to);        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
+        return String.valueOf(ariaBusiness.count());
+    }  
 }

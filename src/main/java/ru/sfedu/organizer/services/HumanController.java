@@ -22,6 +22,7 @@ import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.model.HumanEvents;
 import ru.sfedu.organizer.model.HumanModel;
 import ru.sfedu.organizer.model.HumanWorks;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -29,30 +30,23 @@ import ru.sfedu.organizer.model.HumanWorks;
  */
 @Stateless
 @Path("/human")
-public class HumanController extends AbstractFacade<Human> {
+public class HumanController{
 
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
     
     private static final HumanBusiness humanBusiness = new HumanBusiness();
 
-    public HumanController() {
-        super(Human.class);
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void create(Human entity) {
+//        super.create(entity);
+//    }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Human entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Human entity) {
-        super.edit(entity);
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void edit(@PathParam("id") Long id, Human entity) {
+//        super.edit(entity);
+//    }
 
     @DELETE
     @Path("{id}")
@@ -92,30 +86,28 @@ public class HumanController extends AbstractFacade<Human> {
     }
     
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Human> findAll() {
-        return super.findAll();
+    public Response findAll() {
+        List<SearchResult> list = humanBusiness.getAll();        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    @Path("/99999{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Human> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    @Path("{from}/{to}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        List<SearchResult> list = humanBusiness.getByRange(from, to);        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
+        return String.valueOf(humanBusiness.count());
     }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
 }

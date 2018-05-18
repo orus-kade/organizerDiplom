@@ -109,7 +109,12 @@ public abstract class Dao<T> {
         return result;
     }
     
-    protected Optional<List> getAllByPage(int page, List<String> orderParametrs){
+    protected Optional<List> getByRange(int from, int to, List<String> orderParametrs){
+        if (from > to){
+            int foo = from;
+            from = to;
+            to = foo;
+        }
         this.getSession();
         Transaction tran = session.beginTransaction();
         Criteria criteria = session.createCriteria(this.entityClass);
@@ -118,8 +123,9 @@ public abstract class Dao<T> {
                 criteria.addOrder(Order.asc(par));
             });
         }
-        criteria.setFirstResult(Constants.ITEMS_ON_PAGE * (page-1));
-        criteria.setMaxResults(Constants.ITEMS_ON_PAGE);
+        criteria.addOrder(Order.asc("id"));
+        criteria.setFirstResult(from-1);
+        criteria.setMaxResults(to-from+1);
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
         return result;

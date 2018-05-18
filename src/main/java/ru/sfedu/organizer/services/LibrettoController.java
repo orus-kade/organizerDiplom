@@ -21,6 +21,7 @@ import ru.sfedu.organizer.business.LibrettoBusiness;
 import ru.sfedu.organizer.entity.Libretto;
 import ru.sfedu.organizer.model.HumanModel;
 import ru.sfedu.organizer.model.LibrettoModel;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -28,30 +29,22 @@ import ru.sfedu.organizer.model.LibrettoModel;
  */
 @Stateless
 @Path("/libretto")
-public class LibrettoController extends AbstractFacade<Libretto> {
-
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
+public class LibrettoController{
 
     private static final LibrettoBusiness librettoBusiness = new LibrettoBusiness();
     
-    public LibrettoController() {
-        super(Libretto.class);
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void create(Libretto entity) {
+//        super.create(entity);
+//    }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Libretto entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Libretto entity) {
-        super.edit(entity);
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void edit(@PathParam("id") Long id, Libretto entity) {
+//        super.edit(entity);
+//    }
 
     @DELETE
     @Path("{id}")
@@ -68,32 +61,6 @@ public class LibrettoController extends AbstractFacade<Libretto> {
         Gson gson = new Gson();
         String json = gson.toJson(librettoModel); 
         return Response.status(200).entity(json).build();
-    }
-
-    @GET
-    @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Libretto> findAll() {
-        return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Libretto> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
-    @GET
-    @Path("count")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
     }
     
 }

@@ -2,9 +2,12 @@
  */
 package ru.sfedu.organizer.business;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import ru.sfedu.organizer.dao.StageDao;
 import ru.sfedu.organizer.entity.Stage;
+import ru.sfedu.organizer.model.SearchResult;
 import ru.sfedu.organizer.model.StageModel;
 
 /**
@@ -39,5 +42,21 @@ public class StageBusiness {
         }
     } 
     
+    public List<SearchResult> getByRange(int from, int to){
+        Optional<List> o = stageDao.getByRange(from, to);
+        List<SearchResult> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<Stage> list = o.get();
+            list.stream().forEach(e -> result.add(new SearchResult(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getTitle())));
+        }
+        return result;
+    }
     
+    public List<SearchResult> getAll(){
+        return this.getByRange(1, this.count());
+    }
+    
+    public int count(){
+        return stageDao.count();
+    }
 }

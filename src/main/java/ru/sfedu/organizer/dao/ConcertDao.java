@@ -29,8 +29,8 @@ public class ConcertDao extends Dao<Concert>{
         return super.getAll(Arrays.asList("title"));
     }
     
-    public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(page, Arrays.asList("title"));
+    public Optional<List> getByRange(int from, int to){
+        return super.getByRange(from, to, Arrays.asList("title"));
     }
     
 }

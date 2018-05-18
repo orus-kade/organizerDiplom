@@ -10,6 +10,7 @@ import java.util.Map;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.utils.Utils;
 
 /**
  *
@@ -32,19 +33,13 @@ public class ConcertModel {
     
     public void addDirector(Human human){
         if (human != null){
-            String name = human.getSurname() + " " + human.getName();
-            if (human.getPatronymic() != null) name += " " + human.getPatronymic();
-            this.director.put(human.getId(), name);
+            this.director.put(human.getId(), Utils.getHumanName(human));
         }            
     }
     
     public void addSingers(List<Human> list){
         if (list != null)
-            list.stream().forEach(e -> {
-                String name = e.getSurname() + " " + e.getName();
-                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-                this.singers.put(e.getId(), name);
-            });
+            list.stream().forEach(e -> this.singers.put(e.getId(), Utils.getHumanName(e)));
     }
     public void addAries(List<Aria> list){
         if (list != null)

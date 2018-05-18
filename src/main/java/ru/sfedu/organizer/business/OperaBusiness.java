@@ -12,6 +12,7 @@ import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.entity.Stage;
 import ru.sfedu.organizer.model.OperaModel;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -48,5 +49,23 @@ public class OperaBusiness {
         if (o.isPresent()){
             operaDao.delete(o.get());
         }
+    }
+    
+    public List<SearchResult> getByRange(int from, int to){
+        Optional<List> o = operaDao.getByRange(from, to);
+        List<SearchResult> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<Opera> list = o.get();
+            list.stream().forEach(e -> result.add(new SearchResult(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getTitle())));
+        }
+        return result;
+    }
+    
+    public List<SearchResult> getAll(){
+        return this.getByRange(1, this.count());
+    }
+    
+    public int count(){
+        return operaDao.count();
     }
 }

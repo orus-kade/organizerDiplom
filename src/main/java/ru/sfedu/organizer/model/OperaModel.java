@@ -14,6 +14,7 @@ import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Personage;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.entity.Stage;
+import ru.sfedu.organizer.utils.Utils;
 
 /**
  *
@@ -59,20 +60,12 @@ public class OperaModel {
 
     public void addWriters(List<Human> list){
         if (list != null)
-            list.forEach(e -> {
-                String name = e.getSurname() + " " + e.getName();
-                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-                this.writers.put(e.getId(), name);
-            });
+            list.forEach(e -> this.writers.put(e.getId(), Utils.getHumanName(e)));
     }
     
     public void addComposers(List<Human> list){
         if (list != null)
-            list.forEach(e -> {
-                String name = e.getSurname() + " " + e.getName();
-                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-                this.composers.put(e.getId(), name);
-            });
+            list.forEach(e -> this.composers.put(e.getId(), Utils.getHumanName(e)));
     } 
     
     public void addStages(List<Stage> list){

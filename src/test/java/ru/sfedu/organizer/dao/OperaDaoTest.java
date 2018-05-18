@@ -86,16 +86,16 @@ public class OperaDaoTest {
      * Test of getAllByPage method, of class OperaDao.
      */
     //@Test
-    public void testGetAllByPage() {
-        System.out.println("getAllByPage");
-        int page = 0;
-        OperaDao instance = new OperaDao();
-        Optional<List> expResult = null;
-        Optional<List> result = instance.getAllByPage(page);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+//    public void testGetAllByPage() {
+//        System.out.println("getAllByPage");
+//        int page = 0;
+//        OperaDao instance = new OperaDao();
+//        Optional<List> expResult = null;
+//        Optional<List> result = instance.getAllByPage(page);
+//        assertEquals(expResult, result);
+//        // TODO review the generated test code and remove the default call to fail.
+//        fail("The test case is a prototype.");
+//    }
 
     /**
      * Test of getHumansByProfession method, of class OperaDao.

@@ -32,8 +32,8 @@ public class AriaDao extends Dao<Aria>{
         return super.getAll(Arrays.asList("title"));
     }
     
-    public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(page, Arrays.asList("title"));
+    public Optional<List> getByRange(int from, int to){
+        return super.getByRange(from, to, Arrays.asList("title"));
     }
     
 //    public Optional<List> getByTitle(String title, int page){
@@ -42,13 +42,4 @@ public class AriaDao extends Dao<Aria>{
 //        
 //    }
     
-//    public void delete(Aria aria){
-//        this.getSession();
-//        Transaction tran = session.beginTransaction();
-////        session.createSQLQuery("delete from aria_concert where aria_id = :id")
-////                .setParameter("id", aria.getId())
-////                .executeUpdate();
-//        session.delete(aria);
-//        tran.commit();
-//    }
 }

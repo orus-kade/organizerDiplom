@@ -32,12 +32,13 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.ConcertController.class);
         resources.add(ru.sfedu.organizer.services.HumanController.class);
         resources.add(ru.sfedu.organizer.services.LibrettoController.class);
-        resources.add(ru.sfedu.organizer.services.NoteFacadeREST.class);
+        resources.add(ru.sfedu.organizer.services.NoteController.class);
         resources.add(ru.sfedu.organizer.services.OperaController.class);
         resources.add(ru.sfedu.organizer.services.PersonageController.class);
         resources.add(ru.sfedu.organizer.services.PlaceController.class);
+        resources.add(ru.sfedu.organizer.services.SearchConrtoller.class);
         resources.add(ru.sfedu.organizer.services.SingleEventController.class);
         resources.add(ru.sfedu.organizer.services.StageController.class);
-        resources.add(ru.sfedu.organizer.services.UserFacadeREST.class);
+        resources.add(ru.sfedu.organizer.services.UserController.class);
     }    
 }

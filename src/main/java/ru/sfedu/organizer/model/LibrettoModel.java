@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.utils.Utils;
 
 /**
  *
@@ -27,10 +28,6 @@ public class LibrettoModel {
     
     public void addWriters(List<Human> list){
         if (list != null)
-            list.stream().forEach(e -> {
-                String name = e.getSurname() + " " + e.getName();
-                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-                this.writers.put(e.getId(), name);
-            });
+            list.stream().forEach(e -> this.writers.put(e.getId(), Utils.getHumanName(e)));
     }
 }

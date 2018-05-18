@@ -30,8 +30,8 @@ public class NoteDao extends Dao<Note>{
 //        return super.getAll(Aria.class, Arrays.asList("title"));
 //    }
 //    
-//    public Optional<List> getAllByPage(int page){
-//        return super.getAllByPage(Aria.class, page, Arrays.asList("title"));
+//    public Optional<List> getByRange(int page){
+//        return super.getByRange(Aria.class, page, Arrays.asList("title"));
 //    }
     
 }

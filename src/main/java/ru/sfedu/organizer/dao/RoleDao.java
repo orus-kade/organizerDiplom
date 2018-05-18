@@ -32,10 +32,5 @@ public class RoleDao extends Dao<Role>{
     
     public Optional<List> getAll(){
         return super.getAll(Arrays.asList("personage"));
-    }
-    
-    public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(page, Arrays.asList("personage"));
-    }
-    
+    }    
 }

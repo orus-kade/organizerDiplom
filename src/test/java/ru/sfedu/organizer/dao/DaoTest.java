@@ -144,7 +144,7 @@ public class DaoTest {
 //    }
 
     /**
-     * Test of getAllByPage method, of class Dao.
+     * Test of getByRange method, of class Dao.
      */
 //    @Test
 //    public void testGetByPage() {
@@ -170,7 +170,7 @@ public class DaoTest {
 //        int count = dao.countAll(Human.class);
 //        System.out.println(count);
 //        //result = dao.getAll(Human.class);
-//        result = dao.getAllByPage(Human.class, 1, Arrays.asList("name"));
+//        result = dao.getByRange(Human.class, 1, Arrays.asList("name"));
 //        if (result.isPresent()){
 //            List list = result.get();
 //            System.out.println(list.isEmpty());

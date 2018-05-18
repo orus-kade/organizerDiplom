@@ -2,7 +2,9 @@
  */
 package ru.sfedu.organizer.business;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import javax.ejb.Stateless;
 import ru.sfedu.organizer.dao.HumanDao;
@@ -11,6 +13,8 @@ import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.model.HumanEvents;
 import ru.sfedu.organizer.model.HumanModel;
 import ru.sfedu.organizer.model.HumanWorks;
+import ru.sfedu.organizer.model.SearchResult;
+import ru.sfedu.organizer.utils.Utils;
 
 /**
  *
@@ -56,5 +60,23 @@ public class HumanBusiness {
         if (o.isPresent()){
             humanDao.delete(o.get());
         }
+    }
+    
+    public List<SearchResult> getByRange(int from, int to){
+        Optional<List> o = humanDao.getByRange(from, to);
+        List<SearchResult> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<Human> list = o.get();
+            list.stream().forEach(e -> result.add(new SearchResult(e.getClass().getSimpleName().toLowerCase(), e.getId(), Utils.getHumanName(e))));
+        }
+        return result;
+    }
+    
+    public List<SearchResult> getAll(){
+        return this.getByRange(1, this.count());
+    }
+    
+    public int count(){
+        return humanDao.count();
     }
 }

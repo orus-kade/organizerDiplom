@@ -2,10 +2,13 @@
  */
 package ru.sfedu.organizer.business;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import ru.sfedu.organizer.dao.PlaceDao;
 import ru.sfedu.organizer.entity.Place;
 import ru.sfedu.organizer.model.PlaceModel;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -35,5 +38,23 @@ public class PlaceBusiness {
         if (o.isPresent()){
             placeDao.delete(o.get());
         }
+    }
+    
+    public List<SearchResult> getByRange(int from, int to){
+        Optional<List> o = placeDao.getByRange(from, to);
+        List<SearchResult> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<Place> list = o.get();
+            list.stream().forEach(e -> result.add(new SearchResult(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getTitle())));
+        }
+        return result;
+    }
+    
+    public List<SearchResult> getAll(){
+        return this.getByRange(1, this.count());
+    }
+    
+    public int count(){
+        return placeDao.count();
     }
 }

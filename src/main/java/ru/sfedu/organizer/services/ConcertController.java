@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.ConcertBusiness;
 import ru.sfedu.organizer.entity.Concert;
 import ru.sfedu.organizer.model.ConcertModel;
+import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
@@ -27,30 +28,22 @@ import ru.sfedu.organizer.model.ConcertModel;
  */
 @Stateless
 @Path("/concert")
-public class ConcertController extends AbstractFacade<Concert> {
-
-    @PersistenceContext(unitName = "ru.sfedu_organizer_war_1.0-SNAPSHOTPU")
-    private EntityManager em;
+public class ConcertController{
     
     private static final ConcertBusiness concertBusiness = new ConcertBusiness();
 
-    public ConcertController() {
-        super(Concert.class);
-    }
+//    @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void create(Concert entity) {
+//        super.create(entity);
+//    }
 
-    @POST
-    @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(Concert entity) {
-        super.create(entity);
-    }
-
-    @PUT
-    @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Long id, Concert entity) {
-        super.edit(entity);
-    }
+//    @PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    public void edit(@PathParam("id") Long id, Concert entity) {
+//        super.edit(entity);
+//    }
 
     @DELETE
     @Path("{id}")
@@ -70,29 +63,28 @@ public class ConcertController extends AbstractFacade<Concert> {
     }
 
     @GET
-    @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Concert> findAll() {
-        return super.findAll();
+    public Response findAll() {
+        List<SearchResult> list = concertBusiness.getAll();        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<Concert> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+        List<SearchResult> list = concertBusiness.getByRange(from, to);        
+        Gson gson = new Gson();
+        String json = gson.toJson(list); 
+        return Response.status(200).entity(json).build();
     }
 
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(super.count());
-    }
-
-    @Override
-    protected EntityManager getEntityManager() {
-        return em;
-    }
-    
+        return String.valueOf(concertBusiness.count());
+    }  
 }

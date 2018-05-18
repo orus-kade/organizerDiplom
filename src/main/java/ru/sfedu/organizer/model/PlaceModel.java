@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.utils.Utils;
 
 
 /**
@@ -32,11 +33,7 @@ public class PlaceModel {
     
     public void addHumans(List<Human> list){
         if (list != null)
-            list.stream().forEach(e -> {
-                String name = e.getSurname() + " " + e.getName();
-                if (e.getPatronymic() != null) name += " " + e.getPatronymic();
-                this.humans.put(e.getId(), name);
-            });
+            list.stream().forEach(e -> this.humans.put(e.getId(), Utils.getHumanName(e)));
     }
     
     public void addEvents(List<SingleEvent> list){

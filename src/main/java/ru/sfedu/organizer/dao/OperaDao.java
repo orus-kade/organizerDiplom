@@ -14,6 +14,7 @@ import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.entity.Stage;
+import ru.sfedu.organizer.utils.Utils;
 
 /**
  *
@@ -37,8 +38,8 @@ public class OperaDao extends Dao<Opera>{
         return super.getAll(Arrays.asList("title"));
     }
     
-    public Optional<List> getAllByPage(int page){
-        return super.getAllByPage(page, Arrays.asList("title"));
+    public Optional<List> getByRange(int from, int to){
+        return super.getByRange(from, to, Arrays.asList("title"));
     }
     
     public List<Human> getHumansByProfession(Opera opera, Professions profession){
@@ -69,12 +70,7 @@ public class OperaDao extends Dao<Opera>{
                     (a, r) -> a.add(r.getId()),
                     (a1, a2) -> a1.addAll(a2))
             );
-            Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, 0);
-            cal.set(Calendar.MINUTE, 0);
-            cal.set(Calendar.SECOND, 0);
-            cal.set(Calendar.MILLISECOND, 0);        
-            long date = cal.getTimeInMillis();
+            long date = Utils.getCurrentDateWithoutTime();
             this.getSession();
             Transaction tran = session.beginTransaction();
             singleEvents.addAll(session.createCriteria(SingleEvent.class)

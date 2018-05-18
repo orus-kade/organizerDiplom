@@ -2,10 +2,14 @@
  */
 package ru.sfedu.organizer.business;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import ru.sfedu.organizer.dao.SingleEventDao;
 import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.model.SearchResult;
+import ru.sfedu.organizer.model.SingleEventInfo;
 import ru.sfedu.organizer.model.SingleEventModel;
 
 /**
@@ -46,4 +50,39 @@ public class SingleEventBusiness {
         }
     }
     
+    public List<SingleEventInfo> getByRange(int from, int to){
+        Optional<List> o = dao.getByRange(from, to);
+        List<SingleEventInfo> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<SingleEvent> list = o.get();
+            list.stream().forEach(e -> result.add(new SingleEventInfo(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
+        }
+        return result;
+    }
+    
+    public List<SingleEventInfo> getByRangeFuture(int from, int to){
+        Optional<List> o = dao.getByRangeFuture(from, to);
+        List<SingleEventInfo> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<SingleEvent> list = o.get();
+            list.stream().forEach(e -> result.add(new SingleEventInfo(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
+        }
+        return result;
+    }
+    
+    public List<SingleEventInfo> getAll(){
+        return this.getByRange(1, this.count());
+    }
+    
+    public List<SingleEventInfo> getAllFuture(){
+        return this.getByRange(1, this.countFuture());
+    }
+    
+    public int count(){
+        return dao.count();
+    }
+    
+    public int countFuture(){
+        return dao.countFuture();
+    }
 }
