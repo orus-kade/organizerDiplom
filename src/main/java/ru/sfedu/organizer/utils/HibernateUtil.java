@@ -57,7 +57,6 @@ public class HibernateUtil {
             metadataSources.addAnnotatedClass(SingleEvent.class);
             metadataSources.addAnnotatedClass(Stage.class);
             metadataSources.addAnnotatedClass(User.class);
-            metadataSources.addResource("named-queries.hbm.xml");// Именованные запросы
             sessionFactory = metadataSources.buildMetadata().buildSessionFactory();
         }
 

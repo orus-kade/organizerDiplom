@@ -4,6 +4,7 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,38 +18,40 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ru.sfedu.organizer.business.OperaBusiness;
-import ru.sfedu.organizer.entity.Opera;
-import ru.sfedu.organizer.model.OperaModel;
+import ru.sfedu.organizer.business.PlaceBusiness;
+import ru.sfedu.organizer.entity.Place;
+import ru.sfedu.organizer.model.PlaceModel;
 import ru.sfedu.organizer.model.SearchResult;
 
 /**
  *
  * @author sterie
  */
-@Stateless
-@Path("/opera")
-public class OperaController{
 
-    private static final OperaBusiness operaBusiness = new OperaBusiness();
+@Stateless
+@Path("/place")
+public class PlaceService{
+    
+    @EJB
+    private PlaceBusiness placeBusiness = new PlaceBusiness();
 
 //    @POST
 //    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void create(Opera entity) {
+//    public void create(Place entity) {
 //        super.create(entity);
 //    }
 
 //    @PUT
 //    @Path("{id}")
 //    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void edit(@PathParam("id") Long id, Opera entity) {
+//    public void edit(@PathParam("id") Long id, Place entity) {
 //        super.edit(entity);
 //    }
 
     @DELETE
-    @Path("{id}")
+    @Path("/{id}")
     public Response remove(@PathParam("id") Long id) {
-        operaBusiness.delete(id);
+        placeBusiness.delete(id);
         return Response.ok().build();
     }
 
@@ -56,16 +59,16 @@ public class OperaController{
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) {
-        OperaModel operaModel = operaBusiness.getById(id);
+        PlaceModel placeModel = placeBusiness.getById(id);
         Gson gson = new Gson();
-        String json = gson.toJson(operaModel); 
+        String json = gson.toJson(placeModel); 
         return Response.status(200).entity(json).build();
     }
 
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<SearchResult> list = operaBusiness.getAll();        
+        List<SearchResult> list = placeBusiness.getAll();        
         Gson gson = new Gson();
         String json = gson.toJson(list); 
         return Response.status(200).entity(json).build();
@@ -75,7 +78,7 @@ public class OperaController{
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        List<SearchResult> list = operaBusiness.getByRange(from, to);        
+        List<SearchResult> list = placeBusiness.getByRange(from, to);        
         Gson gson = new Gson();
         String json = gson.toJson(list); 
         return Response.status(200).entity(json).build();
@@ -85,6 +88,6 @@ public class OperaController{
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(operaBusiness.count());
+        return String.valueOf(placeBusiness.count());
     }  
 }

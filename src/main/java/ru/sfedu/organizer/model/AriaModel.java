@@ -85,4 +85,32 @@ public class AriaModel {
             this.opera.put(opera.getId(), opera.getTitle());
         }
     }
+    
+    public long getOperaId(){
+        if (this.opera.isEmpty())
+            return 0;
+        List<Long> keyList = new ArrayList(this.opera.keySet());
+        return keyList.get(0);
+    }
+    
+    public List<Long> getWritersId(){
+        if (this.writers.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.writers.keySet());
+        return keyList;
+    }
+    
+    public List<Long> getComposersId(){
+        if (this.composers.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.composers.keySet());
+        return keyList;
+    }
+    
+    public List<Long> getPersonagesId(){
+        if (this.personages.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.personages.keySet());
+        return keyList;
+    }
 }

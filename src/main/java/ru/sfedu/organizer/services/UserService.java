@@ -23,7 +23,7 @@ import ru.sfedu.organizer.entity.User;
  */
 @Stateless
 @Path("/user")
-public class UserController{
+public class UserService{
 
 
 //    @POST

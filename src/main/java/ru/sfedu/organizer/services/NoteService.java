@@ -23,7 +23,7 @@ import ru.sfedu.organizer.entity.Note;
  */
 @Stateless
 @Path("ru.sfedu.organizer.model.note")
-public class NoteController{
+public class NoteService{
 
 
 //    @POST

@@ -162,6 +162,14 @@ public class Place {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Place a = (Place) obj;
+        return this.id == a.getId();
+    } 
 
     
 }

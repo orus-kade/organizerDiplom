@@ -115,4 +115,12 @@ public class Role {
     //
     // Other methods
     //
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Role a = (Role) obj;
+        return this.id == a.getId();
+    } 
 }

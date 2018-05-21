@@ -158,4 +158,12 @@ public class SingleEvent {
     //
     // Other methods
     //
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        SingleEvent a = (SingleEvent) obj;
+        return this.id == a.getId();
+    } 
 }

@@ -23,7 +23,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "aria")
-@XmlRootElement(name = "aria")
 
 public class Aria {
 
@@ -242,7 +241,12 @@ public class Aria {
     public String toString() {
         return "Aria{" + "id=" + id + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", personages=" + personages + ", opera=" + opera + ", position=" + position + '}';
     }
-    
-    
-    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Aria a = (Aria) obj;
+        return this.id == a.getId();
+    } 
 }

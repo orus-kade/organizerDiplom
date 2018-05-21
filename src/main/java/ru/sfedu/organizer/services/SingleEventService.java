@@ -4,6 +4,7 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -29,9 +30,10 @@ import ru.sfedu.organizer.model.SingleEventModel;
  */
 @Stateless
 @Path("/singleevent")
-public class SingleEventController{
+public class SingleEventService{
     
-    private static final SingleEventBusiness business = new SingleEventBusiness();
+    @EJB
+    private SingleEventBusiness business = new SingleEventBusiness();
 
 //    @POST
 //    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -64,7 +66,7 @@ public class SingleEventController{
     }
 
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         List<SingleEventInfo> list = business.getAll();        
         Gson gson = new Gson();

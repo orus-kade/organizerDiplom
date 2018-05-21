@@ -4,6 +4,9 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.LibrettoBusiness;
+import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
 import ru.sfedu.organizer.entity.Libretto;
 import ru.sfedu.organizer.model.HumanModel;
 import ru.sfedu.organizer.model.LibrettoModel;
@@ -29,23 +33,21 @@ import ru.sfedu.organizer.model.SearchResult;
  */
 @Stateless
 @Path("/libretto")
-public class LibrettoController{
-
-    private static final LibrettoBusiness librettoBusiness = new LibrettoBusiness();
+public class LibrettoService{
     
-//    @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void create(Libretto entity) {
-//        super.create(entity);
-//    }
+    @EJB
+    private LibrettoBusiness librettoBusiness = new LibrettoBusiness();
+    
+    @RolesAllowed("ADMIN")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response create(String json) throws ObjectNotFoundException {
+        LibrettoModel librettoModel = new Gson().fromJson(json, LibrettoModel.class);
+        long id = librettoBusiness.createOrSave(librettoModel);
+        return Response.ok().entity(id).build();
+    }
 
-//    @PUT
-//    @Path("{id}")
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void edit(@PathParam("id") Long id, Libretto entity) {
-//        super.edit(entity);
-//    }
-
+    @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") Long id) {
@@ -53,6 +55,7 @@ public class LibrettoController{
         return Response.ok().build();
     }
 
+    @PermitAll
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)

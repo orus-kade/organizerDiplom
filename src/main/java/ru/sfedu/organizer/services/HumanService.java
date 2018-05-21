@@ -4,6 +4,9 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -18,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.HumanBusiness;
+import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.model.HumanEvents;
 import ru.sfedu.organizer.model.HumanModel;
@@ -30,24 +34,23 @@ import ru.sfedu.organizer.model.SearchResult;
  */
 @Stateless
 @Path("/human")
-public class HumanController{
+public class HumanService{
+
+    @EJB
+    private HumanBusiness humanBusiness = new HumanBusiness();
 
     
-    private static final HumanBusiness humanBusiness = new HumanBusiness();
+    @RolesAllowed("ADMIN")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response create(String json) throws ObjectNotFoundException {
+        HumanModel humanModel = new Gson().fromJson(json, HumanModel.class);
+        long id = humanBusiness.createOrSave(humanModel);
+        return Response.ok().entity(id).build();
+    }
 
-//    @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void create(Human entity) {
-//        super.create(entity);
-//    }
-
-//    @PUT
-//    @Path("{id}")
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void edit(@PathParam("id") Long id, Human entity) {
-//        super.edit(entity);
-//    }
-
+    @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") Long id) {
@@ -55,6 +58,7 @@ public class HumanController{
         return Response.ok().build();
     }
 
+    @PermitAll
     @GET
     @Path("/events/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +69,8 @@ public class HumanController{
         return Response.status(200).entity(json).build();
     }
     
+    
+    @PermitAll
     @GET
     @Path("/works/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +81,7 @@ public class HumanController{
         return Response.status(200).entity(json).build();
     }
     
+    @PermitAll
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -85,6 +92,7 @@ public class HumanController{
         return Response.status(200).entity(json).build();
     }
     
+    @PermitAll
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response findAll() {
@@ -94,6 +102,7 @@ public class HumanController{
         return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -104,6 +113,7 @@ public class HumanController{
         return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)

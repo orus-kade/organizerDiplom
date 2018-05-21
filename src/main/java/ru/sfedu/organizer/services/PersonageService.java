@@ -4,6 +4,7 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -27,9 +28,10 @@ import ru.sfedu.organizer.model.PersonageModel;
  */
 @Stateless
 @Path("/personage")
-public class PersonageController{
- 
-    private static final PersonageBusiness personageBusiness = new PersonageBusiness();
+public class PersonageService{
+    
+    @EJB
+    private PersonageBusiness personageBusiness = new PersonageBusiness();
 
 //    @POST
 //    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

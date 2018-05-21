@@ -22,6 +22,7 @@ import ru.sfedu.organizer.utils.Utils;
  *
  * @author sterie
  */
+
 public class SingleEventDao extends Dao<SingleEvent>{
     
     public SingleEventDao() {

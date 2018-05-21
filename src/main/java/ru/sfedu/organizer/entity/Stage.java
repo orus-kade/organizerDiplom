@@ -89,4 +89,12 @@ public class Stage extends Event {
     //
     // Other methods
     //
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Stage a = (Stage) obj;
+        return this.getId() == a.getId();
+    } 
 }

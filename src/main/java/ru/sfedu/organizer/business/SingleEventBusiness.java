@@ -51,7 +51,13 @@ public class SingleEventBusiness {
     }
     
     public List<SingleEventInfo> getByRange(int from, int to){
-        Optional<List> o = dao.getByRange(from, to);
+        Optional<List> o;
+        if (from == 0 && to == 0){
+            o = dao.getAll();
+        }
+        else{
+            o = dao.getByRange(from, to);
+        }
         List<SingleEventInfo> result = new ArrayList<>();
         if (o.isPresent() && !o.get().isEmpty()){            
             List<SingleEvent> list = o.get();
@@ -61,7 +67,13 @@ public class SingleEventBusiness {
     }
     
     public List<SingleEventInfo> getByRangeFuture(int from, int to){
-        Optional<List> o = dao.getByRangeFuture(from, to);
+        Optional<List> o;
+        if (from == 0 && to == 0){
+            o = dao.getAll();
+        }
+        else{
+            o = dao.getByRange(from, to);
+        }
         List<SingleEventInfo> result = new ArrayList<>();
         if (o.isPresent() && !o.get().isEmpty()){            
             List<SingleEvent> list = o.get();
@@ -71,11 +83,11 @@ public class SingleEventBusiness {
     }
     
     public List<SingleEventInfo> getAll(){
-        return this.getByRange(1, this.count());
+        return this.getByRange(0, 0);
     }
     
     public List<SingleEventInfo> getAllFuture(){
-        return this.getByRange(1, this.countFuture());
+        return this.getByRange(0, 0);
     }
     
     public int count(){
@@ -84,5 +96,9 @@ public class SingleEventBusiness {
     
     public int countFuture(){
         return dao.countFuture();
+    }
+    
+    public void createOrSave (SingleEvent item){
+        dao.saveOrUpdate(item);
     }
 }

@@ -195,4 +195,12 @@ public class Opera {
     public void setStages(List<Stage> stages) {
         this.stages = stages;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Opera a = (Opera) obj;
+        return this.id == a.getId();
+    } 
 }

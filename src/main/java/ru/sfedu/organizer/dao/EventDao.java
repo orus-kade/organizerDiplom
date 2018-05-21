@@ -12,6 +12,7 @@ import ru.sfedu.organizer.entity.Event;
  *
  * @author sterie
  */
+
 public class EventDao extends Dao<Event>{
     
     public EventDao() {

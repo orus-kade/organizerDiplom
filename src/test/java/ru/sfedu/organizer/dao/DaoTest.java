@@ -25,15 +25,22 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import ru.sfedu.organizer.business.HumanBusiness;
 import ru.sfedu.organizer.entity.Event;
+import ru.sfedu.organizer.model.SearchResult;
 import ru.sfedu.organizer.utils.HibernateUtil;
 import ru.sfedu.organizer.utils.MyGenerator;
 
@@ -358,20 +365,8 @@ public class DaoTest {
     
     @Test 
     public void anotherTest(){
-        Session session = HibernateUtil.getSessionFactory().openSession();
-//        AriaDao ariaDao = new AriaDao();
-//        Aria aria = ariaDao.getById(1L).get();
-        Event event = new Event();
-        EventDao eventDao = new EventDao();
-        event = eventDao.getById(1L).get();
-        System.out.println(event.getClass().getName());
-        System.out.println("olo");        
-        //Hibernate.isInitialized(aria);
-        //System.out.println(Hibernate.isPropertyInitialized(aria, "composers"));
-        session.close();  
-//          Set prof = new HashSet<Professions>();
-//          prof.add(Professions.COMPOSER);
-//          prof.add(Professions.COMPOSER);
-//          prof.add(Professions.COMPOSER);
+        HumanBusiness hb = new HumanBusiness();
+        List<SearchResult> l = hb.search("Mars", Arrays.asList(Professions.values()));
+        System.out.println(l);          
     }
 }

@@ -195,4 +195,12 @@ public class Note {
     public void setUser(User user) {
         this.user = user;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Note a = (Note) obj;
+        return this.id == a.getId();
+    } 
 }

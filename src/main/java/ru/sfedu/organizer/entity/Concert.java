@@ -15,7 +15,6 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "concert")
-@XmlRootElement
 public class Concert extends Event {
 
     //
@@ -63,7 +62,6 @@ public class Concert extends Event {
      *
      * @return the value of aries
      */
-    @XmlTransient
     public List<Aria> getAries() {
         return aries;
     }
@@ -82,7 +80,6 @@ public class Concert extends Event {
      *
      * @return the value of singers
      */
-    @XmlTransient
     public List<Human> getSingers() {
         return singers;
     }
@@ -90,5 +87,13 @@ public class Concert extends Event {
     //
     // Other methods
     //
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Concert a = (Concert) obj;
+        return this.getId() == a.getId();
+    } 
     
 }

@@ -14,6 +14,7 @@ import ru.sfedu.organizer.entity.User;
  *
  * @author sterie
  */
+
 public class UserDao extends Dao<User>{
     
     public UserDao() {

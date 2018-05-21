@@ -72,26 +72,22 @@ public abstract class Dao<T> {
             tran.commit();
     }
     
-    public void saveOrUpdate(Optional<T> item){
-        if (item.isPresent()){
+    public void saveOrUpdate(T item){
             this.getSession();
             Transaction tran = session.beginTransaction();
-            session.saveOrUpdate(item.get());
-            tran.commit();
-        }
+            session.saveOrUpdate(item);
+            tran.commit();   
     }
     
-    public void saveOrUpdateList(Optional<List> itemList){
-        if (itemList.isPresent()){
+    public void saveOrUpdateList(List<T> itemList){
             this.getSession();
             Transaction tran = session.beginTransaction();
-            itemList.get().forEach(e ->{
+            itemList.forEach(e ->{
                 if (e != null){
                     session.saveOrUpdate(e);
                 }
             });            
             tran.commit();
-        }
     }
     
     
@@ -104,6 +100,7 @@ public abstract class Dao<T> {
                 criteria.addOrder(Order.asc(par));
             });
         }
+        criteria.addOrder(Order.asc("id"));
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
         return result;

@@ -16,6 +16,7 @@ import ru.sfedu.organizer.entity.Role;
  *
  * @author sterie
  */
+
 public class RoleDao extends Dao<Role>{
     
     public RoleDao() {

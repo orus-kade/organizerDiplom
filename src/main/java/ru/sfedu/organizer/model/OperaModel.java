@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Human;
-import ru.sfedu.organizer.entity.Libretto;
-import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Personage;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.entity.Stage;
@@ -77,4 +75,47 @@ public class OperaModel {
         if (list != null)
            list.stream().forEach(e -> this.futureEvents.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public long getLibrettoId() {
+        return librettoId;
+    }
+    
+    public List<Long> getPersonagesId(){
+        if (this.personages.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.personages.keySet());
+        return keyList;
+    }
+    
+    public List<Long> getAriesId(){
+        if (this.aries.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.aries.keySet());
+        return keyList;
+    }
+    
 }

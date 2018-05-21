@@ -8,7 +8,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 import java.util.Optional;
+import org.hibernate.Criteria;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.type.LongType;
 import ru.sfedu.organizer.entity.Aria;
@@ -23,6 +26,7 @@ import ru.sfedu.organizer.utils.Utils;
  *
  * @author sterie
  */
+
 public class HumanDao extends Dao<Human>{
     
     public HumanDao() {
@@ -138,5 +142,23 @@ public class HumanDao extends Dao<Human>{
                 .list());
         tran.commit();
         return list;
+    }
+    
+    public Optional<List> search(String key){
+        this.getSession();
+        Transaction tran = session.beginTransaction();
+        Criteria criteria = session.createCriteria(this.entityClass);
+        criteria.add(Restrictions.or(Restrictions.ilike("name", key, MatchMode.ANYWHERE),
+                                     Restrictions.ilike("surname", key, MatchMode.ANYWHERE),
+                                     Restrictions.or(Restrictions.isNull("patronymic"),
+                                                     Restrictions.ilike("patronymic", key, MatchMode.ANYWHERE))
+                                    ));
+        criteria.addOrder(Order.asc("surname"));
+        criteria.addOrder(Order.asc("name"));
+        criteria.addOrder(Order.asc("patronymic"));
+        criteria.addOrder(Order.asc("id"));
+        Optional<List> result = Optional.ofNullable(criteria.list());
+        tran.commit();
+        return result;
     }
 }

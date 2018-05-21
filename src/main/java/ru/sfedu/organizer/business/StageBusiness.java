@@ -43,7 +43,13 @@ public class StageBusiness {
     } 
     
     public List<SearchResult> getByRange(int from, int to){
-        Optional<List> o = stageDao.getByRange(from, to);
+        Optional<List> o;
+        if (from == 0 && to == 0){
+            o = stageDao.getAll();
+        }
+        else{
+            o = stageDao.getByRange(from, to);
+        }
         List<SearchResult> result = new ArrayList<>();
         if (o.isPresent() && !o.get().isEmpty()){            
             List<Stage> list = o.get();
@@ -53,10 +59,28 @@ public class StageBusiness {
     }
     
     public List<SearchResult> getAll(){
-        return this.getByRange(1, this.count());
+        return this.getByRange(0, 0);
     }
     
     public int count(){
         return stageDao.count();
+    }
+    
+    public List<SearchResult> search(String key){
+        if (key == null || key.trim().length()==0){
+            return this.getAll();
+        }
+        String keyNew = key.trim().toLowerCase();
+        Optional<List> o = stageDao.search(keyNew);
+        List<SearchResult> result = new ArrayList<>();
+        if (o.isPresent() && !o.get().isEmpty()){            
+            List<Stage> list = o.get();
+            list.stream().forEach(e -> result.add(new SearchResult(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getTitle())));
+        }
+        return result;
+    }  
+    
+    public void createOrSave (Stage item){
+        stageDao.saveOrUpdate(item);
     }
 }

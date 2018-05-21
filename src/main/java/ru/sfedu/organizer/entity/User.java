@@ -47,16 +47,16 @@ public class User {
     @Column(name="user_role")
     private UserRoles role;
     
-    @Column(name="user_email")
-    @NotNull
-    private String email;
+//    @Column(name="user_email")
+//    @NotNull
+//    private String email;
     
     @Column(name="user_create_date")
     @NotNull
     private long createDate;
     
-    @Column(name="user_name")
-    private String name;
+//    @Column(name="user_name")
+//    private String name;
     
     @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<Note> notes;
@@ -142,18 +142,18 @@ public class User {
      *
      * @param newVar the new value of email
      */
-    public void setEmail(String newVar) {
-        email = newVar;
-    }
-
-    /**
-     * Get the value of email
-     *
-     * @return the value of email
-     */
-    public String getEmail() {
-        return email;
-    }
+//    public void setEmail(String newVar) {
+//        email = newVar;
+//    }
+//
+//    /**
+//     * Get the value of email
+//     *
+//     * @return the value of email
+//     */
+//    public String getEmail() {
+//        return email;
+//    }
 
     /**
      * Set the value of createDate
@@ -178,18 +178,18 @@ public class User {
      *
      * @param newVar the new value of name
      */
-    public void setName(String newVar) {
-        name = newVar;
-    }
-
-    /**
-     * Get the value of name
-     *
-     * @return the value of name
-     */
-    public String getName() {
-        return name;
-    }
+//    public void setName(String newVar) {
+//        name = newVar;
+//    }
+//
+//    /**
+//     * Get the value of name
+//     *
+//     * @return the value of name
+//     */
+//    public String getName() {
+//        return name;
+//    }
 
     /**
      * Set the value of notes
@@ -243,5 +243,11 @@ public class User {
         this.password = password;
     }
     
-    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        User a = (User) obj;
+        return this.id == a.getId();
+    } 
 }

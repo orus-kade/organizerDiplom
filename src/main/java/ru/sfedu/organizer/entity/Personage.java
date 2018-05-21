@@ -160,4 +160,12 @@ public class Personage {
     public void setDescription(String description) {
         this.description = description;
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Personage a = (Personage) obj;
+        return this.id == a.getId();
+    } 
 }

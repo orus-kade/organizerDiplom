@@ -8,6 +8,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.CriteriaQuery;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Restrictions;
 
 /**
  *
@@ -36,10 +39,15 @@ public class AriaDao extends Dao<Aria>{
         return super.getByRange(from, to, Arrays.asList("title"));
     }
     
-//    public Optional<List> getByTitle(String title, int page){
-//        Transaction transaction = session.beginTransaction();
-//        Criteria criteria = session.createCriteria(Aria.class);
-//        
-//    }
-    
+    public Optional<List> search(String key){
+        this.getSession();
+        Transaction tran = session.beginTransaction();
+        Criteria criteria = session.createCriteria(this.entityClass);
+        criteria.add(Restrictions.ilike("title", key, MatchMode.ANYWHERE));
+        criteria.addOrder(Order.asc("title"));
+        criteria.addOrder(Order.asc("id"));
+        Optional<List> result = Optional.ofNullable(criteria.list());
+        tran.commit();
+        return result;
+    }    
 }

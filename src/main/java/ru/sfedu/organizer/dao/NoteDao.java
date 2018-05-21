@@ -12,6 +12,7 @@ import ru.sfedu.organizer.entity.Note;
  *
  * @author sterie
  */
+
 public class NoteDao extends Dao<Note>{
     
     public NoteDao() {

@@ -24,6 +24,7 @@ public class HumanModel {
     private Date deathDate;
     private Map<Long, String> places = new HashMap<>();
     private List<String> professions = new ArrayList<>();
+    private String voice;
 
     public HumanModel(long id, String name, String surname, String patronymic, String biography, Date birthDate, Date deathDate) {
         this.id = id;
@@ -33,6 +34,9 @@ public class HumanModel {
         this.biography = biography;
         this.birthDate = birthDate;
         this.deathDate = deathDate;
+    }
+
+    public HumanModel() {
     }
    
     public void addPlaces(List<Place> list){
@@ -44,4 +48,80 @@ public class HumanModel {
         if (list != null)
             list.stream().forEach(e -> this.professions.add(e.toString()));
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public Date getDeathDate() {
+        return deathDate;
+    }
+
+    public void setDeathDate(Date deathDate) {
+        this.deathDate = deathDate;
+    }
+
+    public List<Long> getPlacesIds() {
+        if (this.places.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.places.keySet());
+        return keyList;
+    }
+
+    public List<String> getProfessions() {
+        return professions;
+    }
+
+    public String getVoice() {
+        return voice;
+    }
+
+    public void setVoice(String voice) {
+        this.voice = voice;
+    }    
+    
 }

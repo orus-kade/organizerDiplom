@@ -56,6 +56,5 @@ Contributor(s):
         <!--<property name="hbm2ddl.auto">create</property>-->
         <!--<property name="hbm2ddl.auto">create-drop</property>-->
         <property name="hbm2ddl.auto">update</property>
-        <!--<mapping resource="named-queries.hbm.xml"/>-->
     </session-factory>
 </hibernate-configuration>

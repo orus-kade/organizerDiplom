@@ -4,6 +4,9 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,75 +20,80 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import ru.sfedu.organizer.business.StageBusiness;
-import ru.sfedu.organizer.entity.Stage;
-import ru.sfedu.organizer.model.ConcertModel;
+import ru.sfedu.organizer.business.OperaBusiness;
+import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
+import ru.sfedu.organizer.entity.Opera;
+import ru.sfedu.organizer.model.OperaModel;
 import ru.sfedu.organizer.model.SearchResult;
-import ru.sfedu.organizer.model.StageModel;
 
 /**
  *
  * @author sterie
  */
 @Stateless
-@Path("/stage")
-public class StageController{
+@Path("/opera")
+public class OperaService{
 
-    private static final StageBusiness stageBusiness = new StageBusiness();
+    @EJB
+    private OperaBusiness operaBusiness = new OperaBusiness();
 
-//    @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void create(Stage entity) {
-//        super.create(entity);
-//    }
+    @PermitAll
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response create(String json) throws ObjectNotFoundException {
+        OperaModel operaModel = new Gson().fromJson(json, OperaModel.class);
+        long id = operaBusiness.createOrSave(operaModel);
+        return Response.ok().entity(id).build();
+    }
 
-//    @PUT
-//    @Path("{id}")
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void edit(@PathParam("id") Long id, Stage entity) {
-//        super.edit(entity);
-//    }
-
+    
+    @RolesAllowed("ADMIN")
     @DELETE
-    @Path("/{id}")
+    @Path("{id}")
     public Response remove(@PathParam("id") Long id) {
-        stageBusiness.delete(id);
+        operaBusiness.delete(id);
         return Response.ok().build();
     }
 
+    
+    @PermitAll
     @GET
     @Path("/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) {
-        StageModel stageModel = stageBusiness.getById(id);
+        OperaModel operaModel = operaBusiness.getById(id);
         Gson gson = new Gson();
-        String json = gson.toJson(stageModel);
-        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
+        String json = gson.toJson(operaModel); 
+        return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<SearchResult> list = stageBusiness.getAll();        
+        List<SearchResult> list = operaBusiness.getAll();        
         Gson gson = new Gson();
         String json = gson.toJson(list); 
         return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        List<SearchResult> list = stageBusiness.getByRange(from, to);        
+        List<SearchResult> list = operaBusiness.getByRange(from, to);        
         Gson gson = new Gson();
         String json = gson.toJson(list); 
         return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
-        return String.valueOf(stageBusiness.count());
+        return String.valueOf(operaBusiness.count());
     }  
 }

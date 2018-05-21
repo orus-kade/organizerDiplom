@@ -139,5 +139,12 @@ public class Event {
         this.title = title;
     }
     
+    @Override
+    public boolean equals(Object obj) {
+        if (this == null || obj == null || getClass() != obj.getClass()) 
+            return false;
+        Event a = (Event) obj;
+        return this.id == a.getId();
+    } 
     
 }
