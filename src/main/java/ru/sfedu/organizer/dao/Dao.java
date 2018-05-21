@@ -42,6 +42,10 @@ public abstract class Dao<T> {
     protected void getSession(){
         this.session = HibernateUtil.getSessionFactory().getCurrentSession();
     }
+
+    protected  void closeSession(){
+        this.session.close();
+    }
     
     protected Optional<T> get(long id){ 
         this.getSession();
@@ -51,6 +55,7 @@ public abstract class Dao<T> {
             InitialiseUtil.forcedInitialise(item.get());
         } 
         tran.commit();
+        this.closeSession();
         return item;
     }
     
@@ -58,6 +63,7 @@ public abstract class Dao<T> {
         this.getSession();
         Transaction tran = session.beginTransaction();
         session.delete(item);
+        this.closeSession();
         tran.commit();
     }
     
@@ -70,13 +76,15 @@ public abstract class Dao<T> {
                 }
             });
             tran.commit();
+            this.closeSession();
     }
     
     public void saveOrUpdate(T item){
             this.getSession();
             Transaction tran = session.beginTransaction();
             session.saveOrUpdate(item);
-            tran.commit();   
+            tran.commit();  
+            this.closeSession();
     }
     
     public void saveOrUpdateList(List<T> itemList){
@@ -88,6 +96,7 @@ public abstract class Dao<T> {
                 }
             });            
             tran.commit();
+            this.closeSession();
     }
     
     
@@ -103,6 +112,7 @@ public abstract class Dao<T> {
         criteria.addOrder(Order.asc("id"));
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
+        this.closeSession();
         return result;
     }
     
@@ -125,6 +135,7 @@ public abstract class Dao<T> {
         criteria.setMaxResults(to-from+1);
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
+        this.closeSession();
         return result;
     }
         
@@ -135,6 +146,7 @@ public abstract class Dao<T> {
         criteria.setProjection(Projections.rowCount());
         int count = Integer.parseInt(criteria.uniqueResult().toString());
         tran.commit();
+        this.closeSession();
         return count;        
     }
 }

@@ -37,7 +37,7 @@ public class OperaService{
     @EJB
     private OperaBusiness operaBusiness = new OperaBusiness();
 
-    @PermitAll
+    @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.TEXT_PLAIN)

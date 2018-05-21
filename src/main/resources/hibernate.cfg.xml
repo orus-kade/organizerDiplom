@@ -1,4 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -38,23 +39,26 @@ made subject to such option by the copyright holder.
 
 Contributor(s):
 -->
-<!DOCTYPE hibernate-configuration PUBLIC
-        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
-        "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <hibernate-configuration>
-    <session-factory>
-        <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-        <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/organizer</property>
-        <property name="hibernate.connection.username">organizer_user</property>
-        <property name="hibernate.connection.password">music5</property>
-        <property name="hibernate.connection.pool_size">1</property>
-        <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-        <property name="show_sql">true</property>
-        <property name="current_session_context_class">thread</property>
-        <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
-        <!--<property name="hbm2ddl.auto">create</property>-->
-        <!--<property name="hbm2ddl.auto">create-drop</property>-->
-        <property name="hbm2ddl.auto">update</property>
-    </session-factory>
+  <session-factory>
+    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
+    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/organizer</property>
+    <property name="hibernate.connection.username">organizer_user</property>
+    <property name="hibernate.connection.password">music5</property>
+    <!--<property name="hibernate.connection.pool_size">1</property>-->
+    <property name="hibernate.c3po.minPoolSize">2</property>
+    <property name="hibernate.c3po.maxPoolSize">20</property>
+    <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    <property name="show_sql">true</property>
+    <property name="current_session_context_class">thread</property>
+    <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
+    <!--<property name="hbm2ddl.auto">create</property>-->
+    <!--<property name="hbm2ddl.auto">create-drop</property>-->
+    <property name="hbm2ddl.auto">update</property>
+    <property name="connection.release_mode">auto</property>
+    <property name="hibernate.transaction.auto_close_session">true</property>
+    <property name="hibernate.connection.autocommit">true</property>
+    
+  </session-factory>
 </hibernate-configuration>

@@ -48,7 +48,7 @@ public class OperaDao extends Dao<Opera>{
     
     public List<Human> getHumansByProfession(Opera opera, Professions profession){
         List<Human> list = new ArrayList<>();
-        if (profession.equals(Professions.COMPOSER) || profession.equals(Professions.WRITER)){
+        if ((profession.equals(Professions.COMPOSER) || profession.equals(Professions.WRITER)) && opera.getAries() != null && !opera.getAries().isEmpty()){
             this.getSession();
             Transaction tran = this.session.beginTransaction();
             String tableName = "aria_" + profession.toString().toLowerCase();
@@ -62,6 +62,7 @@ public class OperaDao extends Dao<Opera>{
                     .setParameterList("ariaIds", ariaIds)
                     .list());
             tran.commit();
+            this.closeSession();
         }        
         return list;
     }
@@ -83,6 +84,7 @@ public class OperaDao extends Dao<Opera>{
                     .add(Restrictions.in("event.id", stageIds))
                     .list());
             tran.commit();
+            this.closeSession();
         }
         return singleEvents;
     }
@@ -96,6 +98,7 @@ public class OperaDao extends Dao<Opera>{
         criteria.addOrder(Order.asc("id"));
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
+        this.closeSession();
         return result;
     } 
 }

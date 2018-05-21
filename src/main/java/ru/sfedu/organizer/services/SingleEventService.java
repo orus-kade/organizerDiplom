@@ -4,23 +4,21 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.SingleEventBusiness;
-import ru.sfedu.organizer.entity.SingleEvent;
-import ru.sfedu.organizer.model.SearchResult;
+import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
 import ru.sfedu.organizer.model.SingleEventInfo;
 import ru.sfedu.organizer.model.SingleEventModel;
 
@@ -35,19 +33,17 @@ public class SingleEventService{
     @EJB
     private SingleEventBusiness business = new SingleEventBusiness();
 
-//    @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void create(SingleEvent entity) {
-//        super.create(entity);
-//    }
+    @RolesAllowed("ADMIN")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response create(String json) throws ObjectNotFoundException {
+        SingleEventModel eventModel = new Gson().fromJson(json, SingleEventModel.class);
+        long id = business.createOrSave(eventModel);
+        return Response.ok().entity(id).build();
+    }
 
-//    @PUT
-//    @Path("{id}")
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void edit(@PathParam("id") Long id, SingleEvent entity) {
-//        super.edit(entity);
-//    }
 
+    @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") Long id) {
@@ -55,6 +51,7 @@ public class SingleEventService{
         return Response.ok().build();
     }
 
+    @PermitAll
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,6 +62,7 @@ public class SingleEventService{
         return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
     }
 
+    @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
@@ -74,6 +72,7 @@ public class SingleEventService{
         return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
     @Path("{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -84,6 +83,7 @@ public class SingleEventService{
         return Response.status(200).entity(json).build();
     }
     
+    @PermitAll
     @GET
     @Path("future/{from}/{to}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -94,6 +94,7 @@ public class SingleEventService{
         return Response.status(200).entity(json).build();
     }
     
+    @PermitAll
     @GET
     @Path("future")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -104,6 +105,7 @@ public class SingleEventService{
         return Response.status(200).entity(json).build();
     }
 
+    @PermitAll
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -111,6 +113,7 @@ public class SingleEventService{
         return String.valueOf(business.count());
     }
     
+    @PermitAll
     @GET
     @Path("future/count")
     @Produces(MediaType.TEXT_PLAIN)

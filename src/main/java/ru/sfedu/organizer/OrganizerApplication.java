@@ -5,7 +5,6 @@ package ru.sfedu.organizer;
 import java.util.Set;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
-import org.hibernate.Hibernate;
 import ru.sfedu.organizer.utils.HibernateUtil;
 
 
@@ -17,7 +16,7 @@ import ru.sfedu.organizer.utils.HibernateUtil;
 public class OrganizerApplication extends Application {
 
     public OrganizerApplication() {
-        HibernateUtil.getSessionFactory();
+        //HibernateUtil.getSessionFactory();
     }
     
     
@@ -29,12 +28,12 @@ public class OrganizerApplication extends Application {
         return resources;
     }
 
-    /**
-     * Do not modify addRestResourceClasses() method.
-     * It is automatically populated with
-     * all resources defined in the project.
-     * If required, comment out calling this method in getClasses().
-     */
+    
+    @Override
+    protected void finalize() throws Throwable {
+        HibernateUtil.getSessionFactory().close();
+    }
+
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(ru.sfedu.organizer.services.AriaService.class);
         resources.add(ru.sfedu.organizer.services.ConcertService.class);
@@ -52,6 +51,5 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.exceptionhandlers.ObjectNotFoundExceptionHandler.class);
         resources.add(ru.sfedu.organizer.services.interceptors.LoggingInterceptor.class);
         resources.add(ru.sfedu.organizer.services.interceptors.SecurityInterceptor.class);
-        
-    }    
+    }
 }

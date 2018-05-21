@@ -40,4 +40,48 @@ public class PlaceModel {
         if (list != null)
             list.stream().forEach(e -> this.events.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
     }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<SingleEventInfo> getEvents() {
+        return events;
+    }
+
+    public List<Long> getHumansId(){
+        if (this.humans.isEmpty())
+            return null;
+        List<Long> keyList = new ArrayList(this.humans.keySet());
+        return keyList;
+    }
+
 }

@@ -62,6 +62,7 @@ public class HumanDao extends Dao<Human>{
                     .setParameter("humanId", humanId)
                     .list());
             tran.commit();
+            this.closeSession();
         }        
         return list;
     }
@@ -76,6 +77,7 @@ public class HumanDao extends Dao<Human>{
                     .setParameter("humanId", humanId)
                     .list());
             tran.commit();
+            this.closeSession();
         return list;
     }
     
@@ -87,6 +89,7 @@ public class HumanDao extends Dao<Human>{
                 .add(Restrictions.sqlRestriction(" event_director_id = " + humanId))
                 .list());
         tran.commit();
+        this.closeSession();
         return list;
     }
     
@@ -115,6 +118,7 @@ public class HumanDao extends Dao<Human>{
                    .list());
         }
         tran.commit();
+        this.closeSession();
         return list;
     }    
 //    
@@ -141,6 +145,7 @@ public class HumanDao extends Dao<Human>{
                 .setParameter("date", date)
                 .list());
         tran.commit();
+        this.closeSession();
         return list;
     }
     
@@ -159,6 +164,7 @@ public class HumanDao extends Dao<Human>{
         criteria.addOrder(Order.asc("id"));
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
+        this.closeSession();
         return result;
     }
 }

@@ -50,17 +50,17 @@ public class SecurityInterceptor implements PreProcessInterceptor{
             
                 
 		Method method = rmi.getMethod();
-		
-                logger.info(method.getName());
-                
+
 		//Access allowed for all 
 		if(method.isAnnotationPresent(PermitAll.class))
 		{
+                        logger.info("permit all");
 			return null;
 		}
 		//Access denied for all 
 		if(method.isAnnotationPresent(DenyAll.class))
 		{
+                        logger.info("deny all");
 			return ACCESS_FORBIDDEN;
 		}
 		

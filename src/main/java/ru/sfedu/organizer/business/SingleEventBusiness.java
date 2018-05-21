@@ -6,7 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
+import ru.sfedu.organizer.dao.EventDao;
+import ru.sfedu.organizer.dao.PlaceDao;
 import ru.sfedu.organizer.dao.SingleEventDao;
+import ru.sfedu.organizer.entity.Event;
+import ru.sfedu.organizer.entity.ObjectTypes;
+import ru.sfedu.organizer.entity.Place;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.model.SearchResult;
 import ru.sfedu.organizer.model.SingleEventInfo;
@@ -17,21 +23,25 @@ import ru.sfedu.organizer.model.SingleEventModel;
  * @author sterie
  */
 public class SingleEventBusiness {
-    
+
     private static final SingleEventDao dao = new SingleEventDao();
+
+    private static final PlaceDao placeDao = new PlaceDao();
+
+    private static final EventDao eventDao = new EventDao();
 
     public SingleEventBusiness() {
     }
-    
-    public SingleEventModel getById(long id){
+
+    public SingleEventModel getById(long id) {
         Optional<SingleEvent> o = dao.getById(id);
         SingleEventModel singleEventModel = null;
-        if (o.isPresent()){
+        if (o.isPresent()) {
             SingleEvent singleEvent = o.get();
             singleEventModel = new SingleEventModel(
-                    singleEvent.getId(), 
-                    singleEvent.getEvent().getTitle(), 
-                    singleEvent.getEvent().getClass().getSimpleName().toLowerCase(), 
+                    singleEvent.getId(),
+                    singleEvent.getEvent().getTitle(),
+                    singleEvent.getEvent().getClass().getSimpleName().toLowerCase(),
                     singleEvent.getEvent().getId(),
                     singleEvent.getDescription(),
                     new Date(singleEvent.getDatetime()),
@@ -42,63 +52,86 @@ public class SingleEventBusiness {
         }
         return singleEventModel;
     }
-    
-    public void delete(long id){
+
+    public void delete(long id) {
         Optional<SingleEvent> o = dao.getById(id);
-        if (o.isPresent()){
+        if (o.isPresent()) {
             dao.delete(o.get());
         }
     }
-    
-    public List<SingleEventInfo> getByRange(int from, int to){
+
+    public List<SingleEventInfo> getByRange(int from, int to) {
         Optional<List> o;
-        if (from == 0 && to == 0){
+        if (from == 0 && to == 0) {
             o = dao.getAll();
-        }
-        else{
+        } else {
             o = dao.getByRange(from, to);
         }
         List<SingleEventInfo> result = new ArrayList<>();
-        if (o.isPresent() && !o.get().isEmpty()){            
+        if (o.isPresent() && !o.get().isEmpty()) {
             List<SingleEvent> list = o.get();
             list.stream().forEach(e -> result.add(new SingleEventInfo(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
         }
         return result;
     }
-    
-    public List<SingleEventInfo> getByRangeFuture(int from, int to){
+
+    public List<SingleEventInfo> getByRangeFuture(int from, int to) {
         Optional<List> o;
-        if (from == 0 && to == 0){
+        if (from == 0 && to == 0) {
             o = dao.getAll();
-        }
-        else{
+        } else {
             o = dao.getByRange(from, to);
         }
         List<SingleEventInfo> result = new ArrayList<>();
-        if (o.isPresent() && !o.get().isEmpty()){            
+        if (o.isPresent() && !o.get().isEmpty()) {
             List<SingleEvent> list = o.get();
             list.stream().forEach(e -> result.add(new SingleEventInfo(e.getClass().getSimpleName().toLowerCase(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
         }
         return result;
     }
-    
-    public List<SingleEventInfo> getAll(){
+
+    public List<SingleEventInfo> getAll() {
         return this.getByRange(0, 0);
     }
-    
-    public List<SingleEventInfo> getAllFuture(){
+
+    public List<SingleEventInfo> getAllFuture() {
         return this.getByRange(0, 0);
     }
-    
-    public int count(){
+
+    public int count() {
         return dao.count();
     }
-    
-    public int countFuture(){
+
+    public int countFuture() {
         return dao.countFuture();
     }
-    
-    public void createOrSave (SingleEvent item){
-        dao.saveOrUpdate(item);
+
+    public long createOrSave(SingleEventModel singleEventModel) throws ObjectNotFoundException {
+        SingleEvent sEvent;
+        if (singleEventModel.getId() <= 0) {
+            sEvent = new SingleEvent();
+        } else {
+            Optional<SingleEvent> o = dao.getById(singleEventModel.getId());
+            if (!o.isPresent()) {
+                throw new ObjectNotFoundException(ObjectTypes.SINGLE_EVENT, singleEventModel.getId());
+            }
+            sEvent = o.get();
+        }
+        sEvent.setDescription(singleEventModel.getDescription());
+        sEvent.setDatetime(singleEventModel.getDate().getTime());
+        Optional<Place> op = placeDao.getById(singleEventModel.getPlaceId());
+        if (!op.isPresent()) {
+            throw new ObjectNotFoundException(ObjectTypes.PLACE, singleEventModel.getPlaceId());
+        }
+        Place place = op.get();
+        sEvent.setPlace(place);
+        Optional<Event> oe = eventDao.getById(singleEventModel.getEventId());
+        if (!oe.isPresent()) {
+            throw new ObjectNotFoundException(ObjectTypes.EVENT, singleEventModel.getEventId());
+        }
+        Event event = oe.get();
+        sEvent.setEvent(event);
+        dao.saveOrUpdate(sEvent);
+        return sEvent.getId();
     }
 }

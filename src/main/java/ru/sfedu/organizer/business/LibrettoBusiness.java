@@ -25,14 +25,14 @@ import ru.sfedu.organizer.model.LibrettoModel;
 @Stateless
 public class LibrettoBusiness {
     
-    private static final LibrettoDao librettoDao = new LibrettoDao();
+    private final LibrettoDao librettoDao = new LibrettoDao();
     
-    private HumanDao humanDao = new HumanDao();
+    private final HumanDao humanDao = new HumanDao();
     
     @EJB 
-    private HumanBusiness humanBusiness = new HumanBusiness();
+    private final HumanBusiness humanBusiness = new HumanBusiness();
 
-    private OperaDao operaDao = new OperaDao();
+    private final OperaDao operaDao = new OperaDao();
     
     public LibrettoBusiness() {
     }

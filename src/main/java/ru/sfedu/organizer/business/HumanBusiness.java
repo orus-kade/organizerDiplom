@@ -30,7 +30,7 @@ public class HumanBusiness {
     
     static final Logger logger = LogManager.getLogger(HumanBusiness.class);
     
-    private static final HumanDao humanDao = new HumanDao();
+    private final HumanDao humanDao = new HumanDao();
 
     public HumanBusiness() {
     }

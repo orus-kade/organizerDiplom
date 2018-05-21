@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ru.sfedu.organizer.dao;
 
 import ru.sfedu.organizer.entity.Opera;
@@ -28,6 +24,7 @@ import java.util.Set;
 import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -365,8 +362,10 @@ public class DaoTest {
     
     @Test 
     public void anotherTest(){
-        HumanBusiness hb = new HumanBusiness();
-        List<SearchResult> l = hb.search("Mars", Arrays.asList(Professions.values()));
-        System.out.println(l);          
+//        HumanBusiness hb = new HumanBusiness();
+//        List<SearchResult> l = hb.search("Mars", Arrays.asList(Professions.values()));
+        SessionFactory sf = HibernateUtil.getSessionFactory();
+        sf.close();
+        System.out.println(1);          
     }
 }

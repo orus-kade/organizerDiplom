@@ -27,13 +27,13 @@ import ru.sfedu.organizer.model.SearchResult;
 @Stateless
 public class OperaBusiness {
 
-    private static OperaDao operaDao = new OperaDao();
+    private final OperaDao operaDao = new OperaDao();
 
-    private LibrettoDao librettoDao = new LibrettoDao();
+    private final LibrettoDao librettoDao = new LibrettoDao();
 
-    private PersonageDao personageDao = new PersonageDao();
+    private final PersonageDao personageDao = new PersonageDao();
     
-    private AriaDao ariaDao =  new AriaDao();
+    private final AriaDao ariaDao =  new AriaDao();
 
     public OperaBusiness() {
     }

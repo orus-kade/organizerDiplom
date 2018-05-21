@@ -59,7 +59,6 @@ public class HibernateUtil {
             metadataSources.addAnnotatedClass(User.class);
             sessionFactory = metadataSources.buildMetadata().buildSessionFactory();
         }
-
         return sessionFactory;
     }
     

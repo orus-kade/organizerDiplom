@@ -4,6 +4,8 @@ package ru.sfedu.organizer.services;
 
 import com.google.gson.Gson;
 import java.util.List;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -19,6 +21,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ru.sfedu.organizer.business.PersonageBusiness;
+import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
 import ru.sfedu.organizer.entity.Personage;
 import ru.sfedu.organizer.model.PersonageModel;
 
@@ -33,19 +36,17 @@ public class PersonageService{
     @EJB
     private PersonageBusiness personageBusiness = new PersonageBusiness();
 
-//    @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void create(Personage entity) {
-//        super.create(entity);
-//    }
+    @RolesAllowed("ADMIN")
+    @POST
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response create(String json) throws ObjectNotFoundException {
+        PersonageModel personageModel = new Gson().fromJson(json, PersonageModel.class);
+        long id = personageBusiness.createOrSave(personageModel);
+        return Response.ok().entity(id).build();
+    }
 
-//    @PUT
-//    @Path("{id}")
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    public void edit(@PathParam("id") Long id, Personage entity) {
-//        super.edit(entity);
-//    }
-
+    @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
     public Response remove(@PathParam("id") Long id) {
@@ -53,20 +54,14 @@ public class PersonageService{
         return Response.ok().build();
     }
 
+    @PermitAll
     @GET
     @Path("/{id}")
-    @Produces( MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) {
         PersonageModel personageModel = personageBusiness.getById(id);
         Gson gson = new Gson();
         String json = gson.toJson(personageModel); 
         return Response.status(200).entity(json).build();
     }
-
-//    @GET
-//    @Path("count")
-//    @Produces(MediaType.TEXT_PLAIN)
-//    public String countREST() {
-//        return String.valueOf(super.count());
-//    } 
 }

@@ -26,14 +26,14 @@ import ru.sfedu.organizer.model.SearchResult;
 @Stateless
 public class ConcertBusiness {
     
-    private static final ConcertDao concertDao = new ConcertDao();
+    private final ConcertDao concertDao = new ConcertDao();
     
-    private AriaDao ariaDao = new AriaDao(); 
+    private final AriaDao ariaDao = new AriaDao(); 
     
-    private HumanDao humanDao = new HumanDao();
+    private final HumanDao humanDao = new HumanDao();
     
     @EJB 
-    private HumanBusiness humanBusiness = new HumanBusiness();
+    private final HumanBusiness humanBusiness = new HumanBusiness();
 
     public ConcertBusiness() {
     }
@@ -130,10 +130,15 @@ public class ConcertBusiness {
            }
         if (concertModel.getDirectorId() > 0){
             Optional<Human> o = humanDao.getById(concertModel.getDirectorId());
-            if (o.isPresent())
-                concert.setDirector(o.get());
+            if (o.isPresent()){
+                Human h = o.get();
+                if (humanBusiness.isHumanProfession(h, Professions.DIRECTOR))
+                    concert.setDirector(h);
+            }
         }        
         concertDao.saveOrUpdate(concert);
         return concert.getId();
     }
+    
+    
 }

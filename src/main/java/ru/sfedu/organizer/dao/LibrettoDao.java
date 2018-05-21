@@ -31,5 +31,6 @@ public class LibrettoDao extends Dao<Libretto>{
         opera.setLibretto(libretto);    
         session.saveOrUpdate(opera);
         tran.commit();
+        this.closeSession();
     }
 }

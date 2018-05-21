@@ -53,6 +53,7 @@ public class StageDao extends Dao<Stage>{
         criteria.addOrder(Order.asc("id"));
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
+        this.closeSession();
         return result;
     } 
     

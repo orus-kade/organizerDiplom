@@ -28,16 +28,16 @@ import ru.sfedu.organizer.model.SearchResult;
 @Stateless
 public class AriaBusiness {
     
-    private AriaDao ariaDao = new AriaDao();
+    private final AriaDao ariaDao = new AriaDao();
     
-    private HumanDao humanDao = new HumanDao();
+    private final HumanDao humanDao = new HumanDao();
     
     @EJB 
-    private HumanBusiness humanBusiness = new HumanBusiness();
+    private final HumanBusiness humanBusiness = new HumanBusiness();
     
-    private OperaDao operaDao = new OperaDao();
+    private final OperaDao operaDao = new OperaDao();
     
-    private PersonageDao personageDao = new PersonageDao();
+    private final PersonageDao personageDao = new PersonageDao();
 
     public AriaBusiness() {
     }

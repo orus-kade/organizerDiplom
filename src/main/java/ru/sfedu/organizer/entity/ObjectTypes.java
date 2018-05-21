@@ -17,5 +17,7 @@ public enum ObjectTypes {
     LIBRETTO,
     OPERA,
     PLACE,
-    STAGE    
+    STAGE,
+    SINGLE_EVENT,
+    EVENT
 }

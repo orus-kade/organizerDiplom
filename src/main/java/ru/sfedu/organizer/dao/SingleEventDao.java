@@ -44,6 +44,7 @@ public class SingleEventDao extends Dao<SingleEvent>{
         criteria.setProjection(Projections.rowCount());
         int count = Integer.parseInt(criteria.uniqueResult().toString());
         tran.commit();
+        this.closeSession();
         return count;
     }
     
@@ -72,6 +73,7 @@ public class SingleEventDao extends Dao<SingleEvent>{
         criteria.setMaxResults(to-from+1);
         Optional<List> result = Optional.ofNullable(criteria.list());
         tran.commit();
+        this.closeSession();
         return result;
     }
 }
