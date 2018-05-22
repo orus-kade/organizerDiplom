@@ -33,7 +33,7 @@ public class PlaceBusiness {
     public PlaceBusiness() {
     }
     
-    public PlaceModel getById(long id){
+    public PlaceModel getById(long id) throws ObjectNotFoundException{
         Optional<Place> o = placeDao.getById(id);
         PlaceModel placeModel = null;
         if (o.isPresent()){
@@ -42,14 +42,16 @@ public class PlaceBusiness {
             placeModel.addEvents(place.getEvents());
             placeModel.addHumans(place.getPersons());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.PLACE, id);
         return placeModel;
     }
     
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException{
         Optional<Place> o = placeDao.getById(id);
         if (o.isPresent()){
             placeDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.PLACE, id);
     }
     
     public List<SearchResult> getByRange(int from, int to){

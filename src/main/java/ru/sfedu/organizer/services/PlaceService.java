@@ -34,13 +34,11 @@ public class PlaceService{
     @EJB
     private PlaceBusiness placeBusiness = new PlaceBusiness();
 
-    @PermitAll
-    //@RolesAllowed("ADMIN")
+    @RolesAllowed("ADMIN")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response create(String json) throws ObjectNotFoundException {
-        PlaceModel placeModel = new Gson().fromJson(json, PlaceModel.class);
+    public Response create(PlaceModel placeModel) throws ObjectNotFoundException {
         long id = placeBusiness.createOrSave(placeModel);
         return Response.ok().build();
     }
@@ -48,7 +46,7 @@ public class PlaceService{
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("/{id}")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException{
         placeBusiness.delete(id);
         return Response.ok().build();
     }
@@ -57,11 +55,9 @@ public class PlaceService{
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@PathParam("id") Long id) {
+    public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         PlaceModel placeModel = placeBusiness.getById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(placeModel); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(placeModel).build();
     }
 
     @PermitAll
@@ -69,9 +65,7 @@ public class PlaceService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         List<SearchResult> list = placeBusiness.getAll();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll
@@ -80,9 +74,7 @@ public class PlaceService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SearchResult> list = placeBusiness.getByRange(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll

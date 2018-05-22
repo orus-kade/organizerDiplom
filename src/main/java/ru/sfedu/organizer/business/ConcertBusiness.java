@@ -38,7 +38,7 @@ public class ConcertBusiness {
     public ConcertBusiness() {
     }
     
-    public ConcertModel getById(long id){
+    public ConcertModel getById(long id) throws ObjectNotFoundException{
         Optional<Concert> o = concertDao.getById(id);
         ConcertModel consertModel = null;
         if (o.isPresent()){
@@ -49,14 +49,16 @@ public class ConcertBusiness {
             consertModel.addAries(concert.getAries());
             consertModel.addEvents(concert.getSingleEvents());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.CONSERT, id);
         return consertModel;
     }
     
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException{
         Optional<Concert> o = concertDao.getById(id);
         if (o.isPresent()){
             concertDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.CONSERT, id);
     } 
     
     public List<SearchResult> getByRange(int from, int to){

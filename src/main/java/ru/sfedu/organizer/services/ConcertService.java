@@ -43,10 +43,9 @@ public class ConcertService{
 
     @RolesAllowed("ADMIN")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response create(String json) throws ObjectNotFoundException {
-        ConcertModel concertModel = new Gson().fromJson(json, ConcertModel.class);
+    public Response create(ConcertModel concertModel) throws ObjectNotFoundException {
         long id = concertBusiness.createOrSave(concertModel);
         return Response.ok().entity(id).build();
     }
@@ -54,7 +53,7 @@ public class ConcertService{
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException {
         concertBusiness.delete(id);
         return Response.ok().build();
     }
@@ -63,11 +62,9 @@ public class ConcertService{
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@PathParam("id") Long id) {
+    public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         ConcertModel concertModel = concertBusiness.getById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(concertModel);
-        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(200).entity(concertModel).build();
     }
 
     @PermitAll
@@ -75,9 +72,7 @@ public class ConcertService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         List<SearchResult> list = concertBusiness.getAll();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll
@@ -86,9 +81,7 @@ public class ConcertService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SearchResult> list = concertBusiness.getByRange(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll

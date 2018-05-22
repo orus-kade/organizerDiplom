@@ -35,10 +35,9 @@ public class StageService{
 
     @RolesAllowed("ADMIN")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response create(String json) throws ObjectNotFoundException {
-        StageModel stageModel = new Gson().fromJson(json, StageModel.class);
+    public Response create(StageModel stageModel) throws ObjectNotFoundException {
         long id = stageBusiness.createOrSave(stageModel);
         return Response.ok().entity(id).build();
     }
@@ -46,7 +45,7 @@ public class StageService{
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("/{id}")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException {
         stageBusiness.delete(id);
         return Response.ok().build();
     }
@@ -54,12 +53,10 @@ public class StageService{
     @PermitAll
     @GET
     @Path("/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public Response find(@PathParam("id") Long id) {
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         StageModel stageModel = stageBusiness.getById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(stageModel);
-        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(200).entity(stageModel).build();
     }
 
     @PermitAll
@@ -67,9 +64,7 @@ public class StageService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         List<SearchResult> list = stageBusiness.getAll();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll
@@ -78,9 +73,7 @@ public class StageService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SearchResult> list = stageBusiness.getByRange(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll

@@ -39,10 +39,9 @@ public class AriaService{
 
     @RolesAllowed("ADMIN")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response createOrSave(String json) throws ObjectNotFoundException {
-        AriaModel entity = new Gson().fromJson(json, AriaModel.class);
+    public Response createOrSave(AriaModel entity) throws ObjectNotFoundException {
         long id =  ariaBusiness.createOrSave(entity);
         return Response.ok().entity(id).build();
     }
@@ -50,7 +49,7 @@ public class AriaService{
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException {
         ariaBusiness.delete(id);
         return Response.ok().build();
     }
@@ -59,12 +58,9 @@ public class AriaService{
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@PathParam("id") Long id) {
-        logger.debug("olo");
+    public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         AriaModel ariaModel = ariaBusiness.getById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(ariaModel); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(ariaModel).build();
     }
 
     @PermitAll
@@ -72,9 +68,7 @@ public class AriaService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         List<SearchResult> list = ariaBusiness.getAll();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll
@@ -83,9 +77,7 @@ public class AriaService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SearchResult> list = ariaBusiness.getByRange(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll

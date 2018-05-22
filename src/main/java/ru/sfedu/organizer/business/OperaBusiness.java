@@ -38,7 +38,7 @@ public class OperaBusiness {
     public OperaBusiness() {
     }
 
-    public OperaModel getById(long id) {
+    public OperaModel getById(long id) throws ObjectNotFoundException {
         Optional<Opera> o = operaDao.getById(id);
         OperaModel operaModel = null;
         if (o.isPresent()) {
@@ -54,14 +54,16 @@ public class OperaBusiness {
             operaModel.addStages(opera.getStages());
             operaModel.addFutureEvents(operaDao.getFutureEvents(opera.getStages()));
         }
+        else throw new ObjectNotFoundException(ObjectTypes.OPERA, id);
         return operaModel;
     }
 
-    public void delete(long id) {
+    public void delete(long id) throws ObjectNotFoundException {
         Optional<Opera> o = operaDao.getById(id);
         if (o.isPresent()) {
             operaDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.OPERA, id);
     }
 
     public List<SearchResult> getByRange(int from, int to) {

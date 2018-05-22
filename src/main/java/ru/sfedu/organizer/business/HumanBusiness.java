@@ -35,7 +35,7 @@ public class HumanBusiness {
     public HumanBusiness() {
     }
     
-    public HumanModel getById(long id){
+    public HumanModel getById(long id) throws ObjectNotFoundException{
         Optional<Human> o = humanDao.getById(id);
         HumanModel humanModel = null;
         if (o.isPresent()){
@@ -46,6 +46,7 @@ public class HumanBusiness {
             if (human.getVoice() != null)
                 humanModel.setVoice(human.getVoice().toString());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.HUMAN, id);
         return humanModel;
     }
     
@@ -65,11 +66,12 @@ public class HumanBusiness {
         return humanEvents;
     }
     
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException{
         Optional<Human> o = humanDao.getById(id);
         if (o.isPresent()){
             humanDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.HUMAN, id);
     }
     
     public List<SearchResult> getByRange(int from, int to){

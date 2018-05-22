@@ -33,7 +33,7 @@ public class SingleEventBusiness {
     public SingleEventBusiness() {
     }
 
-    public SingleEventModel getById(long id) {
+    public SingleEventModel getById(long id) throws ObjectNotFoundException {
         Optional<SingleEvent> o = dao.getById(id);
         SingleEventModel singleEventModel = null;
         if (o.isPresent()) {
@@ -50,14 +50,16 @@ public class SingleEventBusiness {
                     singleEvent.getPlace().getLocation()
             );
         }
+        else throw new ObjectNotFoundException(ObjectTypes.SINGLE_EVENT, id);
         return singleEventModel;
     }
 
-    public void delete(long id) {
+    public void delete(long id) throws ObjectNotFoundException {
         Optional<SingleEvent> o = dao.getById(id);
         if (o.isPresent()) {
             dao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.SINGLE_EVENT, id);
     }
 
     public List<SingleEventInfo> getByRange(int from, int to) {

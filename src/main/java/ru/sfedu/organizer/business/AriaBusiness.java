@@ -42,7 +42,7 @@ public class AriaBusiness {
     public AriaBusiness() {
     }
     
-    public AriaModel getById(long id){
+    public AriaModel getById(long id) throws ObjectNotFoundException{
         Optional<Aria> o = ariaDao.getById(id);
         AriaModel ariaModel = null;
         if (o.isPresent()){
@@ -53,14 +53,16 @@ public class AriaBusiness {
             ariaModel.addWriters(aria.getWriters());
             ariaModel.addPersonages(aria.getPersonages());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.ARIA, id);
         return ariaModel;
     }
 
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException {
         Optional<Aria> o = ariaDao.getById(id);
         if (o.isPresent()){
             ariaDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.ARIA, id);
     }   
     
     public List<SearchResult> getByRange(int from, int to){

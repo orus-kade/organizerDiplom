@@ -19,5 +19,7 @@ public enum ObjectTypes {
     PLACE,
     STAGE,
     SINGLE_EVENT,
-    EVENT
+    EVENT,
+    USER,
+    NOTE
 }

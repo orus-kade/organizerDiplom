@@ -39,7 +39,6 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.ConcertService.class);
         resources.add(ru.sfedu.organizer.services.HumanService.class);
         resources.add(ru.sfedu.organizer.services.LibrettoService.class);
-        resources.add(ru.sfedu.organizer.services.NoteService.class);
         resources.add(ru.sfedu.organizer.services.OperaService.class);
         resources.add(ru.sfedu.organizer.services.PersonageService.class);
         resources.add(ru.sfedu.organizer.services.PlaceService.class);
@@ -47,7 +46,6 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.SingleEventService.class);
         resources.add(ru.sfedu.organizer.services.StageService.class);
         resources.add(ru.sfedu.organizer.services.UserService.class);
-        resources.add(ru.sfedu.organizer.services.exceptionhandlers.JsonParseExceptionHandler.class);
         resources.add(ru.sfedu.organizer.services.exceptionhandlers.ObjectNotFoundExceptionHandler.class);
         resources.add(ru.sfedu.organizer.services.interceptors.LoggingInterceptor.class);
         resources.add(ru.sfedu.organizer.services.interceptors.SecurityInterceptor.class);

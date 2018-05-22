@@ -37,7 +37,7 @@ public class LibrettoBusiness {
     public LibrettoBusiness() {
     }
 
-    public LibrettoModel getById(long id){
+    public LibrettoModel getById(long id) throws ObjectNotFoundException{
         Optional<Libretto> o = librettoDao.getById(id);
         LibrettoModel librettoModel = null;
         if (o.isPresent()){
@@ -45,14 +45,16 @@ public class LibrettoBusiness {
             librettoModel = new LibrettoModel(libretto.getId(), libretto.getOpera().getId(), libretto.getOpera().getTitle(), libretto.getText());   
             librettoModel.addWriters(libretto.getWriters());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.LIBRETTO, id);
         return librettoModel;
     }    
     
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException{
         Optional<Libretto> o = librettoDao.getById(id);
         if (o.isPresent()){
             librettoDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.LIBRETTO, id);
     }
     
     public long createOrSave (LibrettoModel librettoModel) throws ObjectNotFoundException{

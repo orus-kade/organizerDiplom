@@ -35,9 +35,8 @@ public class SingleEventService{
 
     @RolesAllowed("ADMIN")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
-    public Response create(String json) throws ObjectNotFoundException {
-        SingleEventModel eventModel = new Gson().fromJson(json, SingleEventModel.class);
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response create(SingleEventModel eventModel) throws ObjectNotFoundException {
         long id = business.createOrSave(eventModel);
         return Response.ok().entity(id).build();
     }
@@ -46,7 +45,7 @@ public class SingleEventService{
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException{
         business.delete(id);
         return Response.ok().build();
     }
@@ -55,11 +54,9 @@ public class SingleEventService{
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@PathParam("id") Long id) {
+    public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         SingleEventModel singleEventModel = business.getById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(singleEventModel);
-        return Response.status(200).entity(json).type(MediaType.APPLICATION_JSON).build();
+        return Response.status(200).entity(singleEventModel).build();
     }
 
     @PermitAll
@@ -67,9 +64,7 @@ public class SingleEventService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
         List<SingleEventInfo> list = business.getAll();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll
@@ -78,9 +73,7 @@ public class SingleEventService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SingleEventInfo> list = business.getByRange(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
     
     @PermitAll
@@ -89,9 +82,7 @@ public class SingleEventService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRangeFuture(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SingleEventInfo> list = business.getByRangeFuture(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
     
     @PermitAll
@@ -100,9 +91,7 @@ public class SingleEventService{
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response findAllFuture() {
         List<SingleEventInfo> list = business.getAllFuture();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll

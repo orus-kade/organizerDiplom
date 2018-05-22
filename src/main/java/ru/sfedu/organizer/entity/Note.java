@@ -1,6 +1,5 @@
 package ru.sfedu.organizer.entity;
 
-import java.util.*;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -31,6 +30,10 @@ public class Note {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="note_id")
     private long id;
+    
+    @Column(name="note_title")
+    @NotNull
+    private String title;
     
     @Column(name="note_object_id")
     @NotNull
@@ -180,6 +183,14 @@ public class Note {
      */
     public long getUpdateDate() {
         return updateDate;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
     
     

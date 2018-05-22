@@ -3,9 +3,11 @@ package ru.sfedu.organizer.entity;
 import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,15 +17,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  * Class User
  */
 @Entity
 @Table(name = "userdata")
-@XmlRootElement
 public class User {
 
     //
@@ -42,10 +44,16 @@ public class User {
     @NotNull
     private String password;
     
+    @Column(name="user_salt")
+    @NotNull
+    private byte[] salt;
+    
+    @Fetch(FetchMode.SELECT)
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     @NotNull
     @Column(name="user_role")
-    private UserRoles role;
+    private List<UserRoles> roles;
     
 //    @Column(name="user_email")
 //    @NotNull
@@ -119,22 +127,12 @@ public class User {
         return login;
     }
 
-    /**
-     * Set the value of role
-     *
-     * @param newVar the new value of role
-     */
-    public void setRole(UserRoles newVar) {
-        role = newVar;
+    public List<UserRoles> getRoles() {
+        return roles;
     }
 
-    /**
-     * Get the value of role
-     *
-     * @return the value of role
-     */
-    public UserRoles getRole() {
-        return role;
+    public void setRoles(List<UserRoles> roles) {
+        this.roles = roles;
     }
 
     /**
@@ -224,13 +222,18 @@ public class User {
      *
      * @return the value of events
      */
-    @XmlTransient
     public List<SingleEvent> getEvents() {
         return events;
     }
 
-    
-    
+    public byte[] getSalt() {
+        return salt;
+    }
+
+    public void setSalt(byte[] salt) {
+        this.salt = salt;
+    }
+
     //
     // Other methods
     //

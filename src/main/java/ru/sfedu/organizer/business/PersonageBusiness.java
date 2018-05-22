@@ -31,7 +31,7 @@ public class PersonageBusiness {
     public PersonageBusiness() {
     }
      
-    public PersonageModel getById(long id){
+    public PersonageModel getById(long id) throws ObjectNotFoundException{
         Optional<Personage> o = personageDao.getById(id);
         PersonageModel personageModel = null;
         if (o.isPresent()){
@@ -39,14 +39,16 @@ public class PersonageBusiness {
             personageModel = new PersonageModel(personage.getId(), personage.getName(), personage.getOpera().getId(), personage.getOpera().getTitle(), personage.getDescription());   
             personageModel.addAries(personage.getAries());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.PERSONAGE, id);
         return personageModel;
     } 
     
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException{
         Optional<Personage> o = personageDao.getById(id);
         if (o.isPresent()){
             personageDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.PERSONAGE, id);
     }
     
     public List<SearchResult> search(String key){

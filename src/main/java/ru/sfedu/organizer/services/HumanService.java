@@ -42,10 +42,9 @@ public class HumanService{
     
     @RolesAllowed("ADMIN")
     @POST
-    @Consumes(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response create(String json) throws ObjectNotFoundException {
-        HumanModel humanModel = new Gson().fromJson(json, HumanModel.class);
+    public Response create(HumanModel humanModel) throws ObjectNotFoundException {
         long id = humanBusiness.createOrSave(humanModel);
         return Response.ok().entity(id).build();
     }
@@ -53,7 +52,7 @@ public class HumanService{
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
-    public Response remove(@PathParam("id") Long id) {
+    public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException {
         humanBusiness.delete(id);
         return Response.ok().build();
     }
@@ -64,9 +63,7 @@ public class HumanService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEvents(@PathParam("id") Long id) {
         HumanEvents humanEvents = humanBusiness.getEventsById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(humanEvents); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(humanEvents).build();
     }
     
     
@@ -76,20 +73,16 @@ public class HumanService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWorks(@PathParam("id") Long id) {
         HumanWorks humanWorks = humanBusiness.getWorksById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(humanWorks); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(humanWorks).build();
     }
     
     @PermitAll
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@PathParam("id") Long id) {
+    public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         HumanModel humanModel = humanBusiness.getById(id);
-        Gson gson = new Gson();
-        String json = gson.toJson(humanModel); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(humanModel).build();
     }
     
     @PermitAll
@@ -97,9 +90,7 @@ public class HumanService{
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Response findAll() {
         List<SearchResult> list = humanBusiness.getAll();        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll
@@ -108,9 +99,7 @@ public class HumanService{
     @Produces(MediaType.APPLICATION_JSON)
     public Response findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         List<SearchResult> list = humanBusiness.getByRange(from, to);        
-        Gson gson = new Gson();
-        String json = gson.toJson(list); 
-        return Response.status(200).entity(json).build();
+        return Response.status(200).entity(list).build();
     }
 
     @PermitAll

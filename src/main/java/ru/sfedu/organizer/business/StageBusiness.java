@@ -44,7 +44,7 @@ public class StageBusiness {
     public StageBusiness() {
     }
 
-    public StageModel getById(long id) {
+    public StageModel getById(long id) throws ObjectNotFoundException{
         Optional<Stage> o = stageDao.getById(id);
         StageModel stageModel = null;
         if (o.isPresent()) {
@@ -55,14 +55,16 @@ public class StageBusiness {
             stageModel.addOpera(stage.getOpera());
             stageModel.addRoles(stage.getRoles());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.STAGE, id);
         return stageModel;
     }
 
-    public void delete(long id) {
+    public void delete(long id) throws ObjectNotFoundException {
         Optional<Stage> o = stageDao.getById(id);
         if (o.isPresent()) {
             stageDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.STAGE, id);
     }
 
     public List<SearchResult> getByRange(int from, int to) {
