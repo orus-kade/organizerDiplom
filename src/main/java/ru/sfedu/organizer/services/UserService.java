@@ -69,10 +69,9 @@ public class UserService{
 
     
     @RolesAllowed("USER")
-    @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response find(@QueryParam("id") Long id) throws ObjectNotFoundException {
+    public Response find(@QueryParam("userId") Long id) throws ObjectNotFoundException {
         UserModel userModel = userBusiness.getById(id);
         return Response.ok().entity(userModel).build();
     }
@@ -82,7 +81,7 @@ public class UserService{
     @Path("/note")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
-    public Response createOrSaveNote(@QueryParam("id") Long id, NoteModel noteModel) throws ObjectNotFoundException{
+    public Response createOrSaveNote(@QueryParam("userId") Long id, NoteModel noteModel) throws ObjectNotFoundException{
         userBusiness.createOrSaveNote(noteModel, id);
         return Response.ok().build();
     }

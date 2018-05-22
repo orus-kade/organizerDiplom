@@ -46,6 +46,8 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.SingleEventService.class);
         resources.add(ru.sfedu.organizer.services.StageService.class);
         resources.add(ru.sfedu.organizer.services.UserService.class);
+        resources.add(ru.sfedu.organizer.services.exceptionhandlers.NotAllowedExceptionHandler.class);
+        resources.add(ru.sfedu.organizer.services.exceptionhandlers.NotFoundExceptionHandler.class);
         resources.add(ru.sfedu.organizer.services.exceptionhandlers.ObjectNotFoundExceptionHandler.class);
         resources.add(ru.sfedu.organizer.services.interceptors.LoggingInterceptor.class);
         resources.add(ru.sfedu.organizer.services.interceptors.SecurityInterceptor.class);

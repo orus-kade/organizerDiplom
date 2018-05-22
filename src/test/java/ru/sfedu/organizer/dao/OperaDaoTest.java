@@ -100,7 +100,7 @@ public class OperaDaoTest {
     /**
      * Test of getHumansByProfession method, of class OperaDao.
      */
-    @Test
+   // @Test
     public void testGetHumansByProfession() {
         System.out.println("getHumansByProfession");
         Opera opera = null;

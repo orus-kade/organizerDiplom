@@ -96,6 +96,7 @@ public class UserBusiness {
         Optional<User> o = userDao.getByLogin(login);
         if(o.isPresent()) return false;
         User user = new User();
+        user.setLogin(login);
         user.setCreateDate(new Date().getTime());
         user.setRoles(new ArrayList<>(Arrays.asList(UserRoles.USER)));
         try {
@@ -263,7 +264,7 @@ public class UserBusiness {
     }
 
     private UserModel getModel(User user) {
-        UserModel userModel = new UserModel(user.getId(), new Date(user.getCreateDate()));
+        UserModel userModel = new UserModel(user.getId(), new Date(user.getCreateDate()), user.getLogin());
         if (user.getEvents() != null && !user.getEvents().isEmpty()){
             List<SingleEventModel> events = new ArrayList<>();
             user.getEvents().stream().forEach(e -> {
@@ -291,6 +292,7 @@ public class UserBusiness {
                     logger.error(ex);
                 }
             });
+            userModel.setNotes(notes);
         }
         userModel.setRoles(user.getRoles());
         return userModel;

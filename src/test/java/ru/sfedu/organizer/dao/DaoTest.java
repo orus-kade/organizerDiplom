@@ -353,11 +353,12 @@ public class DaoTest {
         }
     }
 
-    @Test
+    //@Test
     public void anotherTest() {
         Session ses = HibernateUtil.getSessionFactory().openSession();
         ses.beginTransaction();
         ses.get(User.class, 1L);
+        User user = ses.get(User.class, 2L);
         ses.getTransaction().commit();
         ses.close();
         HibernateUtil.getSessionFactory().close();
