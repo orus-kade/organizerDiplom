@@ -72,6 +72,12 @@ public class UserBusiness {
     @EJB
     private final StageBusiness stageBusiness = new StageBusiness();
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public UserModel getById(long id) throws ObjectNotFoundException{
         Optional<User> o = userDao.getById(id);
         if(!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.USER, id);
@@ -79,6 +85,12 @@ public class UserBusiness {
         return this.getModel(user);
     }
     
+    /**
+     *
+     * @param login
+     * @param pass
+     * @return
+     */
     public UserModel login(String login, String pass){
         Optional<User> o = userDao.getByLogin(login);
         if(!o.isPresent()) return null; 
@@ -92,6 +104,12 @@ public class UserBusiness {
         return this.getModel(user);
     }
     
+    /**
+     *
+     * @param login
+     * @param pass
+     * @return
+     */
     public boolean registration(String login, String pass){
         Optional<User> o = userDao.getByLogin(login);
         if(o.isPresent()) return false;
@@ -115,6 +133,10 @@ public class UserBusiness {
         return true;
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return userDao.count();
     }
@@ -155,6 +177,10 @@ public class UserBusiness {
         return user.getPassword().equals(this.getSecurePassword(candidate, user.getSalt()));
     } 
     
+    /**
+     *
+     * @param id
+     */
     public void delete(long id){
         Optional<User> o = userDao.getById(id);
         if (o.isPresent()){
@@ -162,6 +188,12 @@ public class UserBusiness {
         }
     }
     
+    /**
+     *
+     * @param id
+     * @param eventId
+     * @throws ObjectNotFoundException
+     */
     public void removeEvent(long id, long eventId) throws ObjectNotFoundException{
         Optional<User> o = userDao.getById(id);
         if(!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.USER, id);
@@ -172,6 +204,12 @@ public class UserBusiness {
         userDao.saveOrUpdate(user);
     }
     
+    /**
+     *
+     * @param id
+     * @param eventId
+     * @throws ObjectNotFoundException
+     */
     public void addEvent(long id, long eventId) throws ObjectNotFoundException{
         Optional<User> o = userDao.getById(id);
         if(!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.USER, id);
@@ -184,6 +222,12 @@ public class UserBusiness {
         userDao.saveOrUpdate(user);
     }
     
+    /**
+     *
+     * @param id
+     * @param noteId
+     * @throws ObjectNotFoundException
+     */
     public void removeNote(long id, long noteId) throws ObjectNotFoundException{
         Optional<User> o = userDao.getById(id);
         if(!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.USER, id);
@@ -194,6 +238,13 @@ public class UserBusiness {
         userDao.saveOrUpdate(user);
     }
     
+    /**
+     *
+     * @param noteModel
+     * @param userId
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSaveNote(NoteModel noteModel, long userId) throws ObjectNotFoundException{
         Note note;
         if (noteModel.getId() <= 0){
@@ -231,7 +282,7 @@ public class UserBusiness {
             case ARIA : {
                 return ariaBusiness.getById(objectId).getTitle();
             }
-            case CONSERT : {
+            case CONCERT : {
                 return concertBusiness.getById(objectId).getTitle();
             } 
             case HUMAN : {
@@ -298,6 +349,10 @@ public class UserBusiness {
         return userModel;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<UserModel> detAll(){
         Optional<List> o = userDao.getAll();
         List<UserModel> list = new ArrayList<>();
@@ -312,6 +367,11 @@ public class UserBusiness {
         return list;
     }
     
+    /**
+     *
+     * @param userModel
+     * @throws ObjectNotFoundException
+     */
     public void setRoles(UserModel userModel) throws ObjectNotFoundException{
         Optional<User> o = userDao.getById(userModel.getUserId());
         if(!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.USER, userModel.getUserId());

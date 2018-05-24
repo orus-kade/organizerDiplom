@@ -12,9 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.annotations.Type;
 
 /**
@@ -34,7 +34,6 @@ public class Libretto {
     private long id;
 
     @OneToOne(mappedBy = "libretto", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
-    @NotNull
     private Opera opera;
 
     @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
@@ -50,6 +49,10 @@ public class Libretto {
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Libretto() {
     }
 
@@ -139,13 +142,37 @@ public class Libretto {
     //
     // Other methods
     //
+
+    @Override
+    public String toString() {
+        String st =  "Libretto{" + "id=" + id;
+        try {
+            String string =", opera=[id="+opera.getId()+"]";
+            string += ", writers=[";
+            if (this.writers != null && !this.writers.isEmpty()) {
+                string += this.writers.stream().collect(StringBuilder::new,
+                        (response, element) -> response.append(" ").append("id=" + element.getId()),
+                        (response1, response2) -> response1.append(",").append(response2.toString()))
+                        .toString();
+            }
+            st += string + "]";
+        } catch (org.hibernate.LazyInitializationException ex) {
+            LogManager.getLogger(Libretto.class).error("Object is not fully initialized\n" + ex);
+        }      
+        st += ", text=" + text + '}';
+        return st;
+    }
+    
+    
+    
     @Override
     public boolean equals(Object obj) {
         if (this == null || obj == null || getClass() != obj.getClass()) {
             return false;
         }
         Libretto a = (Libretto) obj;
-        return this.id == a.getId();
+        //return this.id == a.getId();
+        return this.toString().equals(a.toString());
     }
 
 }

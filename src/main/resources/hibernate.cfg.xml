@@ -59,6 +59,6 @@ Contributor(s):
     <property name="connection.release_mode">auto</property>
     <property name="hibernate.transaction.auto_close_session">true</property>
     <property name="hibernate.connection.autocommit">true</property>
-    
+    <property name="hibernate.max_fetch_depth">2</property>
   </session-factory>
 </hibernate-configuration>

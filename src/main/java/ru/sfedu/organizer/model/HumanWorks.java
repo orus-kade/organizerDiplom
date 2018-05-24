@@ -19,19 +19,34 @@ public class HumanWorks {
     private List<AriaInfo> writerWorks = new ArrayList<>();
     private List<LibrettoInfo> librettos = new ArrayList<>();
 
+    /**
+     *
+     */
     public HumanWorks() {
     }
     
+    /**
+     *
+     * @param list
+     */
     public void addComposerWorks(List<Aria> list){
         if (list != null)
             list.stream().forEach(e -> this.composerWorks.add(new AriaInfo(e)));
     }
     
+    /**
+     *
+     * @param list
+     */
     public void addWriterWorks(List<Aria> list){
         if (list != null)
             list.stream().forEach(e -> this.writerWorks.add(new AriaInfo(e)));
     }
     
+    /**
+     *
+     * @param list
+     */
     public void addLibrettos(List<Libretto> list){
         if (list != null)
             list.stream().forEach(e -> this.librettos.add(new LibrettoInfo(e.getOpera(), e.getId())));

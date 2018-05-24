@@ -34,9 +34,10 @@ public class HibernateUtil {
     /**
      * Создание фабрики
      *
+     * @return 
      */
     public static SessionFactory getSessionFactory() {
-        if (sessionFactory == null) {
+        if (sessionFactory == null || sessionFactory.isClosed()) {
 // loads configuration and mappings
             Configuration configuration = new Configuration().configure();
             ServiceRegistry serviceRegistry

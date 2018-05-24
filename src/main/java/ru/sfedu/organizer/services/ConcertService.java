@@ -33,7 +33,7 @@ import ru.sfedu.organizer.model.SearchResult;
  * @author sterie
  */
 @Stateless
-@Path("/concert")
+@Path("concert")
 public class ConcertService{
     
     static final Logger logger = LogManager.getLogger(ConcertService.class);
@@ -41,6 +41,12 @@ public class ConcertService{
     @EJB
     private ConcertBusiness concertBusiness = new ConcertBusiness();
 
+    /**
+     *
+     * @param concertModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -50,6 +56,12 @@ public class ConcertService{
         return Response.ok().entity(id).build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -58,15 +70,25 @@ public class ConcertService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         ConcertModel concertModel = concertBusiness.getById(id);
         return Response.status(200).entity(concertModel).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -75,6 +97,12 @@ public class ConcertService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -84,6 +112,10 @@ public class ConcertService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")

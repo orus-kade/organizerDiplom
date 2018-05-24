@@ -33,7 +33,7 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     
-    @Column(name="title")
+    @Column(name="title", nullable = false)
     private String title;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.REFRESH})
@@ -44,12 +44,16 @@ public class Event {
     @Type(type = "text")
     private String description;
     
-    @OneToMany(mappedBy="event", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy="event", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SingleEvent> singleEvents;
 
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Event() {
     }
 
@@ -81,10 +85,18 @@ public class Event {
         return id;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SingleEvent> getSingleEvents() {
         return singleEvents;
     }
 
+    /**
+     *
+     * @param singleEvents
+     */
     public void setSingleEvents(List<SingleEvent> singleEvents) {
         this.singleEvents = singleEvents;
     }
@@ -131,10 +143,19 @@ public class Event {
     // Other methods
     //
 
+    /**
+     *
+     * @return
+     */
+
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }

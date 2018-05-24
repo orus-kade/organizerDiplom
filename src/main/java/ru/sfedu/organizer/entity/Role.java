@@ -34,17 +34,19 @@ public class Role {
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "personage_id")
-    @NotNull
     private Personage personage;
 
     @OneToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
     @JoinColumn(name = "singer_id")
-    @NotNull
     private Human singer;
 
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Role() {
     }
 

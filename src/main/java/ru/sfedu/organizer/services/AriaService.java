@@ -2,7 +2,6 @@
  */
 package ru.sfedu.organizer.services;
 
-import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
@@ -29,7 +28,7 @@ import ru.sfedu.organizer.model.SearchResult;
  * @author sterie
  */
 @Stateless
-@Path("/aria")
+@Path("aria")
 public class AriaService{
     
     static final Logger logger = LogManager.getLogger(AriaService.class);
@@ -37,6 +36,12 @@ public class AriaService{
     @EJB
     private  AriaBusiness ariaBusiness = new AriaBusiness();
 
+    /**
+     *
+     * @param entity
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -46,6 +51,12 @@ public class AriaService{
         return Response.ok().entity(id).build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -54,15 +65,25 @@ public class AriaService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         AriaModel ariaModel = ariaBusiness.getById(id);
         return Response.status(200).entity(ariaModel).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -71,6 +92,12 @@ public class AriaService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -80,6 +107,10 @@ public class AriaService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")

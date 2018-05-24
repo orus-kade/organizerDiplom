@@ -33,13 +33,18 @@ import ru.sfedu.organizer.model.SearchResult;
  * @author sterie
  */
 @Stateless
-@Path("/human")
+@Path("human")
 public class HumanService{
 
     @EJB
     private HumanBusiness humanBusiness = new HumanBusiness();
 
-    
+    /**
+     *
+     * @param humanModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -49,6 +54,12 @@ public class HumanService{
         return Response.ok().entity(id).build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -57,34 +68,53 @@ public class HumanService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     */
     @PermitAll
     @GET
-    @Path("/events/{id}")
+    @Path("events/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getEvents(@PathParam("id") Long id) {
         HumanEvents humanEvents = humanBusiness.getEventsById(id);
         return Response.status(200).entity(humanEvents).build();
     }
     
-    
+    /**
+     *
+     * @param id
+     * @return
+     */
     @PermitAll
     @GET
-    @Path("/works/{id}")
+    @Path("works/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getWorks(@PathParam("id") Long id) {
         HumanWorks humanWorks = humanBusiness.getWorksById(id);
         return Response.status(200).entity(humanWorks).build();
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         HumanModel humanModel = humanBusiness.getById(id);
         return Response.status(200).entity(humanModel).build();
     }
     
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -93,6 +123,12 @@ public class HumanService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -102,6 +138,10 @@ public class HumanService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")

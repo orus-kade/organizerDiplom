@@ -35,9 +35,18 @@ public class ConcertBusiness {
     @EJB 
     private final HumanBusiness humanBusiness = new HumanBusiness();
 
+    /**
+     *
+     */
     public ConcertBusiness() {
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public ConcertModel getById(long id) throws ObjectNotFoundException{
         Optional<Concert> o = concertDao.getById(id);
         ConcertModel consertModel = null;
@@ -49,18 +58,29 @@ public class ConcertBusiness {
             consertModel.addAries(concert.getAries());
             consertModel.addEvents(concert.getSingleEvents());
         }
-        else throw new ObjectNotFoundException(ObjectTypes.CONSERT, id);
+        else throw new ObjectNotFoundException(ObjectTypes.CONCERT, id);
         return consertModel;
     }
     
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException{
         Optional<Concert> o = concertDao.getById(id);
         if (o.isPresent()){
             concertDao.delete(o.get());
         }
-        else throw new ObjectNotFoundException(ObjectTypes.CONSERT, id);
+        else throw new ObjectNotFoundException(ObjectTypes.CONCERT, id);
     } 
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SearchResult> getByRange(int from, int to){
         Optional<List> o;
         if (from == 0 && to == 0){
@@ -77,14 +97,27 @@ public class ConcertBusiness {
         return result;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<SearchResult> getAll(){
         return this.getByRange(0, 0);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return concertDao.count();
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public List<SearchResult> search(String key){
         if (key == null || key.trim().length()==0){
             return this.getAll();
@@ -99,13 +132,19 @@ public class ConcertBusiness {
         return result;
     }    
     
+    /**
+     *
+     * @param concertModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave (ConcertModel concertModel) throws ObjectNotFoundException{
         Concert concert;
         if (concertModel.getId() <= 0)
             concert = new Concert();
         else{
             Optional<Concert> o = concertDao.getById(concertModel.getId());
-            if (!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.CONSERT, concertModel.getId());
+            if (!o.isPresent()) throw new ObjectNotFoundException(ObjectTypes.CONCERT, concertModel.getId());
             concert = o.get();
         }
         concert.setDescription(concertModel.getDescription());

@@ -34,9 +34,18 @@ public class LibrettoBusiness {
 
     private final OperaDao operaDao = new OperaDao();
     
+    /**
+     *
+     */
     public LibrettoBusiness() {
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public LibrettoModel getById(long id) throws ObjectNotFoundException{
         Optional<Libretto> o = librettoDao.getById(id);
         LibrettoModel librettoModel = null;
@@ -49,6 +58,11 @@ public class LibrettoBusiness {
         return librettoModel;
     }    
     
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException{
         Optional<Libretto> o = librettoDao.getById(id);
         if (o.isPresent()){
@@ -57,6 +71,12 @@ public class LibrettoBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.LIBRETTO, id);
     }
     
+    /**
+     *
+     * @param librettoModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave (LibrettoModel librettoModel) throws ObjectNotFoundException{
         Libretto libretto;
         if (librettoModel.getId() <= 0){

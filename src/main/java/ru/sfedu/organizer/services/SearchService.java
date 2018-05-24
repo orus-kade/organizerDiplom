@@ -27,7 +27,7 @@ import ru.sfedu.organizer.model.SearchResult;
  * @author sterie
  */
 @Stateless
-@Path("/")
+@Path("")
 public class SearchService{
     
     static final Logger logger = LogManager.getLogger(SearchService.class);
@@ -35,6 +35,12 @@ public class SearchService{
     @EJB
     private SearchBusiness searchBusiness = new SearchBusiness();
    
+    /**
+     *
+     * @param key
+     * @param params
+     * @return
+     */
     @PermitAll
     @POST
     @Produces(MediaType.APPLICATION_JSON)

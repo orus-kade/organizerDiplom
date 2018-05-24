@@ -27,12 +27,18 @@ import ru.sfedu.organizer.model.SingleEventModel;
  * @author sterie
  */
 @Stateless
-@Path("/singleevent")
+@Path("singleevent")
 public class SingleEventService{
     
     @EJB
     private SingleEventBusiness business = new SingleEventBusiness();
 
+    /**
+     *
+     * @param eventModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -41,7 +47,12 @@ public class SingleEventService{
         return Response.ok().entity(id).build();
     }
 
-
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -50,15 +61,25 @@ public class SingleEventService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         SingleEventModel singleEventModel = business.getById(id);
         return Response.status(200).entity(singleEventModel).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -67,6 +88,12 @@ public class SingleEventService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -76,6 +103,12 @@ public class SingleEventService{
         return Response.status(200).entity(list).build();
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("future/{from}/{to}")
@@ -85,6 +118,10 @@ public class SingleEventService{
         return Response.status(200).entity(list).build();
     }
     
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("future")
@@ -94,6 +131,10 @@ public class SingleEventService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")
@@ -102,6 +143,10 @@ public class SingleEventService{
         return String.valueOf(business.count());
     }
     
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("future/count")

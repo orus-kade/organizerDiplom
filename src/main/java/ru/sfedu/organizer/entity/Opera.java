@@ -4,7 +4,6 @@ import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,9 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.annotations.Type;
 
 /**
@@ -22,7 +19,6 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "opera")
-@XmlRootElement
 public class Opera {
 
     //
@@ -33,24 +29,27 @@ public class Opera {
     @Column(name="opera_id")
     private long id;
     
-    @Column(name="opera_title")
-    @NotNull
+    @Column(name="opera_title", nullable = false)
     private String title;
     
     @Column(name="opera_description")
     @Type(type = "text")
     private String description;
     
-    @OneToMany(mappedBy="opera", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "opera_id")
     private List<Personage> personages;
     
-    @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
+    //@OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "opera_id")
     private List<Aria> aries;
     
-    @OneToMany(mappedBy = "opera", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "opera_id")
     private List<Stage> stages;
     
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="libretto_id")
     private Libretto libretto;
     
@@ -58,6 +57,10 @@ public class Opera {
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Opera() {
     }
 
@@ -139,7 +142,6 @@ public class Opera {
      *
      * @return the value of personages
      */
-    @XmlTransient
     public List<Personage> getPersonages() {
         return personages;
     }
@@ -158,7 +160,6 @@ public class Opera {
      *
      * @return the value of aries
      */
-    @XmlTransient
     public List<Aria> getAries() {
         return aries;
     }
@@ -177,7 +178,6 @@ public class Opera {
      *
      * @return the value of libretto
      */
-    @XmlTransient
     public Libretto getLibretto() {
         return libretto;
     }
@@ -188,19 +188,63 @@ public class Opera {
     // Other methods
     //
 
+    /**
+     *
+     * @return
+     */
+
     public List<Stage> getStages() {
         return stages;
     }
 
+    /**
+     *
+     * @param stages
+     */
     public void setStages(List<Stage> stages) {
         this.stages = stages;
     }
+
+    @Override
+    public String toString() {
+        String st = "Opera{" + "id=" + id + ", title=" + title + ", description=" + description;
+        try{
+            String string =", personages=[";
+        if (this.personages!=null && !this.personages.isEmpty())
+           string += this.personages.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string += "], aries=[";
+        if (this.aries!=null && !this.aries.isEmpty())
+           string += this.aries.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string +="], stages=[";
+        if (this.stages!=null && !this.stages.isEmpty())
+           string += this.stages.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string +="], libretto=[";
+        if (libretto!= null) string += "id="+libretto.getId();
+        st += string + "]";
+        } catch (org.hibernate.LazyInitializationException ex){
+            LogManager.getLogger(Opera.class).error("Object is not fully initialized\n"+ex);
+        }
+        st += '}';
+        return st;
+    }
+    
+    
     
     @Override
     public boolean equals(Object obj) {
         if (this == null || obj == null || getClass() != obj.getClass()) 
             return false;
         Opera a = (Opera) obj;
-        return this.id == a.getId();
+        //return this.id == a.getId();
+        return this.toString().equals(a.toString());
     } 
 }

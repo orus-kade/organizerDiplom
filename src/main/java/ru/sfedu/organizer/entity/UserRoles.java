@@ -10,6 +10,14 @@ package ru.sfedu.organizer.entity;
  * @author sterie
  */
 public enum UserRoles {
+
+    /**
+     *
+     */
     ADMIN,
+
+    /**
+     *
+     */
     USER
 }

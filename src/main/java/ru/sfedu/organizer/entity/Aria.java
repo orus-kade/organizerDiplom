@@ -14,9 +14,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
+
 
 /**
  * Class Aria
@@ -31,11 +30,10 @@ public class Aria {
     //
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "aria_id")
+    @Column(name = "aria_id", nullable = false)
     private long id;
 
-    @Column(name = "aria_title")
-    @NotNull
+    @Column(name = "aria_title", nullable = false)
     private String title;
 
     @Column(name = "aria_text")
@@ -63,16 +61,18 @@ public class Aria {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "opera_id")
-    @NotNull
     private Opera opera;
 
-    @Column(name = "position")
-    @NotNull
+    @Column(name = "position", nullable = false)
     private int position;
 
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Aria() {
     }
 
@@ -154,7 +154,7 @@ public class Aria {
      *
      * @return the value of composers
      */
-    @XmlTransient
+
     public List<Human> getComposers() {
         return composers;
     }
@@ -173,7 +173,7 @@ public class Aria {
      *
      * @return the value of writers
      */
-    @XmlTransient
+
     public List<Human> getWriters() {
         return writers;
     }
@@ -192,7 +192,7 @@ public class Aria {
      *
      * @return the value of personages
      */
-    @XmlTransient
+
     public List<Personage> getPersonages() {
         return personages;
     }
@@ -239,7 +239,33 @@ public class Aria {
 
     @Override
     public String toString() {
-        return "Aria{" + "id=" + id + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", personages=" + personages + ", opera=" + opera + ", position=" + position + '}';
+        String st = "Aria{" + "id=" + id + ", title=" + title + ", text=" + text;
+        try{
+            String string =", composers=[";
+        if (this.composers!=null && !this.composers.isEmpty())
+           string += this.composers.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string += "], writers=[";
+        if (this.writers!=null && !this.writers.isEmpty())
+           string += this.writers.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string +="], personages=[";
+        if (this.personages!=null && !this.personages.isEmpty())
+           string += this.personages.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string +="], opera=[id="+opera.getId()+"]";
+        st += string;
+        } catch (org.hibernate.LazyInitializationException ex){
+            LogManager.getLogger(Aria.class).error("Object is not fully initialized\n"+ex);
+        } 
+        st += ", position="+position+"}";
+        return st;
     }
 
     @Override
@@ -247,6 +273,7 @@ public class Aria {
         if (this == null || obj == null || getClass() != obj.getClass()) 
             return false;
         Aria a = (Aria) obj;
-        return this.id == a.getId();
+        //return this.id == a.getId();
+        return this.toString().equals(a.toString());
     } 
 }

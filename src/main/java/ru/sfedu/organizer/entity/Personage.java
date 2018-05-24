@@ -38,8 +38,7 @@ public class Personage {
     @Column(name = "personage_id")
     private long id;
 
-    @Column(name = "personage_name")
-    @NotNull
+    @Column(name = "personage_name", nullable = false)
     private String name;
     
     @Column(name = "personage_description")
@@ -54,13 +53,16 @@ public class Personage {
     private List<Aria> aries;
 
     @ManyToOne//(fetch = FetchType.LAZY)
-    @JoinColumn(name = "opera_id")
-    @NotNull
+    @JoinColumn(name = "opera_id")//, nullable = false)
     private Opera opera;
 
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Personage() {
     }
 
@@ -153,10 +155,19 @@ public class Personage {
     // Other methods
     //
 
+    /**
+     *
+     * @return
+     */
+
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }

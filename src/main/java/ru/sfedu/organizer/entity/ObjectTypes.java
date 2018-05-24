@@ -10,16 +10,64 @@ package ru.sfedu.organizer.entity;
  * @author sterie
  */
 public enum ObjectTypes {
+
+    /**
+     *
+     */
     ARIA,
+
+    /**
+     *
+     */
     PERSONAGE,
-    CONSERT,
+
+    /**
+     *
+     */
+    CONCERT,
+
+    /**
+     *
+     */
     HUMAN,
+
+    /**
+     *
+     */
     LIBRETTO,
+
+    /**
+     *
+     */
     OPERA,
+
+    /**
+     *
+     */
     PLACE,
+
+    /**
+     *
+     */
     STAGE,
+
+    /**
+     *
+     */
     SINGLE_EVENT,
+
+    /**
+     *
+     */
     EVENT,
+
+    /**
+     *
+     */
     USER,
+
+    /**
+     *
+     */
     NOTE
 }

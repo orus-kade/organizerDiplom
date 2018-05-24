@@ -27,12 +27,18 @@ import ru.sfedu.organizer.model.StageModel;
  * @author sterie
  */
 @Stateless
-@Path("/stage")
+@Path("stage")
 public class StageService{
 
     @EJB
     private StageBusiness stageBusiness = new StageBusiness();
 
+    /**
+     *
+     * @param stageModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -42,23 +48,39 @@ public class StageService{
         return Response.ok().entity(id).build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
-    @Path("/{id}")
+    @Path("{id}")
     public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException {
         stageBusiness.delete(id);
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         StageModel stageModel = stageBusiness.getById(id);
         return Response.status(200).entity(stageModel).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -67,6 +89,12 @@ public class StageService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -76,6 +104,10 @@ public class StageService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")

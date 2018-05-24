@@ -26,6 +26,16 @@ public class HumanModel {
     private List<String> professions = new ArrayList<>();
     private String voice;
 
+    /**
+     *
+     * @param id
+     * @param name
+     * @param surname
+     * @param patronymic
+     * @param biography
+     * @param birthDate
+     * @param deathDate
+     */
     public HumanModel(long id, String name, String surname, String patronymic, String biography, Date birthDate, Date deathDate) {
         this.id = id;
         this.name = name;
@@ -36,75 +46,146 @@ public class HumanModel {
         this.deathDate = deathDate;
     }
 
+    /**
+     *
+     */
     public HumanModel() {
     }
    
+    /**
+     *
+     * @param list
+     */
     public void addPlaces(List<Place> list){
         if (list != null)
             list.stream().forEach(e -> this.places.put(e.getId(), e.getTitle()));
     }
     
+    /**
+     *
+     * @param list
+     */
     public void addProfessions(List<Professions> list){
         if (list != null)
             list.stream().forEach(e -> this.professions.add(e.toString()));
     }
 
+    /**
+     *
+     * @return
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getSurname() {
         return surname;
     }
 
+    /**
+     *
+     * @param surname
+     */
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getPatronymic() {
         return patronymic;
     }
 
+    /**
+     *
+     * @param patronymic
+     */
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getBiography() {
         return biography;
     }
 
+    /**
+     *
+     * @param biography
+     */
     public void setBiography(String biography) {
         this.biography = biography;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getBirthDate() {
         return birthDate;
     }
 
+    /**
+     *
+     * @param birthDate
+     */
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
     }
 
+    /**
+     *
+     * @return
+     */
     public Date getDeathDate() {
         return deathDate;
     }
 
+    /**
+     *
+     * @param deathDate
+     */
     public void setDeathDate(Date deathDate) {
         this.deathDate = deathDate;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getPlacesIds() {
         if (this.places.isEmpty())
             return null;
@@ -112,14 +193,26 @@ public class HumanModel {
         return keyList;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<String> getProfessions() {
         return professions;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getVoice() {
         return voice;
     }
 
+    /**
+     *
+     * @param voice
+     */
     public void setVoice(String voice) {
         this.voice = voice;
     }    

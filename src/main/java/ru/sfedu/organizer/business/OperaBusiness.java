@@ -35,9 +35,18 @@ public class OperaBusiness {
     
     private final AriaDao ariaDao =  new AriaDao();
 
+    /**
+     *
+     */
     public OperaBusiness() {
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public OperaModel getById(long id) throws ObjectNotFoundException {
         Optional<Opera> o = operaDao.getById(id);
         OperaModel operaModel = null;
@@ -58,6 +67,11 @@ public class OperaBusiness {
         return operaModel;
     }
 
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException {
         Optional<Opera> o = operaDao.getById(id);
         if (o.isPresent()) {
@@ -66,6 +80,12 @@ public class OperaBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.OPERA, id);
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SearchResult> getByRange(int from, int to) {
         Optional<List> o;
         if (from == 0 && to == 0) {
@@ -81,14 +101,27 @@ public class OperaBusiness {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SearchResult> getAll() {
         return this.getByRange(0, 0);
     }
 
+    /**
+     *
+     * @return
+     */
     public int count() {
         return operaDao.count();
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public List<SearchResult> search(String key) {
         if (key == null || key.trim().length() == 0) {
             return this.getAll();
@@ -103,6 +136,12 @@ public class OperaBusiness {
         return result;
     }
 
+    /**
+     *
+     * @param operaModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave(OperaModel operaModel) throws ObjectNotFoundException {
         Opera opera;
         if (operaModel.getId() <= 0) {

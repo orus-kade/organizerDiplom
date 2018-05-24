@@ -39,6 +39,12 @@ public class SearchBusiness {
     @EJB
     private StageBusiness stageBusiness = new StageBusiness();
     
+    /**
+     *
+     * @param key
+     * @param params
+     * @return
+     */
     public List<SearchResult> search(String key, List<String> params){
         List<SearchResult> results = new ArrayList<>();
         if (params.contains("aria")) results.addAll(ariaBusiness.search(key));

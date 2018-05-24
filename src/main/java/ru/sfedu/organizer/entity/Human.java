@@ -11,11 +11,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.annotations.Check;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,8 +26,7 @@ import org.hibernate.annotations.Type;
  */
 @Entity
 @Table(name = "human")
-@Check(constraints = "human_birthDate is null or human_deathDate is null or (human_birthDate < human_deathDate)")
-@XmlRootElement
+@Check(constraints = "human_birthDate = 0 or human_deathDate = 0 or (human_birthDate < human_deathDate)")
 public class Human {
 
     //
@@ -38,12 +37,10 @@ public class Human {
     @Column(name = "human_id")
     private long id;
 
-    @Column(name = "human_name")
-    @NotNull
+    @Column(name = "human_name", nullable = false)
     private String name;
 
-    @Column(name = "human_surname")
-    @NotNull
+    @Column(name = "human_surname", nullable = false)
     private String surname;
 
     @Column(name = "human_patronymic")
@@ -59,7 +56,10 @@ public class Human {
     @Column(name = "human_deathDate")
     private long deathDate;
 
-    @ManyToMany(mappedBy = "persons", cascade = {CascadeType.MERGE, CascadeType.REFRESH})    
+    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.REFRESH})
+    @JoinTable(name = "place_human",
+            joinColumns = @JoinColumn(name = "human_id"),
+            inverseJoinColumns = @JoinColumn(name = "place_id"))
     private List<Place> places;
 
     @Column(name = "human_voice", nullable = true)
@@ -74,6 +74,9 @@ public class Human {
     //
     // Constructors
     //
+    /**
+     *
+     */
     public Human() {
     }
 
@@ -227,7 +230,7 @@ public class Human {
      *
      * @return the value of places
      */
-    @XmlTransient
+
     public List<Place> getPlaces() {
         return places;
     }
@@ -271,13 +274,34 @@ public class Human {
     //
     // Other methods
     //
-    
+    @Override
+    public String toString() {
+        String st = "Human{" + "id=" + id + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate;
+        try {
+            String string = ", places=[";
+            if (this.places != null && !this.places.isEmpty()) {
+                string += this.places.stream().collect(StringBuilder::new,
+                        (response, element) -> response.append(" ").append("id=" + element.getId()),
+                        (response1, response2) -> response1.append(",").append(response2.toString()))
+                        .toString();
+            }
+            st += "]";
+            st += string;
+        } catch (org.hibernate.LazyInitializationException ex) {
+            LogManager.getLogger(Human.class).error("Object is not fully initialized\n" + ex);
+        }
+        st += ", voice=" + voice + ", professions=" + professions + '}';
+        return st;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == null || obj == null || getClass() != obj.getClass()) 
+        if (this == null || obj == null || getClass() != obj.getClass()) {
             return false;
+        }
         Human a = (Human) obj;
-        return this.id == a.getId();
-    } 
-    
+        //return this.id == a.getId();
+        return this.toString().equals(a.toString());
+    }
+
 }

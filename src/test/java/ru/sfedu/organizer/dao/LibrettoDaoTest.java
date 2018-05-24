@@ -1,48 +1,35 @@
+/*
+ */
 package ru.sfedu.organizer.dao;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-import java.security.SecureRandom;
-import ru.sfedu.organizer.entity.Opera;
-import ru.sfedu.organizer.entity.Human;
-import ru.sfedu.organizer.entity.Concert;
-import ru.sfedu.organizer.entity.Libretto;
-import ru.sfedu.organizer.entity.Professions;
-import ru.sfedu.organizer.entity.Aria;
-import ru.sfedu.organizer.entity.Place;
-import ru.sfedu.organizer.entity.Personage;
-import ru.sfedu.organizer.entity.Voices;
-import ru.sfedu.organizer.entity.Role;
-import ru.sfedu.organizer.entity.SingleEvent;
-import ru.sfedu.organizer.entity.Stage;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import ru.sfedu.organizer.business.HumanBusiness;
-import ru.sfedu.organizer.entity.Event;
-import ru.sfedu.organizer.entity.User;
-import ru.sfedu.organizer.model.SearchResult;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
+import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.Concert;
+import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.Opera;
+import ru.sfedu.organizer.entity.Personage;
+import ru.sfedu.organizer.entity.Place;
+import ru.sfedu.organizer.entity.Professions;
+import ru.sfedu.organizer.entity.Role;
+import ru.sfedu.organizer.entity.SingleEvent;
+import ru.sfedu.organizer.entity.Stage;
+import ru.sfedu.organizer.entity.Voices;
 import ru.sfedu.organizer.utils.HibernateUtil;
 import ru.sfedu.organizer.utils.MyGenerator;
 
@@ -50,138 +37,111 @@ import ru.sfedu.organizer.utils.MyGenerator;
  *
  * @author sterie
  */
-public class DaoTest {
-
-    public DaoTest() {
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+public class LibrettoDaoTest {
+    
+    private static SessionFactory sessionFactory; 
+    private static OperaDao operaDao = new OperaDao();
+    private static HumanDao humanDao = new HumanDao();
+    private static Opera opera = new Opera();
+    private static List<Human> humans = new ArrayList<>();
+    private static Libretto libretto;
+    private static LibrettoDao dao = new LibrettoDao();
+    
+    public LibrettoDaoTest() {
     }
-
+    
     @BeforeClass
     public static void setUpClass() {
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.setUpClass()");
+        sessionFactory = HibernateUtil.getSessionFactory();
+        opera.setTitle(MyGenerator.generateTitle());
+        opera.setDescription(MyGenerator.generateTitle());
+        Personage ch1 = new Personage();
+        ch1.setOpera(opera);
+        ch1.setName(MyGenerator.generateTitle());
+        Personage ch2 = new Personage();
+        ch2.setOpera(opera);
+        ch2.setName(MyGenerator.generateTitle());
+        opera.setPersonages(Arrays.asList(ch2, ch1));
+        operaDao.saveOrUpdate(opera);
+        Human human1 = new Human();
+        human1.setBiography(MyGenerator.generateTitle());
+        human1.setName(MyGenerator.generateTitle());
+        human1.setSurname(MyGenerator.generateTitle());
+        human1.setBirthDate(MyGenerator.generateDateLong(new GregorianCalendar(1930, 0, 1).getTimeInMillis(), new GregorianCalendar(1990, 11, 31).getTimeInMillis()));
+        human1.setDeathDate(MyGenerator.generateDateLong(new GregorianCalendar(1991, 0, 1).getTimeInMillis(), new Date().getTime()));
+        Human human2 = new Human();
+        human2.setBiography(MyGenerator.generateTitle());
+        human2.setName(MyGenerator.generateTitle());
+        human2.setSurname(MyGenerator.generateTitle());
+        human2.setBirthDate(MyGenerator.generateDateLong(new GregorianCalendar(1930, 0, 1).getTimeInMillis(), new GregorianCalendar(1990, 11, 31).getTimeInMillis()));
+        human2.setDeathDate(MyGenerator.generateDateLong(new GregorianCalendar(1991, 0, 1).getTimeInMillis(), new Date().getTime()));
+        humans.addAll(Arrays.asList(human1, human2));
+        humanDao.saveOrUpdateList(humans);
+        libretto = new Libretto();
+        libretto.setOpera(opera);
+        libretto.setWriters(Arrays.asList(humans.get(0)));
+        libretto.setText(MyGenerator.generateTitle());
     }
-
+    
     @AfterClass
     public static void tearDownClass() {
+        opera = operaDao.getById(opera.getId()).get();
+        operaDao.delete(opera);
+        humanDao.deleteList(humans);
+        sessionFactory.close();
+    }
+    
+    @Test
+    public void aTestAdd(){
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.aTestAdd()");
+        System.out.println(libretto);
+        System.out.println("Search aria before save");
+        Optional<Libretto> o = dao.getById(libretto.getId());
+        assertFalse(o.isPresent());
+        System.out.println("NOT FOUND");
+        dao.saveOrUpdate(libretto);
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.aTestAdd()) : OK");
+    }
+    
+    @Test
+    public void bTestGetById() {
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.btestGetById()");
+        Optional<Libretto> o = dao.getById(libretto.getId());
+        assertTrue(o.isPresent());
+        assertTrue(o.get().equals(libretto));
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.btestGetById() : OK");
     }
 
-    @Before
-    public void setUp() {
+
+    @Test
+    public void cTestEdit() {
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.cTestEdit()");
+        Libretto newLibretto = dao.getById(libretto.getId()).get();
+        newLibretto.setWriters(Arrays.asList(humans.get(1)));
+        newLibretto.setText(MyGenerator.generateTitle());
+        System.out.println("Edited aria: " + newLibretto);
+        dao.saveOrUpdate(newLibretto);
+        Libretto getNewLibretto = dao.getById(libretto.getId()).get();
+        assertTrue(newLibretto.equals(getNewLibretto));
+        assertFalse(getNewLibretto.equals(libretto));
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.cTestEdit() : OK");
     }
 
-    @After
-    public void tearDown() {
+    @Test
+    public void dTestDelete() {
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.dTestDelete()");
+        dao.delete(libretto);
+        Optional<Libretto> o = dao.getById(libretto.getId());
+        assertFalse(o.isPresent());
+        System.out.println("NOT FOUND");
+        System.out.println("ru.sfedu.organizer.dao.LibrettoDaoTest.dTestDelete() : OK");
     }
-
-    /**
-     * Test of get method, of class Dao.
-     */
-//    @Test
-//    public void testGet() {
-//        System.out.println("get");
-//        long id = 0L;
-//        Class cl = null;
-//        Dao instance = null;
-//        Optional expResult = null;
-//        Optional result = instance.get(id, cl);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    /**
-     * Test of delete method, of class Dao.
-     */
-//    @Test
-//    public void testDelete() {
-//        System.out.println("delete");
-//        Dao instance = null;
-//        instance.delete(null);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    /**
-     * Test of deleteList method, of class Dao.
-     */
-//    @Test
-//    public void testDeleteList() {
-//        System.out.println("deleteList");
-//        Optional<List> listItem = null;
-//        Dao instance = null;
-//        instance.deleteList(listItem);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    /**
-     * Test of saveOrUpdate method, of class Dao.
-     */
-//    @Test
-//    public void testSaveOrUpdate() {
-//        System.out.println("saveOrUpdate");
-//        Dao instance = null;
-//        instance.saveOrUpdate(null);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    /**
-     * Test of saveOrUpdateList method, of class Dao.
-     */
-//    @Test
-//    public void testSaveOrUpdateList() {
-//        System.out.println("saveOrUpdateList");
-//        Optional<List> itemList = null;
-//        Dao instance = null;
-//        instance.saveOrUpdateList(itemList);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    /**
-     * Test of getAll method, of class Dao.
-     */
-//    @Test
-//    public void testGetAll() {
-//        System.out.println("getAll");
-//        Class cl = null;
-//        Dao instance = null;
-//        Optional<List> expResult = null;
-//        Optional<List> result = instance.getAll(cl);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-    /**
-     * Test of getByRange method, of class Dao.
-     */
-//    @Test
-//    public void testGetByPage() {
-//        System.out.println("getByPage");
-//        Class cl = null;
-//        int page = 0;
-//        Dao instance = null;
-//        Optional<List> expResult = null;
-//        Optional<List> result = instance.getByPage(cl, page);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//    @Test
-//    public void getPage(){
-//        Session session = HibernateUtil.getSessionFactory().openSession();
-//        Optional<List> result;
-//        Dao<Human> dao = new Dao<>(session);
-//        Human human = new Human();
-//        human.setName("AAnameNew");
-//        dao.saveOrUpdate(Optional.ofNullable(human));
-//        int count = dao.countAll(Human.class);
-//        System.out.println(count);
-//        //result = dao.getAll(Human.class);
-//        result = dao.getByRange(Human.class, 1, Arrays.asList("name"));
-//        if (result.isPresent()){
-//            List list = result.get();
-//            System.out.println(list.isEmpty());
-//            System.out.println(list); 
-//        }        
-//    }
+    
+    
     //@Test
     public void addData() {
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
             List<Human> list = new ArrayList<>();
             Human human;
             for (int i = 1; i <= 10; i++) {
@@ -197,7 +157,7 @@ public class DaoTest {
                 list.add(human);
             }
             HumanDao humanDao = new HumanDao();
-            humanDao.saveOrUpdateList(Optional.ofNullable(list));
+            humanDao.saveOrUpdateList(list);
             List<Personage> chars;
             PersonageDao daoPers = new PersonageDao();
             OperaDao daoOpera = new OperaDao();
@@ -206,7 +166,7 @@ public class DaoTest {
                 Opera opera = new Opera();
                 opera.setTitle("TitleOpera " + i);
                 opera.setDescription("some descr " + i);
-                daoOpera.saveOrUpdate(Optional.ofNullable(opera));
+                daoOpera.saveOrUpdate(opera);
                 chars = new ArrayList<>();
                 Personage ch1 = new Personage();
                 ch1.setOpera(opera);
@@ -225,7 +185,7 @@ public class DaoTest {
 
                 opera.setPersonages(chars);
 
-                daoOpera.saveOrUpdate(Optional.ofNullable(opera));
+                daoOpera.saveOrUpdate(opera);
 
                 aries = new ArrayList<>();
                 for (int j = 1; j <= 7; j++) {
@@ -255,7 +215,7 @@ public class DaoTest {
                 libretto.setWriters(humans);
                 opera.setLibretto(libretto);
                 opera.setAries(aries);
-                daoOpera.saveOrUpdate(Optional.ofNullable(opera));
+                daoOpera.saveOrUpdate(opera);
             }
             PlaceDao placeDao = new PlaceDao();
             List<Place> places = new ArrayList<>();
@@ -270,7 +230,7 @@ public class DaoTest {
                 place.setLocation("location some " + i);
                 places.add(place);
             }
-            placeDao.saveOrUpdateList(Optional.ofNullable(places));
+            placeDao.saveOrUpdateList(places);
             AriaDao ariaDao = new AriaDao();
             ConcertDao concertDao = new ConcertDao();
             List<Concert> concerts = new ArrayList<>();
@@ -291,7 +251,7 @@ public class DaoTest {
                 concert.setTitle("Consert " + i);
                 concerts.add(concert);
             }
-            concertDao.saveOrUpdateList(Optional.ofNullable(concerts));
+            concertDao.saveOrUpdateList(concerts);
             StageDao stageDao = new StageDao();
             List<Stage> stages = new ArrayList<>();
             for (int i = 1; i <= 10; i++) {
@@ -306,7 +266,7 @@ public class DaoTest {
                 stage.setTitle("Stage " + i + " " + stage.getOpera().getTitle());
                 stages.add(stage);
             }
-            stageDao.saveOrUpdateList(Optional.ofNullable(stages));
+            stageDao.saveOrUpdateList(stages);
             EventDao eventDao = new EventDao();
             SingleEventDao singleEventDao = new SingleEventDao();
             List<SingleEvent> singleEvents = new ArrayList<>();
@@ -318,7 +278,7 @@ public class DaoTest {
                 singleEvent.setEvent(eventDao.getById(MyGenerator.generateLong(1, 20)).get());
                 singleEvents.add(singleEvent);
             }
-            singleEventDao.saveOrUpdateList(Optional.ofNullable(singleEvents));
+            singleEventDao.saveOrUpdateList(singleEvents);
             RoleDao roleDao = new RoleDao();
             List<Role> roles = new ArrayList<>();
             for (int i = 1; i <= 30; i++) {
@@ -327,7 +287,7 @@ public class DaoTest {
                 role.setPersonage(daoPers.getById(i).get());
                 roles.add(role);
             }
-            roleDao.saveOrUpdateList(Optional.ofNullable(roles));
+            roleDao.saveOrUpdateList(roles);
             stages = new ArrayList<>();
             for (int i = 11; i <= 20; i++) {
                 Stage stage = stageDao.getById(i).get();
@@ -339,7 +299,7 @@ public class DaoTest {
                 stage.setRoles(rs);
                 stages.add(stage);
             }
-            stageDao.saveOrUpdateList(Optional.ofNullable(stages));
+            stageDao.saveOrUpdateList(stages);
 //        session.clear();    
 //        System.out.println("olololololo");
 //        PersonageDao daoPers = new PersonageDao(session);
@@ -350,17 +310,7 @@ public class DaoTest {
 //        System.out.println(a.getPersonages());
 //        Opera o = daoOpera.getById(1L).get();
 //        //System.out.println(a.getPersonages());
-        }
+        
     }
-
-    //@Test
-    public void anotherTest() {
-        Session ses = HibernateUtil.getSessionFactory().openSession();
-        ses.beginTransaction();
-        ses.get(User.class, 1L);
-        User user = ses.get(User.class, 2L);
-        ses.getTransaction().commit();
-        ses.close();
-        HibernateUtil.getSessionFactory().close();
-    }
+    
 }

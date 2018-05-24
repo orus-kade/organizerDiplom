@@ -17,7 +17,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.xml.bind.annotation.XmlTransient;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -33,40 +32,35 @@ public class User {
     //
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name="user_id", nullable = false)
     private long id;
     
-    @Column(name="user_login")
-    @NotNull
+    @Column(name="user_login", nullable = false)
     private String login;
     
-    @Column(name="user_password")
-    @NotNull
+    @Column(name="user_password", nullable = false)
     private String password;
     
-    @Column(name="user_salt")
-    @NotNull
+    @Column(name="user_salt", nullable = false)
     private byte[] salt;
     
     @Fetch(FetchMode.SELECT)
     @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    @NotNull
-    @Column(name="user_role")
+    @Column(name="user_role", nullable = false)
     private List<UserRoles> roles;
     
 //    @Column(name="user_email")
 //    @NotNull
 //    private String email;
     
-    @Column(name="user_create_date")
-    @NotNull
+    @Column(name="user_create_date", nullable = false)
     private long createDate;
     
 //    @Column(name="user_name")
 //    private String name;
     
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     private List<Note> notes;
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -78,6 +72,10 @@ public class User {
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public User() {
     }
 
@@ -127,10 +125,18 @@ public class User {
         return login;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<UserRoles> getRoles() {
         return roles;
     }
 
+    /**
+     *
+     * @param roles
+     */
     public void setRoles(List<UserRoles> roles) {
         this.roles = roles;
     }
@@ -203,7 +209,6 @@ public class User {
      *
      * @return the value of notes
      */
-    @XmlTransient
     public List<Note> getNotes() {
         return notes;
     }
@@ -226,10 +231,18 @@ public class User {
         return events;
     }
 
+    /**
+     *
+     * @return
+     */
     public byte[] getSalt() {
         return salt;
     }
 
+    /**
+     *
+     * @param salt
+     */
     public void setSalt(byte[] salt) {
         this.salt = salt;
     }
@@ -238,10 +251,19 @@ public class User {
     // Other methods
     //
 
+    /**
+     *
+     * @return
+     */
+
     public String getPassword() {
         return password;
     }
 
+    /**
+     *
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
     }

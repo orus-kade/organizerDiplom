@@ -39,9 +39,18 @@ public class AriaBusiness {
     
     private final PersonageDao personageDao = new PersonageDao();
 
+    /**
+     *
+     */
     public AriaBusiness() {
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public AriaModel getById(long id) throws ObjectNotFoundException{
         Optional<Aria> o = ariaDao.getById(id);
         AriaModel ariaModel = null;
@@ -57,6 +66,11 @@ public class AriaBusiness {
         return ariaModel;
     }
 
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException {
         Optional<Aria> o = ariaDao.getById(id);
         if (o.isPresent()){
@@ -65,6 +79,12 @@ public class AriaBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.ARIA, id);
     }   
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SearchResult> getByRange(int from, int to){
         Optional<List> o;
         if (from == 0 && to == 0){
@@ -81,14 +101,27 @@ public class AriaBusiness {
         return result;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<SearchResult> getAll(){
         return this.getByRange(0, 0);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return ariaDao.count();
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public List<SearchResult> search(String key){
         if (key == null || key.trim().length()==0){
             return this.getAll();
@@ -103,6 +136,12 @@ public class AriaBusiness {
         return result;
     }
     
+    /**
+     *
+     * @param ariaModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave (AriaModel ariaModel) throws ObjectNotFoundException{
         Aria aria;
         if (ariaModel.getId() <= 0)

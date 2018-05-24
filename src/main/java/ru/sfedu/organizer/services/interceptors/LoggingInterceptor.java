@@ -27,6 +27,14 @@ public class LoggingInterceptor implements PreProcessInterceptor{
 	@Context
 	HttpServletRequest servletRequest;
 
+    /**
+     *
+     * @param hr
+     * @param rmi
+     * @return
+     * @throws Failure
+     * @throws WebApplicationException
+     */
     @Override
     public ServerResponse preProcess(HttpRequest hr, ResourceMethodInvoker rmi) throws Failure, WebApplicationException {
         String methodName = rmi.getMethod().getName();

@@ -12,9 +12,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.annotations.Type;
 
 /**
@@ -33,8 +33,7 @@ public class Place {
     @Column(name="place_id")
     private long id;
     
-    @Column(name="place_title")
-    @NotNull
+    @Column(name="place_title", nullable = false)
     private String title;
     
     @Column(name="place_location")
@@ -50,12 +49,16 @@ public class Place {
             inverseJoinColumns = @JoinColumn(name = "human_id"))
     private List<Human> persons;
 
-    @OneToMany(mappedBy = "place", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "place", cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.REMOVE}, orphanRemoval = true)
     private List<SingleEvent> events;
     
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Place() {
     }
 
@@ -142,11 +145,19 @@ public class Place {
         return persons;
     }
     
+    /**
+     *
+     * @return
+     */
     @XmlTransient
     public List<SingleEvent> getEvents() {
         return events;
     }
 
+    /**
+     *
+     * @param events
+     */
     public void setEvents(List<SingleEvent> events) {
         this.events = events;
     }
@@ -155,20 +166,59 @@ public class Place {
     // Other methods
     //
 
+    /**
+     *
+     * @return
+     */
+
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        String st = "Place{" + "id=" + id + ", title=" + title + ", location=" + location + ", description=" + description;
+        try{
+            String string =", persons=[";
+        if (this.persons!=null && !this.persons.isEmpty())
+           string += this.persons.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string += "], events=[";
+        if (this.events!=null && !this.events.isEmpty())
+           string += this.events.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        
+        string += "]";
+        st += string;
+        } catch (org.hibernate.LazyInitializationException ex){
+            LogManager.getLogger(Place.class).error("Object is not fully initialized\n"+ex);
+        }
+        st += '}';
+        return st;
+    }
+    
+    
+    
     
     @Override
     public boolean equals(Object obj) {
         if (this == null || obj == null || getClass() != obj.getClass()) 
             return false;
         Place a = (Place) obj;
-        return this.id == a.getId();
+       // return this.id == a.getId();
+       return this.toString().equals(a.toString());
     } 
 
     

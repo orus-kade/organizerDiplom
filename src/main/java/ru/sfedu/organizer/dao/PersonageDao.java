@@ -18,26 +18,53 @@ import org.hibernate.criterion.Restrictions;
 
 public class PersonageDao extends Dao<Personage>{
     
+    /**
+     *
+     */
     public PersonageDao() {
         super(Personage.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Personage> getById(long id){
         return this.get(id);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return this.countAll();
     }
     
+    /**
+     *
+     * @return
+     */
     public Optional<List> getAll(){
         return super.getAll(Arrays.asList("name"));
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public Optional<List> getByRange(int from, int to){
         return super.getByRange(from, to, Arrays.asList("name"));
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public Optional<List> search(String key){
         this.getSession();
         Transaction tran = session.beginTransaction();

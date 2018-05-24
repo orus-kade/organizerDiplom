@@ -3,7 +3,6 @@ package ru.sfedu.organizer.dao;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 import org.hibernate.Criteria;
@@ -11,7 +10,6 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
-import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Professions;
@@ -26,26 +24,54 @@ import ru.sfedu.organizer.utils.Utils;
 
 public class OperaDao extends Dao<Opera>{
     
+    /**
+     *
+     */
     public OperaDao() {
         super(Opera.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Opera> getById(long id){
         return this.get(id);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return this.countAll();
     }
     
+    /**
+     *
+     * @return
+     */
     public Optional<List> getAll(){
         return super.getAll(Arrays.asList("title"));
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public Optional<List> getByRange(int from, int to){
         return super.getByRange(from, to, Arrays.asList("title"));
     }
     
+    /**
+     *
+     * @param opera
+     * @param profession
+     * @return
+     */
     public List<Human> getHumansByProfession(Opera opera, Professions profession){
         List<Human> list = new ArrayList<>();
         if ((profession.equals(Professions.COMPOSER) || profession.equals(Professions.WRITER)) && opera.getAries() != null && !opera.getAries().isEmpty()){
@@ -67,6 +93,11 @@ public class OperaDao extends Dao<Opera>{
         return list;
     }
     
+    /**
+     *
+     * @param list
+     * @return
+     */
     public List<SingleEvent> getFutureEvents(List<Stage> list){
         List<SingleEvent> singleEvents = new ArrayList<>();
         if (list != null && !list.isEmpty()){
@@ -89,6 +120,11 @@ public class OperaDao extends Dao<Opera>{
         return singleEvents;
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public Optional<List> search(String key){
         this.getSession();
         Transaction tran = session.beginTransaction();

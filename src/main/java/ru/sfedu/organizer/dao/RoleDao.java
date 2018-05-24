@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package ru.sfedu.organizer.dao;
 
 import java.util.Arrays;
@@ -22,22 +18,44 @@ import ru.sfedu.organizer.utils.InitialiseUtil;
 
 public class RoleDao extends Dao<Role>{
     
+    /**
+     *
+     */
     public RoleDao() {
         super(Role.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Role> getById(long id){
         return this.get(id);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return this.countAll();
     }
     
+    /**
+     *
+     * @return
+     */
     public Optional<List> getAll(){
         return super.getAll(Arrays.asList("personage"));
     } 
     
+    /**
+     *
+     * @param persId
+     * @param singerId
+     * @return
+     */
     public Optional<Role> getByPesonageAndSinger(long persId, long singerId){
         this.getSession();
         Transaction tran = session.beginTransaction();

@@ -8,9 +8,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
+
 
 /**
  * Class Stage
@@ -24,10 +26,10 @@ public class Stage extends Event {
     // Fields
     //
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name="opera_id")
+    @JoinColumn(name = "opera_id")
     private Opera opera;
-    
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "role_stage",
             joinColumns = @JoinColumn(name = "stage_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -36,6 +38,9 @@ public class Stage extends Event {
     //
     // Constructors
     //
+    /**
+     *
+     */
     public Stage() {
     }
 
@@ -81,7 +86,6 @@ public class Stage extends Event {
      *
      * @return the value of roles
      */
-    @XmlTransient
     public List<Role> getRoles() {
         return roles;
     }
@@ -89,12 +93,34 @@ public class Stage extends Event {
     //
     // Other methods
     //
-    
+    @Override
+    public String toString() {
+        String st = "Stage{" + "id=" + getId() + ", title=" + getTitle() + ", description=" + getDescription();
+        try {
+            String string = ", opera=[id=" + opera.getId() + "]";
+            string += ", roles=[";
+            if (this.roles != null && !this.roles.isEmpty()) {
+                string += this.roles.stream().collect(StringBuilder::new,
+                        (response, element) -> response.append(" ").append("id=" + element.getId()),
+                        (response1, response2) -> response1.append(",").append(response2.toString()))
+                        .toString();
+            }
+            string += "]";
+            st += string;
+        } catch (org.hibernate.LazyInitializationException ex) {
+            LogManager.getLogger(Stage.class).error("Object is not fully initialized\n" + ex);
+        }
+        st += '}';
+        return st;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == null || obj == null || getClass() != obj.getClass()) 
+        if (this == null || obj == null || getClass() != obj.getClass()) {
             return false;
+        }
         Stage a = (Stage) obj;
-        return this.getId() == a.getId();
-    } 
+        //return this.getId() == a.getId();
+        return this.toString().equals(a.toString());
+    }
 }

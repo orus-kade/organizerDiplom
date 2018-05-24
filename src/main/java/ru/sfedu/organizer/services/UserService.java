@@ -30,7 +30,7 @@ import ru.sfedu.organizer.model.UserModel;
  * @author sterie
  */
 @Stateless
-@Path("/user")
+@Path("user")
 public class UserService{
     
     static final Logger logger = LogManager.getLogger(UserService.class);
@@ -38,10 +38,15 @@ public class UserService{
     @EJB
     private  UserBusiness userBusiness = new UserBusiness();
 
-
+    /**
+     *
+     * @param login
+     * @param pass
+     * @return
+     */
     @PermitAll
     @POST
-    @Path("/login")
+    @Path("login")
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@FormParam("login") String login, @FormParam("pass") String pass){
         UserModel userModel = userBusiness.login(login, pass);
@@ -49,15 +54,25 @@ public class UserService{
         return Response.ok().entity(userModel).build();
     }
     
+    /**
+     *
+     * @param login
+     * @param pass
+     * @return
+     */
     @PermitAll
     @POST
-    @Path("/registration")
+    @Path("registration")
     public Response registration(@FormParam("login") String login, @FormParam("pass") String pass){
         if (!userBusiness.registration(login, pass)) return Response.status(Response.Status.BAD_REQUEST).build();
         return Response.ok().build();
     }
 
-    
+    /**
+     *
+     * @param id
+     * @return
+     */
     @RolesAllowed("ADMIN")
     @PermitAll
     @DELETE
@@ -67,7 +82,12 @@ public class UserService{
        return Response.ok().entity(id).build();
     }
 
-    
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("USER")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -76,9 +96,16 @@ public class UserService{
         return Response.ok().entity(userModel).build();
     }
     
+    /**
+     *
+     * @param id
+     * @param noteModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("USER")
     @POST
-    @Path("/note")
+    @Path("note")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response createOrSaveNote(@QueryParam("userId") Long id, NoteModel noteModel) throws ObjectNotFoundException{
@@ -86,53 +113,84 @@ public class UserService{
         return Response.ok().build();
     }
     
+    /**
+     *
+     * @param eventId
+     * @param userId
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("USER")
     @GET
-    @Path("/add/event/{id}")
+    @Path("add/event/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response addEvent(@PathParam("id") long eventId, @QueryParam("userId") long userId) throws ObjectNotFoundException{
         userBusiness.addEvent(userId, eventId);
         return Response.ok().build();
     }
     
+    /**
+     *
+     * @param eventId
+     * @param userId
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("USER")
     @GET
-    @Path("/remove/event/{id}")
+    @Path("remove/event/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response removeEvent(@PathParam("id") long eventId, @QueryParam("userId") long userId) throws ObjectNotFoundException{
         userBusiness.removeEvent(userId, eventId);
         return Response.ok().build();
     }
     
+    /**
+     *
+     * @param noteId
+     * @param userId
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("USER")
     @GET
-    @Path("/remove/note/{id}")
+    @Path("remove/note/{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response removeNote(@PathParam("id") long noteId, @QueryParam("userId") long userId) throws ObjectNotFoundException{
         userBusiness.removeNote(userId, noteId);
         return Response.ok().build();
     }
     
-    
+    /**
+     *
+     * @return
+     */
     @RolesAllowed("ADMIN")
     @GET
-    @Path("/all")
+    @Path("all")
     @Produces(MediaType.APPLICATION_JSON)
     public Response gatAll() {
         List<UserModel> list = userBusiness.detAll(); 
         return Response.ok().entity(list).build();
     }
     
+    /**
+     *
+     * @return
+     */
     @RolesAllowed("ADMIN")
     @GET
-    @Path("/editroles")
+    @Path("editroles")
     @Produces(MediaType.APPLICATION_JSON)
     public Response setRoles() {
         List<UserModel> list = userBusiness.detAll(); 
         return Response.ok().entity(list).build();
     }
 
-
+    /**
+     *
+     * @return
+     */
     @RolesAllowed("ADMIN")
     @PermitAll
     @GET

@@ -15,10 +15,18 @@ import ru.sfedu.organizer.entity.Note;
 
 public class NoteDao extends Dao<Note>{
     
+    /**
+     *
+     */
     public NoteDao() {
         super(Note.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Note> getById(long id){
         return this.get(id);
     }

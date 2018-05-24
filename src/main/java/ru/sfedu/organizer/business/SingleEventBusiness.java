@@ -30,9 +30,18 @@ public class SingleEventBusiness {
 
     private static final EventDao eventDao = new EventDao();
 
+    /**
+     *
+     */
     public SingleEventBusiness() {
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public SingleEventModel getById(long id) throws ObjectNotFoundException {
         Optional<SingleEvent> o = dao.getById(id);
         SingleEventModel singleEventModel = null;
@@ -54,6 +63,11 @@ public class SingleEventBusiness {
         return singleEventModel;
     }
 
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException {
         Optional<SingleEvent> o = dao.getById(id);
         if (o.isPresent()) {
@@ -62,6 +76,12 @@ public class SingleEventBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.SINGLE_EVENT, id);
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SingleEventInfo> getByRange(int from, int to) {
         Optional<List> o;
         if (from == 0 && to == 0) {
@@ -77,6 +97,12 @@ public class SingleEventBusiness {
         return result;
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SingleEventInfo> getByRangeFuture(int from, int to) {
         Optional<List> o;
         if (from == 0 && to == 0) {
@@ -92,22 +118,44 @@ public class SingleEventBusiness {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SingleEventInfo> getAll() {
         return this.getByRange(0, 0);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SingleEventInfo> getAllFuture() {
         return this.getByRange(0, 0);
     }
 
+    /**
+     *
+     * @return
+     */
     public int count() {
         return dao.count();
     }
 
+    /**
+     *
+     * @return
+     */
     public int countFuture() {
         return dao.countFuture();
     }
 
+    /**
+     *
+     * @param singleEventModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave(SingleEventModel singleEventModel) throws ObjectNotFoundException {
         SingleEvent sEvent;
         if (singleEventModel.getId() <= 0) {

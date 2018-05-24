@@ -18,26 +18,53 @@ import ru.sfedu.organizer.entity.Concert;
  */
 public class ConcertDao extends Dao<Concert>{
     
+    /**
+     *
+     */
     public ConcertDao() {
         super(Concert.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Concert> getById(long id){
         return this.get(id);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return this.countAll();
     }
     
+    /**
+     *
+     * @return
+     */
     public Optional<List> getAll(){
         return super.getAll(Arrays.asList("title"));
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public Optional<List> getByRange(int from, int to){
         return super.getByRange(from, to, Arrays.asList("title"));
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public Optional<List> search(String key){
         this.getSession();
         Transaction tran = session.beginTransaction();

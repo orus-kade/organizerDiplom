@@ -11,7 +11,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Type;
 
@@ -31,30 +30,24 @@ public class Note {
     @Column(name="note_id")
     private long id;
     
-    @Column(name="note_title")
-    @NotNull
+    @Column(name="note_title", nullable = false)
     private String title;
     
-    @Column(name="note_object_id")
-    @NotNull
+    @Column(name="note_object_id", nullable = false)
     private long objectId;
     
-    @Column(name="note_object_type")
-    @NotNull
+    @Column(name="note_object_type", nullable = false)
     @Enumerated(EnumType.STRING)
     private ObjectTypes objectType;
     
-    @Column(name="note_description")
-    @NotNull
+    @Column(name="note_description", nullable = false)
     @Type(type = "text")
     private String description;
     
-    @Column(name="note_createDate")
-    @NotNull
+    @Column(name="note_createDate", nullable = false)
     private long createDate;
     
-    @Column(name="note_updateDate")
-    @NotNull
+    @Column(name="note_updateDate", nullable = false)
     private long updateDate;
     
     @ManyToOne(fetch = FetchType.EAGER)
@@ -64,6 +57,10 @@ public class Note {
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Note() {
     }
 
@@ -185,10 +182,18 @@ public class Note {
         return updateDate;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
@@ -199,10 +204,19 @@ public class Note {
     // Other methods
     //
 
+    /**
+     *
+     * @return
+     */
+
     public User getUser() {
         return user;
     }
 
+    /**
+     *
+     * @param user
+     */
     public void setUser(User user) {
         this.user = user;
     }

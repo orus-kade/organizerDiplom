@@ -10,11 +10,39 @@ package ru.sfedu.organizer.entity;
  * @author sterie
  */
 public enum Voices {
+
+    /**
+     *
+     */
     SOPRANO,
+
+    /**
+     *
+     */
     MEZZO_SOPRANO,
+
+    /**
+     *
+     */
     CONTRALTO,
+
+    /**
+     *
+     */
     COUNTERTENOR,
+
+    /**
+     *
+     */
     TENOR,
+
+    /**
+     *
+     */
     BARITONE,
+
+    /**
+     *
+     */
     BASS
 }

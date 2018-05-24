@@ -1,24 +1,15 @@
 
 package ru.sfedu.organizer.dao;
 
-
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Optional;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.Criteria;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
-import ru.sfedu.organizer.Constants;
-import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.utils.HibernateUtil;
 import ru.sfedu.organizer.utils.InitialiseUtil;
 
@@ -26,27 +17,49 @@ import ru.sfedu.organizer.utils.InitialiseUtil;
 /**
  *
  * @author sterie
+ * @param <T>
  */
 public abstract class Dao<T> {    
     
     private Logger logger = LogManager.getRootLogger();
     
+    /**
+     *
+     */
     protected Session session = null;
     
+    /**
+     *
+     */
     protected Class<T> entityClass;
     
+    /**
+     *
+     * @param entityClass
+     */
     public Dao(Class entityClass) {
         this.entityClass = entityClass;
     }
     
+    /**
+     *
+     */
     protected void getSession(){
         this.session = HibernateUtil.getSessionFactory().getCurrentSession();
     }
 
+    /**
+     *
+     */
     protected  void closeSession(){
         this.session.close();
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     protected Optional<T> get(long id){ 
         this.getSession();
         Transaction tran = session.beginTransaction();
@@ -59,14 +72,23 @@ public abstract class Dao<T> {
         return item;
     }
     
+    /**
+     *
+     * @param item
+     */
     public void delete(T item){
         this.getSession();
         Transaction tran = session.beginTransaction();
         session.delete(item);
-        this.closeSession();
         tran.commit();
+        this.closeSession();
+        
     }
     
+    /**
+     *
+     * @param listItem
+     */
     public void deleteList(List listItem){
             this.getSession();
             Transaction tran = session.beginTransaction();
@@ -79,6 +101,10 @@ public abstract class Dao<T> {
             this.closeSession();
     }
     
+    /**
+     *
+     * @param item
+     */
     public void saveOrUpdate(T item){
             this.getSession();
             Transaction tran = session.beginTransaction();
@@ -87,6 +113,10 @@ public abstract class Dao<T> {
             this.closeSession();
     }
     
+    /**
+     *
+     * @param itemList
+     */
     public void saveOrUpdateList(List<T> itemList){
             this.getSession();
             Transaction tran = session.beginTransaction();
@@ -99,7 +129,11 @@ public abstract class Dao<T> {
             this.closeSession();
     }
     
-    
+    /**
+     *
+     * @param orderParametrs
+     * @return
+     */
     protected Optional<List> getAll(List<String> orderParametrs){
         this.getSession();
         Transaction tran = session.beginTransaction();
@@ -116,6 +150,13 @@ public abstract class Dao<T> {
         return result;
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @param orderParametrs
+     * @return
+     */
     protected Optional<List> getByRange(int from, int to, List<String> orderParametrs){
         if (from > to){
             int foo = from;
@@ -139,6 +180,10 @@ public abstract class Dao<T> {
         return result;
     }
         
+    /**
+     *
+     * @return
+     */
     protected int countAll(){
         this.getSession();
         Transaction tran = session.beginTransaction();

@@ -1,6 +1,5 @@
 package ru.sfedu.organizer.entity;
 
-import java.util.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,10 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.logging.log4j.LogManager;
 import org.hibernate.annotations.Type;
 
 /**
@@ -30,28 +28,28 @@ public class SingleEvent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    
+
     @ManyToOne
-    @JoinColumn(name="place_id")
-    @NotNull
+    @JoinColumn(name = "place_id", nullable = false)
     private Place place;
-    
-    @Column(name="single_event_datetime")
-    @NotNull
+
+    @Column(name = "single_event_datetime", nullable = false)
     private long datetime;
-    
-    @Column(name="singe_event_description")
+
+    @Column(name = "singe_event_description")
     @Type(type = "text")
     private String description;
-    
+
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, fetch = FetchType.EAGER)
-    @JoinColumn(name="event_id")
-    @NotNull
+    @JoinColumn(name = "event_id")
     private Event event;
 
     //
     // Constructors
     //
+    /**
+     *
+     */
     public SingleEvent() {
     }
 
@@ -158,12 +156,27 @@ public class SingleEvent {
     //
     // Other methods
     //
-    
+    @Override
+    public String toString() {
+        String st = "SingleEvent{" + "id=" + id + ", datetime=" + datetime + ", description=" + description;
+        try {
+            String string = ", event=[id=" + event.getId() + "]";
+            string += ", place=" + place.getId() + "]"; 
+            st += string;
+        } catch (org.hibernate.LazyInitializationException ex) {
+            LogManager.getLogger(Aria.class).error("Object is not fully initialized\n" + ex);
+        }
+        st += '}';
+        return st;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == null || obj == null || getClass() != obj.getClass()) 
+        if (this == null || obj == null || getClass() != obj.getClass()) {
             return false;
+        }
         SingleEvent a = (SingleEvent) obj;
-        return this.id == a.getId();
-    } 
+        //return this.id == a.getId();
+        return this.toString().equals(a.toString());
+    }
 }

@@ -41,9 +41,18 @@ public class StageBusiness {
     @EJB
     private final HumanBusiness humanBusiness = new HumanBusiness();
 
+    /**
+     *
+     */
     public StageBusiness() {
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public StageModel getById(long id) throws ObjectNotFoundException{
         Optional<Stage> o = stageDao.getById(id);
         StageModel stageModel = null;
@@ -59,6 +68,11 @@ public class StageBusiness {
         return stageModel;
     }
 
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException {
         Optional<Stage> o = stageDao.getById(id);
         if (o.isPresent()) {
@@ -67,6 +81,12 @@ public class StageBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.STAGE, id);
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SearchResult> getByRange(int from, int to) {
         Optional<List> o;
         if (from == 0 && to == 0) {
@@ -82,14 +102,27 @@ public class StageBusiness {
         return result;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SearchResult> getAll() {
         return this.getByRange(0, 0);
     }
 
+    /**
+     *
+     * @return
+     */
     public int count() {
         return stageDao.count();
     }
 
+    /**
+     *
+     * @param key
+     * @return
+     */
     public List<SearchResult> search(String key) {
         if (key == null || key.trim().length() == 0) {
             return this.getAll();
@@ -104,6 +137,12 @@ public class StageBusiness {
         return result;
     }
 
+    /**
+     *
+     * @param stageModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave(StageModel stageModel) throws ObjectNotFoundException {
         Stage stage;
         if (stageModel.getId() <= 0) {

@@ -7,8 +7,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import org.apache.logging.log4j.LogManager;
 
 /**
  * Class Concert
@@ -35,6 +34,10 @@ public class Concert extends Event {
     //
     // Constructors
     //
+
+    /**
+     *
+     */
     public Concert() {
     }
 
@@ -87,13 +90,40 @@ public class Concert extends Event {
     //
     // Other methods
     //
-    
+
+    @Override
+    public String toString() {
+        String st = "Concert{" + "id=" + getId() + ", title=" + getTitle() + ", description=" + getDescription();
+        try{
+            String string =", aries=[";
+        if (this.aries!=null && !this.aries.isEmpty())
+           string += this.aries.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string += "], singers=[";
+        if (this.singers!=null && !this.singers.isEmpty())
+           string += this.singers.stream().collect(StringBuilder::new,
+	    		(response, element) -> response.append(" ").append("id="+element.getId()),
+	    		(response1, response2) -> response1.append(",").append(response2.toString()))
+	    		.toString();
+        string +="], director=[";
+        if (getDirector()!=null) string+="id="+getDirector().getId();
+        string +="]";
+        st += string;
+        } catch (org.hibernate.LazyInitializationException ex){
+            LogManager.getLogger(Concert.class).error("Object is not fully initialized\n"+ex);
+        } 
+        st += '}';
+        return st;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == null || obj == null || getClass() != obj.getClass()) 
             return false;
         Concert a = (Concert) obj;
-        return this.getId() == a.getId();
+        return this.toString().equals(a.toString());
     } 
     
 }

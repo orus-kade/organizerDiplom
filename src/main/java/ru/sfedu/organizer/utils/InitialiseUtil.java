@@ -16,7 +16,12 @@ import ru.sfedu.organizer.entity.Aria;
  */
 public class InitialiseUtil {
     
-    
+    /**
+     *
+     * @param <T>
+     * @param entity
+     * @return
+     */
     public static <T> T forcedInitialise(T entity){
         try {
             for(PropertyDescriptor propertyDescriptor :

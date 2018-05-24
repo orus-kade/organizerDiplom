@@ -32,9 +32,18 @@ public class HumanBusiness {
     
     private final HumanDao humanDao = new HumanDao();
 
+    /**
+     *
+     */
     public HumanBusiness() {
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public HumanModel getById(long id) throws ObjectNotFoundException{
         Optional<Human> o = humanDao.getById(id);
         HumanModel humanModel = null;
@@ -50,6 +59,11 @@ public class HumanBusiness {
         return humanModel;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public HumanWorks getWorksById(long id){
         HumanWorks humanWorks = new HumanWorks();
         humanWorks.addComposerWorks(humanDao.getWorksByProfession(id, Professions.COMPOSER));
@@ -58,6 +72,11 @@ public class HumanBusiness {
         return humanWorks;
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public HumanEvents getEventsById(long id){
         HumanEvents humanEvents = new HumanEvents();
         humanEvents.addFutureEvents(humanDao.getFutureEvents(id));
@@ -66,6 +85,11 @@ public class HumanBusiness {
         return humanEvents;
     }
     
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException{
         Optional<Human> o = humanDao.getById(id);
         if (o.isPresent()){
@@ -74,6 +98,12 @@ public class HumanBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.HUMAN, id);
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SearchResult> getByRange(int from, int to){
         Optional<List> o;
         if (from == 0 && to == 0){
@@ -90,14 +120,28 @@ public class HumanBusiness {
         return result;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<SearchResult> getAll(){
         return this.getByRange(0, 0);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return humanDao.count();
     }
     
+    /**
+     *
+     * @param key
+     * @param professions
+     * @return
+     */
     public List<SearchResult> search(String key, List<Professions> professions){
         Optional<List> o;
         if (key == null || key.trim().length()==0){
@@ -116,14 +160,32 @@ public class HumanBusiness {
         return result;
     }
     
+    /**
+     *
+     * @param human
+     * @param prof
+     * @return
+     */
     public boolean isHumanProfession(Human human, Professions prof){
         return human.getProfessions().contains(prof);
     }
     
+    /**
+     *
+     * @param human
+     * @param profs
+     * @return
+     */
     public boolean isHumanProfession(Human human, List<Professions> profs){
         return human.getProfessions().containsAll(profs);
     }
     
+    /**
+     *
+     * @param humanModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave (HumanModel humanModel) throws ObjectNotFoundException{
         Human human;
         if (humanModel.getId() <= 0)

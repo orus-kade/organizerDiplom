@@ -24,6 +24,13 @@ public class PlaceModel {
     private Map<Long, String> humans = new HashMap<>();
     private List<SingleEventInfo> events = new ArrayList<>();
 
+    /**
+     *
+     * @param id
+     * @param title
+     * @param location
+     * @param description
+     */
     public PlaceModel(long id, String title, String location, String description) {
         this.id = id;
         this.title = title;
@@ -31,52 +38,100 @@ public class PlaceModel {
         this.description = description;
     }
     
+    /**
+     *
+     * @param list
+     */
     public void addHumans(List<Human> list){
         if (list != null)
             list.stream().forEach(e -> this.humans.put(e.getId(), Utils.getHumanName(e)));
     }
     
+    /**
+     *
+     * @param list
+     */
     public void addEvents(List<SingleEvent> list){
         if (list != null)
             list.stream().forEach(e -> this.events.add(new SingleEventInfo(e.getEvent().getClass().getSimpleName(), e.getId(), e.getEvent().getTitle(), new Date(e.getDatetime()))));
     }
 
+    /**
+     *
+     * @return
+     */
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getLocation() {
         return location;
     }
 
+    /**
+     *
+     * @param location
+     */
     public void setLocation(String location) {
         this.location = location;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<SingleEventInfo> getEvents() {
         return events;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getHumansId(){
         if (this.humans.isEmpty())
             return null;

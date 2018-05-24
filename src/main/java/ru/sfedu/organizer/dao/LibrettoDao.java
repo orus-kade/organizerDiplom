@@ -15,14 +15,26 @@ import ru.sfedu.organizer.entity.Opera;
 
 public class LibrettoDao extends Dao<Libretto>{
     
+    /**
+     *
+     */
     public LibrettoDao() {
         super(Libretto.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Libretto> getById(long id){
         return this.get(id);
     }
     
+    /**
+     *
+     * @param libretto
+     */
     @Override
     public void saveOrUpdate(Libretto libretto){
         this.getSession();

@@ -6,6 +6,9 @@ package ru.sfedu.organizer;
  */
 public class Constants {
     
+    /**
+     *
+     */
     public static int ITEMS_ON_PAGE = 5;
     
 }

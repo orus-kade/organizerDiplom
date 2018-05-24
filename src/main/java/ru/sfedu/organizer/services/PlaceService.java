@@ -28,12 +28,18 @@ import ru.sfedu.organizer.model.SearchResult;
  */
 
 @Stateless
-@Path("/place")
+@Path("place")
 public class PlaceService{
     
     @EJB
     private PlaceBusiness placeBusiness = new PlaceBusiness();
 
+    /**
+     *
+     * @param placeModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -43,23 +49,39 @@ public class PlaceService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
-    @Path("/{id}")
+    @Path("{id}")
     public Response remove(@PathParam("id") Long id) throws ObjectNotFoundException{
         placeBusiness.delete(id);
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         PlaceModel placeModel = placeBusiness.getById(id);
         return Response.status(200).entity(placeModel).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,6 +90,12 @@ public class PlaceService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -77,6 +105,10 @@ public class PlaceService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")

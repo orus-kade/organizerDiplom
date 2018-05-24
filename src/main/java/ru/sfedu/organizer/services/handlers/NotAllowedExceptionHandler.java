@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.services.exceptionhandlers;
+package ru.sfedu.organizer.services.handlers;
 
 /**
  *
@@ -14,11 +14,20 @@ import javax.ws.rs.ext.Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ *
+ * @author sterie
+ */
 @Provider
 public class NotAllowedExceptionHandler implements ExceptionMapper<NotAllowedException>{
 
     Logger logger = LogManager.getLogger(NotAllowedExceptionHandler.class);
     
+    /**
+     *
+     * @param exception
+     * @return
+     */
     @Override
     public Response toResponse(NotAllowedException exception) {
         logger.debug(exception);

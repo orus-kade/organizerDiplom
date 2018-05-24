@@ -10,8 +10,24 @@ package ru.sfedu.organizer.entity;
  * @author sterie
  */
 public enum Professions {
+
+    /**
+     *
+     */
     COMPOSER, 
+
+    /**
+     *
+     */
     DIRECTOR,
+
+    /**
+     *
+     */
     SINGER,
+
+    /**
+     *
+     */
     WRITER
 }

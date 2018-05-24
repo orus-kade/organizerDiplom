@@ -30,9 +30,18 @@ public class PlaceBusiness {
     
     private final SingleEventDao singleEventDao = new SingleEventDao();
 
+    /**
+     *
+     */
     public PlaceBusiness() {
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public PlaceModel getById(long id) throws ObjectNotFoundException{
         Optional<Place> o = placeDao.getById(id);
         PlaceModel placeModel = null;
@@ -46,6 +55,11 @@ public class PlaceBusiness {
         return placeModel;
     }
     
+    /**
+     *
+     * @param id
+     * @throws ObjectNotFoundException
+     */
     public void delete(long id) throws ObjectNotFoundException{
         Optional<Place> o = placeDao.getById(id);
         if (o.isPresent()){
@@ -54,6 +68,12 @@ public class PlaceBusiness {
         else throw new ObjectNotFoundException(ObjectTypes.PLACE, id);
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public List<SearchResult> getByRange(int from, int to){
         Optional<List> o;
         if (from == 0 && to == 0){
@@ -70,14 +90,27 @@ public class PlaceBusiness {
         return result;
     }
     
+    /**
+     *
+     * @return
+     */
     public List<SearchResult> getAll(){
         return this.getByRange(0, 0);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return placeDao.count();
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public List<SearchResult> search(String key){
         if (key == null || key.trim().length()==0){
             return this.getAll();
@@ -92,6 +125,12 @@ public class PlaceBusiness {
         return result;
     }
     
+    /**
+     *
+     * @param placeModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     public long createOrSave (PlaceModel placeModel) throws ObjectNotFoundException{
         Place place;
         if (placeModel.getId() <= 0) {

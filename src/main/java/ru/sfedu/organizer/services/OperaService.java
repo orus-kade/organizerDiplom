@@ -26,12 +26,18 @@ import ru.sfedu.organizer.model.SearchResult;
  * @author sterie
  */
 @Stateless
-@Path("/opera")
+@Path("opera")
 public class OperaService{
 
     @EJB
     private OperaBusiness operaBusiness = new OperaBusiness();
 
+    /**
+     *
+     * @param operaModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -41,7 +47,12 @@ public class OperaService{
         return Response.ok().entity(id).build();
     }
 
-    
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -50,16 +61,25 @@ public class OperaService{
         return Response.ok().build();
     }
 
-    
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         OperaModel operaModel = operaBusiness.getById(id);
         return Response.status(200).entity(operaModel).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -68,6 +88,12 @@ public class OperaService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     @PermitAll
     @GET
     @Path("{from}/{to}")
@@ -77,6 +103,10 @@ public class OperaService{
         return Response.status(200).entity(list).build();
     }
 
+    /**
+     *
+     * @return
+     */
     @PermitAll
     @GET
     @Path("count")

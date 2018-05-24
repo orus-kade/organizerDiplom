@@ -15,12 +15,16 @@ import ru.sfedu.organizer.utils.HibernateUtil;
 @ApplicationPath("/")
 public class OrganizerApplication extends Application {
 
+    /**
+     *
+     */
     public OrganizerApplication() {
-        //HibernateUtil.getSessionFactory();
     }
     
-    
-   
+    /**
+     *
+     * @return
+     */
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
@@ -28,6 +32,7 @@ public class OrganizerApplication extends Application {
         return resources;
     }
 
+    
     
     @Override
     protected void finalize() throws Throwable {
@@ -46,9 +51,10 @@ public class OrganizerApplication extends Application {
         resources.add(ru.sfedu.organizer.services.SingleEventService.class);
         resources.add(ru.sfedu.organizer.services.StageService.class);
         resources.add(ru.sfedu.organizer.services.UserService.class);
-        resources.add(ru.sfedu.organizer.services.exceptionhandlers.NotAllowedExceptionHandler.class);
-        resources.add(ru.sfedu.organizer.services.exceptionhandlers.NotFoundExceptionHandler.class);
-        resources.add(ru.sfedu.organizer.services.exceptionhandlers.ObjectNotFoundExceptionHandler.class);
+        resources.add(ru.sfedu.organizer.services.handlers.GsonMessageBodyHandler.class);
+        resources.add(ru.sfedu.organizer.services.handlers.NotAllowedExceptionHandler.class);
+        resources.add(ru.sfedu.organizer.services.handlers.NotFoundExceptionHandler.class);
+        resources.add(ru.sfedu.organizer.services.handlers.ObjectNotFoundExceptionHandler.class);
         resources.add(ru.sfedu.organizer.services.interceptors.LoggingInterceptor.class);
         resources.add(ru.sfedu.organizer.services.interceptors.SecurityInterceptor.class);
     }

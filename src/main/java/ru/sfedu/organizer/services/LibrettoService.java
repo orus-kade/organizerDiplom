@@ -25,12 +25,18 @@ import ru.sfedu.organizer.model.LibrettoModel;
  * @author sterie
  */
 @Stateless
-@Path("/libretto")
+@Path("libretto")
 public class LibrettoService{
     
     @EJB
     private LibrettoBusiness librettoBusiness = new LibrettoBusiness();
     
+    /**
+     *
+     * @param librettoModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -39,6 +45,12 @@ public class LibrettoService{
         return Response.ok().entity(id).build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -47,9 +59,15 @@ public class LibrettoService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         LibrettoModel librettoModel = librettoBusiness.getById(id);

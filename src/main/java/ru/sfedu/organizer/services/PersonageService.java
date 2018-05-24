@@ -24,12 +24,18 @@ import ru.sfedu.organizer.model.PersonageModel;
  * @author sterie
  */
 @Stateless
-@Path("/personage")
+@Path("personage")
 public class PersonageService{
     
     @EJB
     private PersonageBusiness personageBusiness = new PersonageBusiness();
 
+    /**
+     *
+     * @param personageModel
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -39,6 +45,12 @@ public class PersonageService{
         return Response.ok().entity(id).build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @RolesAllowed("ADMIN")
     @DELETE
     @Path("{id}")
@@ -47,9 +59,15 @@ public class PersonageService{
         return Response.ok().build();
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws ObjectNotFoundException
+     */
     @PermitAll
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response find(@PathParam("id") Long id) throws ObjectNotFoundException {
         PersonageModel personageModel = personageBusiness.getById(id);

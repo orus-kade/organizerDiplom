@@ -29,26 +29,54 @@ import ru.sfedu.organizer.utils.Utils;
 
 public class HumanDao extends Dao<Human>{
     
+    /**
+     *
+     */
     public HumanDao() {
         super(Human.class);
     }
     
+    /**
+     *
+     * @param id
+     * @return
+     */
     public Optional<Human> getById(long id){
         return this.get(id);
     }
     
+    /**
+     *
+     * @return
+     */
     public int count(){
         return this.countAll();
     }
     
+    /**
+     *
+     * @return
+     */
     public Optional<List> getAll(){
         return super.getAll(Arrays.asList("surname", "name", "patronymic"));
     }
     
+    /**
+     *
+     * @param from
+     * @param to
+     * @return
+     */
     public Optional<List> getByRange(int from, int to){
         return super.getByRange(from, to, Arrays.asList("surname", "name", "patronymic"));
     }
     
+    /**
+     *
+     * @param humanId
+     * @param profession
+     * @return
+     */
     public List<Aria> getWorksByProfession(long humanId, Professions profession){
         List<Aria> list = new ArrayList<>();
         if (profession.equals(Professions.COMPOSER) || profession.equals(Professions.WRITER)){
@@ -67,6 +95,11 @@ public class HumanDao extends Dao<Human>{
         return list;
     }
     
+    /**
+     *
+     * @param humanId
+     * @return
+     */
     public List<Libretto> getWorksLibretto(long humanId){
         List<Libretto> list = new ArrayList<>();
             this.getSession();
@@ -81,6 +114,11 @@ public class HumanDao extends Dao<Human>{
         return list;
     }
     
+    /**
+     *
+     * @param humanId
+     * @return
+     */
     public List<Event> getDirectorEvents(long humanId){
         List<Event> list = new ArrayList<>();
         this.getSession();
@@ -93,6 +131,11 @@ public class HumanDao extends Dao<Human>{
         return list;
     }
     
+    /**
+     *
+     * @param humanId
+     * @return
+     */
     public List<Event> getSingerEvents(long humanId){
         List<Event> list = new ArrayList<>();
         this.getSession();
@@ -129,6 +172,12 @@ public class HumanDao extends Dao<Human>{
 //      select consert_id from concert_singer where singer_id = 6
 //      )
 //    )  + datetime ограничение   
+
+    /**
+     *
+     * @param humanId
+     * @return
+     */
     public List<SingleEvent> getFutureEvents(long humanId){
         List<SingleEvent> list = new ArrayList<>();
         this.getSession();
@@ -149,6 +198,11 @@ public class HumanDao extends Dao<Human>{
         return list;
     }
     
+    /**
+     *
+     * @param key
+     * @return
+     */
     public Optional<List> search(String key){
         this.getSession();
         Transaction tran = session.beginTransaction();

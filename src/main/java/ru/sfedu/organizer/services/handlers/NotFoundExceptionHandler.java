@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.services.exceptionhandlers;
+package ru.sfedu.organizer.services.handlers;
 
 /**
  *
@@ -14,11 +14,20 @@ import javax.ws.rs.ext.Provider;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ *
+ * @author sterie
+ */
 @Provider
 public class NotFoundExceptionHandler implements ExceptionMapper<NotFoundException>{
 
     Logger logger = LogManager.getLogger(NotFoundExceptionHandler.class);
     
+    /**
+     *
+     * @param exception
+     * @return
+     */
     @Override
     public Response toResponse(NotFoundException exception) {
         logger.debug(exception);

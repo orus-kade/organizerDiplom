@@ -1,6 +1,6 @@
 /*
  */
-package ru.sfedu.organizer.services.exceptionhandlers;
+package ru.sfedu.organizer.services.handlers;
 
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
@@ -18,6 +18,11 @@ public class ObjectNotFoundExceptionHandler implements ExceptionMapper<ObjectNot
 
     Logger logger = LogManager.getLogger(ObjectNotFoundExceptionHandler.class);
     
+    /**
+     *
+     * @param exception
+     * @return
+     */
     @Override
     public Response toResponse(ObjectNotFoundException exception) {
         String msg = "Object id: " + exception.getObjectId() + " Object type: " + exception.getObjectType().toString() + " was not found.";

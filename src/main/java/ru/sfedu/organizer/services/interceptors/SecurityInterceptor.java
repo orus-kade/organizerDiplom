@@ -52,6 +52,14 @@ public class SecurityInterceptor implements PreProcessInterceptor {
     @EJB
     private UserBusiness userBusiness = new UserBusiness();
 
+    /**
+     *
+     * @param hr
+     * @param rmi
+     * @return
+     * @throws Failure
+     * @throws WebApplicationException
+     */
     @Override
     public ServerResponse preProcess(HttpRequest hr, ResourceMethodInvoker rmi) throws Failure, WebApplicationException {
 
