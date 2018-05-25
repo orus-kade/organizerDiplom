@@ -220,12 +220,17 @@ public class Note {
     public void setUser(User user) {
         this.user = user;
     }
-    
+
+    @Override
+    public String toString() {
+        return "Note{" + "id=" + id + ", title=" + title + ", objectId=" + objectId + ", objectType=" + objectType + ", description=" + description + ", createDate=" + createDate + ", updateDate=" + updateDate + ", user=" + user.getId() + '}';
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == null || obj == null || getClass() != obj.getClass()) 
             return false;
         Note a = (Note) obj;
-        return this.id == a.getId();
+        return (this.id == a.getId() && this.title.equals(a.getTitle()) && this.description.equals(a.getDescription()) && this.objectId == a.getObjectId() && this.objectType == a.getObjectType());
     } 
 }

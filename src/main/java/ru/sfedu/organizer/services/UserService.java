@@ -74,10 +74,16 @@ public class UserService{
      * @return
      */
     @RolesAllowed("ADMIN")
-    @PermitAll
     @DELETE
     @Path("{id}")
-    public Response remove(@PathParam("id") Long id){
+    public Response removeAdmin(@PathParam("id") Long id) throws ObjectNotFoundException{
+       userBusiness.delete(id);
+       return Response.ok().entity(id).build();
+    }
+    
+    @RolesAllowed("USER")
+    @DELETE
+    public Response remove(@QueryParam("userId") Long id) throws ObjectNotFoundException{
        userBusiness.delete(id);
        return Response.ok().entity(id).build();
     }
@@ -192,7 +198,6 @@ public class UserService{
      * @return
      */
     @RolesAllowed("ADMIN")
-    @PermitAll
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)

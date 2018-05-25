@@ -60,7 +60,8 @@ public class User {
 //    @Column(name="user_name")
 //    private String name;
     
-    @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name="user_id")
     private List<Note> notes;
     
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -267,6 +268,14 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "id=" + id + ", login=" + login + ", roles=" + roles + ", createDate=" + createDate + ", notes=" + notes + ", events=" + events + '}';
+    }
+    
+    
+    
     
     @Override
     public boolean equals(Object obj) {

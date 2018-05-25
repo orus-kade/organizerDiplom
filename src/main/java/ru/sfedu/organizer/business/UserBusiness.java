@@ -181,11 +181,12 @@ public class UserBusiness {
      *
      * @param id
      */
-    public void delete(long id){
+    public void delete(long id) throws ObjectNotFoundException{
         Optional<User> o = userDao.getById(id);
         if (o.isPresent()){
             userDao.delete(o.get());
         }
+        else throw new ObjectNotFoundException(ObjectTypes.USER, id);
     }
     
     /**
