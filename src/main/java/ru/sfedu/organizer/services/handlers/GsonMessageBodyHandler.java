@@ -19,7 +19,7 @@ import javax.ws.rs.ext.Provider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.UnsupportedEncodingException;
-import org.jboss.resteasy.spi.ApplicationException;
+
 /**
  *
  * @author sterie
