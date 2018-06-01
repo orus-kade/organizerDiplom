@@ -10,6 +10,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Place;
 
 /**
@@ -77,5 +78,17 @@ public class PlaceDao extends Dao<Place>{
         tran.commit();
         this.closeSession();
         return result;
+    }
+    
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
     }
 }

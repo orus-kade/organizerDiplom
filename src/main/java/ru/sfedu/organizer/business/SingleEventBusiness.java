@@ -11,6 +11,7 @@ import ru.sfedu.organizer.dao.EventDao;
 import ru.sfedu.organizer.dao.PlaceDao;
 import ru.sfedu.organizer.dao.SingleEventDao;
 import ru.sfedu.organizer.entity.Event;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Place;
 import ru.sfedu.organizer.entity.SingleEvent;
@@ -58,6 +59,7 @@ public class SingleEventBusiness {
                     singleEvent.getPlace().getTitle(),
                     singleEvent.getPlace().getLocation()
             );
+            singleEventModel.setLinks(dao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.SINGLE_EVENT, id);
         return singleEventModel;
@@ -182,6 +184,26 @@ public class SingleEventBusiness {
         Event event = oe.get();
         sEvent.setEvent(event);
         dao.saveOrUpdate(sEvent);
+        this.updateLinks(singleEventModel.getLinks(), sEvent.getId());
         return sEvent.getId();
+    }
+
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(dao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.SINGLE_EVENT);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            dao.saveLinks(list);
+        }        
+        dao.deleteLinks(oldList);        
     }
 }

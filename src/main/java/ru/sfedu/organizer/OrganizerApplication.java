@@ -30,13 +30,11 @@ public class OrganizerApplication extends Application {
         Set<Class<?>> resources = new java.util.HashSet<>();
         addRestResourceClasses(resources);
         return resources;
-    }
-
-    
+    } 
     
     @Override
     protected void finalize() throws Throwable {
-        HibernateUtil.getSessionFactory().close();
+        HibernateUtil.getSessionFactory().close(); 
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {

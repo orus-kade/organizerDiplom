@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.utils.Utils;
 
@@ -23,6 +24,7 @@ public class PlaceModel {
     private String description;
     private Map<Long, String> humans = new HashMap<>();
     private List<SingleEventInfo> events = new ArrayList<>();
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -138,5 +140,15 @@ public class PlaceModel {
         List<Long> keyList = new ArrayList(this.humans.keySet());
         return keyList;
     }
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
+    
+    
 
 }

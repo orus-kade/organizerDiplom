@@ -14,6 +14,7 @@ import ru.sfedu.organizer.dao.HumanDao;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Concert;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.model.ConcertModel;
@@ -49,17 +50,18 @@ public class ConcertBusiness {
      */
     public ConcertModel getById(long id) throws ObjectNotFoundException{
         Optional<Concert> o = concertDao.getById(id);
-        ConcertModel consertModel = null;
+        ConcertModel concertModel = null;
         if (o.isPresent()){
             Concert concert = o.get();
-            consertModel = new ConcertModel(concert.getId(), concert.getTitle(), concert.getDescription());   
-            consertModel.addDirector(concert.getDirector());
-            consertModel.addSingers(concert.getSingers());
-            consertModel.addAries(concert.getAries());
-            consertModel.addEvents(concert.getSingleEvents());
+            concertModel = new ConcertModel(concert.getId(), concert.getTitle(), concert.getDescription());   
+            concertModel.addDirector(concert.getDirector());
+            concertModel.addSingers(concert.getSingers());
+            concertModel.addAries(concert.getAries());
+            concertModel.addEvents(concert.getSingleEvents());
+            concertModel.setLinks(concertDao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.CONCERT, id);
-        return consertModel;
+        return concertModel;
     }
     
     /**
@@ -178,8 +180,26 @@ public class ConcertBusiness {
             }
         }        
         concertDao.saveOrUpdate(concert);
+        this.updateLinks(concertModel.getLinks(), concert.getId());
         return concert.getId();
     }
-    
-    
+
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(concertDao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.CONCERT);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            concertDao.saveLinks(list);
+        }        
+        concertDao.deleteLinks(oldList);        
+    }
 }

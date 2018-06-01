@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.utils.Utils;
 
@@ -24,6 +25,7 @@ public class ConcertModel {
     private Map<Long, String> singers = new HashMap<>();
     private List<AriaInfo> aries = new ArrayList<>();
     private Map<Long, Date> events = new HashMap<>();
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -165,5 +167,15 @@ public class ConcertModel {
         List<Long> keyList = new ArrayList(this.singers.keySet());
         return keyList;
     }
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
+    
+    
 
 }

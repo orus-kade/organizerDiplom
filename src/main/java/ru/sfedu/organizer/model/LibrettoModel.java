@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.utils.Utils;
 
 /**
@@ -19,6 +20,7 @@ public class LibrettoModel {
     private String operaTitle;
     private Map<Long, String> writers = new HashMap<>();
     private String text;
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -117,5 +119,14 @@ public class LibrettoModel {
         List<Long> keyList = new ArrayList(this.writers.keySet());
         return keyList;
     }
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
+    
     
 }

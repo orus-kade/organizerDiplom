@@ -13,6 +13,7 @@ import ru.sfedu.organizer.dao.PersonageDao;
 import ru.sfedu.organizer.dao.RoleDao;
 import ru.sfedu.organizer.dao.StageDao;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Personage;
@@ -63,6 +64,7 @@ public class StageBusiness {
             stageModel.addEvents(stage.getSingleEvents());
             stageModel.addOpera(stage.getOpera());
             stageModel.addRoles(stage.getRoles());
+            stageModel.setLinks(stageDao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.STAGE, id);
         return stageModel;
@@ -195,6 +197,26 @@ public class StageBusiness {
             stage.setRoles(roles);
         }
         stageDao.saveOrUpdate(stage);
+        this.updateLinks(stageModel.getLinks(), stage.getId());
         return stage.getId();
+    }
+
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(stageDao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.STAGE);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            stageDao.saveLinks(list);
+        }        
+        stageDao.deleteLinks(oldList);        
     }
 }

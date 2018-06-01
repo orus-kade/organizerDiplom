@@ -13,6 +13,7 @@ import ru.sfedu.organizer.dao.LibrettoDao;
 import ru.sfedu.organizer.dao.OperaDao;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Professions;
@@ -53,6 +54,7 @@ public class LibrettoBusiness {
             Libretto libretto = o.get();
             librettoModel = new LibrettoModel(libretto.getId(), libretto.getOpera().getId(), libretto.getOpera().getTitle(), libretto.getText());   
             librettoModel.addWriters(libretto.getWriters());
+            librettoModel.setLinks(librettoDao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.LIBRETTO, id);
         return librettoModel;
@@ -103,6 +105,26 @@ public class LibrettoBusiness {
                 libretto.setWriters(writers);
             }
         librettoDao.saveOrUpdate(libretto);
+        this.updateLinks(librettoModel.getLinks(), libretto.getId());
         return libretto.getId();
+    }
+    
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(librettoDao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.LIBRETTO);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            librettoDao.saveLinks(list);
+        }        
+        librettoDao.deleteLinks(oldList);        
     }
 }

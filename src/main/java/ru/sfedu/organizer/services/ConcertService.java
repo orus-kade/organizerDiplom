@@ -2,19 +2,15 @@
  */
 package ru.sfedu.organizer.services;
 
-import com.google.gson.Gson;
 import java.util.List;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -24,7 +20,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import ru.sfedu.organizer.business.ConcertBusiness;
 import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
-import ru.sfedu.organizer.entity.Concert;
 import ru.sfedu.organizer.model.ConcertModel;
 import ru.sfedu.organizer.model.SearchResult;
 

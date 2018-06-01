@@ -47,7 +47,7 @@ Contributor(s):
     <property name="hibernate.connection.username">organizer_user</property>
     <property name="hibernate.connection.password">music5</property>
     <!--<property name="hibernate.connection.pool_size">1</property>-->
-    <property name="hibernate.c3po.minPoolSize">2</property>
+    <property name="hibernate.c3po.minPoolSize">0</property>
     <property name="hibernate.c3po.maxPoolSize">20</property>
     <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
     <property name="show_sql">true</property>
@@ -62,3 +62,5 @@ Contributor(s):
     <property name="hibernate.max_fetch_depth">2</property>
   </session-factory>
 </hibernate-configuration>
+
+ 

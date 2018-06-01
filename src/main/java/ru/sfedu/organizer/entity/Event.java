@@ -14,7 +14,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Type;
 
 /**
@@ -23,7 +22,6 @@ import org.hibernate.annotations.Type;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Table(name = "event")
-@XmlRootElement
 public class Event {
 
     //

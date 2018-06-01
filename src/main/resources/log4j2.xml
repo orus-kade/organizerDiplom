@@ -5,15 +5,14 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
+        <File name="File" fileName="logs/organizer.log">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+	</File>
     </Appenders>
  
     <Loggers>
-<!--        <Logger name= "ru.javastudy.examples.User" level="debug" additivity="true">
-           <AppenderRef ref="Console"/>
-        </Logger>-->
- 
-        <!-- Root Logger -->
-        <Root level="debug">
+        <Root level="warn">
+            <AppenderRef ref="File"/>
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers> 

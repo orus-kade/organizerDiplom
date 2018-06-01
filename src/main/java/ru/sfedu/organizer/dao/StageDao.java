@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Stage;
 
 /**
@@ -78,4 +79,15 @@ public class StageDao extends Dao<Stage>{
         return result;
     } 
     
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
+    }
 }

@@ -1,11 +1,13 @@
 
 package ru.sfedu.organizer.dao;
 
+import java.util.List;
 import java.util.Optional;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Opera;
 
 /**
@@ -44,5 +46,17 @@ public class LibrettoDao extends Dao<Libretto>{
         session.saveOrUpdate(opera);
         tran.commit();
         this.closeSession();
+    }
+    
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
     }
 }

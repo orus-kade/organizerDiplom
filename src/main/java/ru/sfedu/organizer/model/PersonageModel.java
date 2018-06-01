@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.MediaLink;
 
 /**
  *
@@ -19,6 +20,7 @@ public class PersonageModel {
     private String opreTitle;
     private String description;
     private Map<Long, String> aries = new HashMap<>(); 
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -136,5 +138,15 @@ public class PersonageModel {
         List<Long> keyList = new ArrayList(this.aries.keySet());
         return keyList;
     }
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
+    
+    
     
 }

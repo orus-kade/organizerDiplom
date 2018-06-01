@@ -1,19 +1,7 @@
 package ru.sfedu.organizer.utils;
 
-import java.lang.reflect.Method;
-import ru.sfedu.organizer.entity.Stage;
-import ru.sfedu.organizer.entity.Libretto;
-import ru.sfedu.organizer.entity.SingleEvent;
-import ru.sfedu.organizer.entity.Opera;
-import ru.sfedu.organizer.entity.Concert;
-import ru.sfedu.organizer.entity.Human;
-import ru.sfedu.organizer.entity.Role;
-import ru.sfedu.organizer.entity.Personage;
-import ru.sfedu.organizer.entity.Aria;
-import ru.sfedu.organizer.entity.User;
-import ru.sfedu.organizer.entity.Note;
-import ru.sfedu.organizer.entity.Event;
-import ru.sfedu.organizer.entity.Place;
+
+import ru.sfedu.organizer.entity.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -58,9 +46,15 @@ public class HibernateUtil {
             metadataSources.addAnnotatedClass(SingleEvent.class);
             metadataSources.addAnnotatedClass(Stage.class);
             metadataSources.addAnnotatedClass(User.class);
+            metadataSources.addAnnotatedClass(MediaLink.class);
             sessionFactory = metadataSources.buildMetadata().buildSessionFactory();
         }
         return sessionFactory;
     }
+
     
+    @Override
+    protected void finalize() throws Throwable {
+        this.finalize();
+    }
 }

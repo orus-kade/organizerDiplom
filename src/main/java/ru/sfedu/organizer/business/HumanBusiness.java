@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import ru.sfedu.organizer.business.exceptions.ObjectNotFoundException;
 import ru.sfedu.organizer.dao.HumanDao;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.entity.Voices;
@@ -54,6 +55,7 @@ public class HumanBusiness {
             humanModel.addProfessions(human.getProfessions());
             if (human.getVoice() != null)
                 humanModel.setVoice(human.getVoice().toString());
+            humanModel.setLinks(humanDao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.HUMAN, id);
         return humanModel;
@@ -222,6 +224,26 @@ public class HumanBusiness {
                 human.setProfessions(list);
             }        
         humanDao.saveOrUpdate(human);
+        this.updateLinks(humanModel.getLinks(), human.getId());
         return human.getId();
+    }
+   
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(humanDao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.HUMAN);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            humanDao.saveLinks(list);
+        }        
+        humanDao.deleteLinks(oldList);        
     }
 }

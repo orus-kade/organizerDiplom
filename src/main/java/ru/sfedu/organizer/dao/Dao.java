@@ -1,6 +1,7 @@
 
 package ru.sfedu.organizer.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
@@ -10,6 +11,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import ru.sfedu.organizer.entity.MediaLink;
+import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.utils.HibernateUtil;
 import ru.sfedu.organizer.utils.InitialiseUtil;
 
@@ -45,7 +49,7 @@ public abstract class Dao<T> {
      *
      */
     protected void getSession(){
-        this.session = HibernateUtil.getSessionFactory().getCurrentSession();
+        this.session = HibernateUtil.getSessionFactory().openSession();
     }
 
     /**
@@ -193,5 +197,42 @@ public abstract class Dao<T> {
         tran.commit();
         this.closeSession();
         return count;        
+    }
+    
+    protected List<MediaLink> getLinks(long id){
+        this.getSession();
+        Transaction tran = session.beginTransaction();
+        List<MediaLink> list = new ArrayList<>();
+        list.addAll(session.createCriteria(MediaLink.class)
+            .add(Restrictions.eq("objectType", ObjectTypes.valueOf(this.entityClass.getSimpleName().toUpperCase())))
+            .add(Restrictions.eq("objectId", id))
+            .list());
+        tran.commit();
+        this.closeSession();
+        return list;
+    }
+    
+    protected void saveOrUpdateLinks(List<MediaLink> list){
+        this.getSession();
+            Transaction tran = session.beginTransaction();
+            list.forEach(e ->{
+                if (e != null){
+                    session.saveOrUpdate(e);
+                }
+            });            
+            tran.commit();
+            this.closeSession();
+    }
+    
+    protected void deleteListLinks(List<MediaLink> list){
+            this.getSession();
+            Transaction tran = session.beginTransaction();
+            list.forEach(e ->{
+                if (e != null){
+                    session.delete(e);
+                }
+            });
+            tran.commit();
+            this.closeSession();
     }
 }

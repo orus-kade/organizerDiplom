@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Personage;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.entity.Stage;
@@ -29,6 +30,7 @@ public class OperaModel {
     private Map<Long, String> composers  = new HashMap<>();  
     private Map<Long, String> stages = new HashMap<>();
     private List<SingleEventInfo> futureEvents = new ArrayList<>();
+    private List<MediaLink> links = new ArrayList();
     
     /**
      *
@@ -188,6 +190,14 @@ public class OperaModel {
             return null;
         List<Long> keyList = new ArrayList(this.aries.keySet());
         return keyList;
+    }
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
     }
     
 }

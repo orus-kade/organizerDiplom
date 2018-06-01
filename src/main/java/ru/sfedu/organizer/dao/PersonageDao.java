@@ -10,6 +10,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
+import ru.sfedu.organizer.entity.MediaLink;
 
 /**
  *
@@ -77,4 +78,16 @@ public class PersonageDao extends Dao<Personage>{
         this.closeSession();
         return result;
     } 
+    
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
+    }
 }

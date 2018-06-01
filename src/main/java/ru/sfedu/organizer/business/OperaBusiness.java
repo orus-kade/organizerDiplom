@@ -13,6 +13,7 @@ import ru.sfedu.organizer.dao.OperaDao;
 import ru.sfedu.organizer.dao.PersonageDao;
 import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Personage;
@@ -62,6 +63,7 @@ public class OperaBusiness {
             operaModel.addWriters(operaDao.getHumansByProfession(opera, Professions.WRITER));
             operaModel.addStages(opera.getStages());
             operaModel.addFutureEvents(operaDao.getFutureEvents(opera.getStages()));
+            operaModel.setLinks(operaDao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.OPERA, id);
         return operaModel;
@@ -179,6 +181,26 @@ public class OperaBusiness {
             opera.setAries(aries);
         }
         operaDao.saveOrUpdate(opera);
+        this.updateLinks(operaModel.getLinks(), opera.getId());
         return opera.getId();
+    }
+
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(operaDao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.OPERA);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            operaDao.saveLinks(list);
+        }        
+        operaDao.deleteLinks(oldList);        
     }
 }

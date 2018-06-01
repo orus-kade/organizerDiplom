@@ -2,7 +2,10 @@
  */
 package ru.sfedu.organizer.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import ru.sfedu.organizer.entity.MediaLink;
 
 /**
  *
@@ -19,6 +22,7 @@ public class SingleEventModel {
     private long placeId;
     private String placeTitle;
     private String placeLocation;
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -187,7 +191,13 @@ public class SingleEventModel {
     public void setPlaceLocation(String placeLocation) {
         this.placeLocation = placeLocation;
     }
-    
-    
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
     
 }

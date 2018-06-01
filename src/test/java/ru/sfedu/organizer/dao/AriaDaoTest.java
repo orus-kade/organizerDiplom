@@ -84,6 +84,7 @@ public class AriaDaoTest {
     
     @AfterClass
     public static void tearDownClass() {
+        System.out.println("ru.sfedu.organizer.dao.AriaDaoTest.tearDownClass()");
         humanDao.deleteList(humans);
         operaDao.delete(opera);
         sessionFactory.close();
@@ -138,4 +139,15 @@ public class AriaDaoTest {
         System.out.println("NOT FOUND");
         System.out.println("ru.sfedu.organizer.dao.AriaDaoTest.dTestDelete() : OK");
     }    
+    
+//    @Test
+//    public void addLink(){
+//        MediaLink link = new MediaLink();
+//        link.setDescription("asd");
+//        link.setObjectId(2);
+//        link.setObjectType(ObjectTypes.ARIA);
+//        link.setType(MediaTypes.LINK);
+//        link.setLink("http://link");
+//        dao.saveLinks(Arrays.asList(link));
+//    }
 }

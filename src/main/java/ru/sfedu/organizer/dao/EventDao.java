@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import ru.sfedu.organizer.entity.Event;
+import ru.sfedu.organizer.entity.MediaLink;
 
 /**
  *
@@ -53,5 +54,17 @@ public class EventDao extends Dao<Event>{
      */
     public Optional<List> getByRange(int from, int to){
         return super.getByRange(from, to, Arrays.asList("title"));
+    }
+    
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
     }
 }

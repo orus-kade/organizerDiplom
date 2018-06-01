@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Place;
 import ru.sfedu.organizer.entity.Professions;
 
@@ -25,6 +26,7 @@ public class HumanModel {
     private Map<Long, String> places = new HashMap<>();
     private List<String> professions = new ArrayList<>();
     private String voice;
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -215,6 +217,16 @@ public class HumanModel {
      */
     public void setVoice(String voice) {
         this.voice = voice;
-    }    
+    } 
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
+    
+    
     
 }

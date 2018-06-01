@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import ru.sfedu.organizer.entity.Human;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Role;
 import ru.sfedu.organizer.entity.SingleEvent;
@@ -25,6 +26,7 @@ public class StageModel {
     private Map<Long, String> director = new HashMap<>();
     private List<RoleInfo> roles = new ArrayList<>();
     private Map<Long, Date> events = new HashMap<>();
+    private List<MediaLink> links = new ArrayList();
 
     /**
      *
@@ -158,5 +160,15 @@ public class StageModel {
     public List<RoleInfo> getRoles() {
         return roles;
     }
+
+    public List<MediaLink> getLinks() {
+        return links;
+    }
+
+    public void setLinks(List<MediaLink> links) {
+        this.links = links;
+    }
+    
+    
 
 }

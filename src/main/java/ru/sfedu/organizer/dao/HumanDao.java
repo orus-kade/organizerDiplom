@@ -18,6 +18,7 @@ import ru.sfedu.organizer.entity.Aria;
 import ru.sfedu.organizer.entity.Event;
 import ru.sfedu.organizer.entity.Human;
 import ru.sfedu.organizer.entity.Libretto;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.Professions;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.utils.Utils;
@@ -220,5 +221,17 @@ public class HumanDao extends Dao<Human>{
         tran.commit();
         this.closeSession();
         return result;
+    }
+    
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
     }
 }

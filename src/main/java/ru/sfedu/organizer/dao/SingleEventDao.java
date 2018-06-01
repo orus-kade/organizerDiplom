@@ -9,6 +9,7 @@ import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.SingleEvent;
 import ru.sfedu.organizer.utils.Utils;
 
@@ -102,5 +103,17 @@ public class SingleEventDao extends Dao<SingleEvent>{
         tran.commit();
         this.closeSession();
         return result;
+    }
+    
+    public List<MediaLink> getMediaLinks(long id){
+        return super.getLinks(id);
+    }
+    
+    public void deleteLinks (List<MediaLink> list){
+        super.deleteListLinks(list);
+    }
+    
+    public void saveLinks (List<MediaLink> list){
+        super.saveOrUpdateLinks(list);
     }
 }

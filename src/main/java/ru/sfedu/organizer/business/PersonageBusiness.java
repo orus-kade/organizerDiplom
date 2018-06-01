@@ -10,6 +10,7 @@ import ru.sfedu.organizer.dao.AriaDao;
 import ru.sfedu.organizer.dao.OperaDao;
 import ru.sfedu.organizer.dao.PersonageDao;
 import ru.sfedu.organizer.entity.Aria;
+import ru.sfedu.organizer.entity.MediaLink;
 import ru.sfedu.organizer.entity.ObjectTypes;
 import ru.sfedu.organizer.entity.Opera;
 import ru.sfedu.organizer.entity.Personage;
@@ -47,6 +48,7 @@ public class PersonageBusiness {
             Personage personage = o.get();
             personageModel = new PersonageModel(personage.getId(), personage.getName(), personage.getOpera().getId(), personage.getOpera().getTitle(), personage.getDescription());   
             personageModel.addAries(personage.getAries());
+            personageModel.setLinks(personageDao.getMediaLinks(id));
         }
         else throw new ObjectNotFoundException(ObjectTypes.PERSONAGE, id);
         return personageModel;
@@ -119,6 +121,26 @@ public class PersonageBusiness {
             pers.setAries(aries);
         }
         personageDao.saveOrUpdate(pers);
+        this.updateLinks(personageModel.getLinks(), pers.getId());
         return pers.getId();
     }    
+    
+    private void updateLinks(List<MediaLink> list, long id) {
+        List<MediaLink> oldList = new ArrayList<>();
+        oldList.addAll(personageDao.getMediaLinks(id));
+        if (list != null && !list.isEmpty()) {
+            list.stream().forEach(e -> {
+                e.setObjectId(id);
+                e.setObjectType(ObjectTypes.PERSONAGE);
+            });
+            List<Long> newIds = new ArrayList<>();
+            newIds.addAll(list.stream().collect(ArrayList<Long>::new,
+                    (a, r) -> a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2))
+            );
+            oldList.removeIf(e -> newIds.contains(e.getId()));
+            personageDao.saveLinks(list);
+        }        
+        personageDao.deleteLinks(oldList);        
+    }
 }
